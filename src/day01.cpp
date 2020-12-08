@@ -34,7 +34,9 @@ void day01(input_t input)
     // - part 2:
     //   - find three entries that sum up to 2020
     //   - return product of those entries
-    const std::vector<int>& v = parse_input(input);
+    std::vector<int> v = parse_input(input);
+
+    std::sort(v.begin(), v.end());
 
     // Part 1
     int product1 = -1;

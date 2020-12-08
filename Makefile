@@ -15,4 +15,11 @@ build:
 clean:
 	cd build/ && make clean
 
+measure:
+	sudo perf stat \
+		-r 5 \
+		-e task-clock,instructions,branches,branch-misses \
+		-e cycles,stalled-cycles-frontend,stalled-cycles-backend \
+		./build/advent2020
+
 .PHONY: help format init build clean
