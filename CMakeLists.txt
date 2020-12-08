@@ -1,9 +1,8 @@
 cmake_minimum_required (VERSION 3.10)
 project (advent2020)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -std=c++17")
-
-add_executable(advent2020
+set(exec_NAME advent2020)
+add_executable(${exec_NAME}
     src/main.cpp
     src/day01.cpp
     src/day02.cpp
@@ -30,6 +29,37 @@ add_executable(advent2020
     src/day23.cpp
     src/day24.cpp
     src/day25.cpp
-    )
-target_link_libraries(advent2020 m)
+)
 
+target_link_libraries(${exec_NAME} m)
+
+set_target_properties(${exec_NAME} PROPERTIES CXX_STANDARD 17)
+set_target_properties(${exec_NAME} PROPERTIES DEBUG_POSTFIX d)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+
+target_compile_options(advent2020 PRIVATE
+    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
+        # Warnings
+        -Weverything
+        -Werror
+        -Wall
+        -Wextra
+        -Wpedantic
+        # Disable specific warnings
+        -Wno-c++20-compat
+        -Wno-c++98-compat-pedantic
+        -Wno-unused-parameter
+        -Wno-exit-time-destructors
+        -Wno-global-constructors
+        -Wno-sign-conversion
+        -Wno-implicit-int-float-conversion
+        -Wno-sign-compare
+        # Code Generation Convention
+        -fwrapv
+        -pedantic
+    >
+    $<$<CXX_COMPILER_ID:MSVC>:
+        /W4
+    >
+)

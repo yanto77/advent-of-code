@@ -46,15 +46,16 @@ int main()
     for (auto& A : advent2020)
     {
         input_t input;
-
         load_input(input, A.input_file);
+
         auto t0 = std::chrono::steady_clock::now();
         (*A.fn)(input);
         auto elapsed = std::chrono::steady_clock::now() - t0;
+
         free_input(input);
 
         total_time += elapsed.count();
-        printf("[%ld μs]\n", int64_t(elapsed.count() * 1e-3));
+        printf(" [%ld μs]\n", int64_t(elapsed.count() * 1e-3));
     }
     printf("Total: %ld μs\n", int64_t(total_time * 1e-3));
 
@@ -65,7 +66,8 @@ void load_input(input_t& input, const std::string& filename)
 {
     static void* backsplash = nullptr;
 
-    backsplash = mmap(backsplash, BACKSPLASH_SIZE, PROT_READ, MAP_PRIVATE | MAP_ANONYMOUS | (backsplash ? MAP_FIXED : 0), -1, 0);
+    int flags = MAP_PRIVATE | MAP_ANONYMOUS | (backsplash ? MAP_FIXED : 0);
+    backsplash = mmap(backsplash, BACKSPLASH_SIZE, PROT_READ, flags, -1, 0);
     if (backsplash == MAP_FAILED)
     {
         perror("mmap");
@@ -78,22 +80,26 @@ void load_input(input_t& input, const std::string& filename)
         perror(filename.c_str());
         exit(EXIT_FAILURE);
     }
+
     input.len = lseek(fd, 0, SEEK_END);
     if (input.len > BACKSPLASH_SIZE)
     {
         fprintf(stderr, "Why is your input so big?\n");
         exit(EXIT_FAILURE);
     }
+
     input.s = reinterpret_cast<char*>(mmap(backsplash, input.len, PROT_READ, MAP_PRIVATE | MAP_FIXED, fd, 0));
     if (input.s == MAP_FAILED)
     {
         perror("mmap");
         exit(EXIT_FAILURE);
     }
+
     if (input.s != backsplash)
     {
         fprintf(stderr, "Warning: Input not mapped at the expected location.\n");
     }
+
     if (close(fd) == -1)
     {
         perror(filename.c_str());
