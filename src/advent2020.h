@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <array>
+#include <cassert>
+#include <cctype>
 #include <climits>
 #include <cmath>
 #include <cstdint>
