@@ -9,8 +9,8 @@
 static constexpr size_t BACKSPLASH_SIZE = 1 << 20;
 
 static const advent_t advent2020[] = {
-    { day01, "input/day01.txt" },
-    // { day02, "input/day02.txt" },
+    // { day01, "input/day01.txt" },
+    { day02, "input/day02.txt" },
     // { day03, "input/day03.txt" },
     // { day04, "input/day04.txt" },
     // { day05, "input/day05.txt" },
