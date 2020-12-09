@@ -31,10 +31,12 @@ add_executable(${exec_NAME}
     src/day25.cpp
 )
 
+target_include_directories(${exec_NAME} SYSTEM PRIVATE include/)
 target_link_libraries(${exec_NAME} m)
 
 set_target_properties(${exec_NAME} PROPERTIES CXX_STANDARD 17)
 set_target_properties(${exec_NAME} PROPERTIES DEBUG_POSTFIX d)
+set_target_properties(${exec_NAME} PROPERTIES CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
 
@@ -55,6 +57,7 @@ target_compile_options(advent2020 PRIVATE
         -Wno-sign-conversion
         -Wno-implicit-int-float-conversion
         -Wno-sign-compare
+        -Wno-padded
         # Code Generation Convention
         -fwrapv
         -pedantic
