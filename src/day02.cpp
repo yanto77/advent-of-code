@@ -1,7 +1,6 @@
 #include "advent2020.h"
-#include <3rd-party/ctre.hpp>
+#include <3rd-party/ctre.hpp> // https://github.com/hanickadot/compile-time-regular-expressions
 #include <charconv>
-#include <stdexcept>
 #include <iostream>
 
 struct input_line_t
@@ -75,17 +74,42 @@ namespace
 
         return v;
     }
+
+    size_t count_occurences(const std::string_view& input, const char& ch)
+    {
+        return std::count_if(input.begin(), input.end(),
+            [&](const char& asd)
+            {
+                return asd == ch;
+            });
+    }
 }
 
 void day02(input_t input)
 {
-    printf("Day 02: todo\n\n");
-
     const auto& data = parse_input(input);
 
+    int i = 0; // Part 1
+    int j = 0; // Part 2
     for (auto d: data)
     {
-        printf("min: %d, max: %d, char: %c, password: ", d.min, d.max, d.ch);
-        std::cout << d.password << std::endl;
+        // Part 1
+        size_t asd = count_occurences(d.password, d.ch);
+        if (d.min <= asd && asd <= d.max)
+        {
+            i++;
+        }
+
+        // Part 2
+        bool pos1 = d.password[d.min-1] == d.ch;
+        bool pos2 = d.password[d.max-1] == d.ch;
+        if (pos1 ^ pos2)
+        {
+            j++;
+        }
     }
+
+    printf("Day 02: part 1: %d, part 2: %d\n", i, j);
+    assert(i == 465);
+    assert(j == 294);
 }
