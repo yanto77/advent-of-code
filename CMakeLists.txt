@@ -34,7 +34,7 @@ add_executable(${exec_NAME}
 target_include_directories(${exec_NAME} SYSTEM PRIVATE include/)
 target_link_libraries(${exec_NAME} m)
 
-set_target_properties(${exec_NAME} PROPERTIES CXX_STANDARD 17)
+set_target_properties(${exec_NAME} PROPERTIES CXX_STANDARD 20)
 set_target_properties(${exec_NAME} PROPERTIES DEBUG_POSTFIX d)
 set_target_properties(${exec_NAME} PROPERTIES CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
