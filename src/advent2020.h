@@ -60,3 +60,11 @@ void day22(input_t);
 void day23(input_t);
 void day24(input_t);
 void day25(input_t);
+
+// Helpers
+
+void parse_input(const input_t& input, std::function<void(const std::string_view&)> line_cb);
+
+int to_int(const std::string_view& sv);
+
+char to_char(const std::string_view& sv);

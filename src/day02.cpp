@@ -13,23 +13,6 @@ struct input_line_t
 
 namespace
 {
-    int to_int(const std::string_view& sv)
-    {
-        int i;
-        auto result = std::from_chars(sv.data(), sv.data() + sv.size(), i);
-        if (result.ec == std::errc::invalid_argument)
-        {
-            assert(false);
-        }
-
-        return i;
-    }
-
-    char to_char(const std::string_view& sv)
-    {
-        return *(sv.data());
-    }
-
     input_line_t parse_line(const std::string_view& s) noexcept
     {
         // Input format:
@@ -52,29 +35,6 @@ namespace
         };
     }
 
-    std::vector<input_line_t> parse_input(const input_t& input)
-    {
-        std::vector<input_line_t> v;
-        v.reserve(1000);
-
-        for (size_t size = 0, i = 0; i < input.len; i++)
-        {
-            if (input.s[i] != '\n')
-            {
-                ++size;
-            }
-            else
-            {
-                std::string_view line { &input.s[i-size], size };
-                v.emplace_back(parse_line(line));
-
-                size = 0;
-            }
-        }
-
-        return v;
-    }
-
     size_t count_occurences(const std::string_view& input, const char& ch)
     {
         return std::count_if(input.begin(), input.end(),
@@ -87,7 +47,13 @@ namespace
 
 void day02(input_t input)
 {
-    const auto& data = parse_input(input);
+    std::vector<input_line_t> data;
+    data.reserve(1000);
+
+    parse_input(input, [&](const std::string_view& line)
+    {
+        data.emplace_back(parse_line(line));
+    });
 
     int i = 0; // Part 1
     int j = 0; // Part 2
