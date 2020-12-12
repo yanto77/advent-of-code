@@ -1,9 +1,7 @@
 #include "advent2020.h"
 #include <charconv>
-#include <chrono>
 #include <fcntl.h>
 #include <sys/mman.h>
-#include <time.h>
 #include <unistd.h>
 
 void parse_input(const input_t& input, std::function<void(const std::string_view&)> line_cb)
