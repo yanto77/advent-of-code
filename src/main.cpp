@@ -1,9 +1,5 @@
 #include "advent2020.h"
 #include <chrono>
-#include <fcntl.h>
-#include <sys/mman.h>
-#include <time.h>
-#include <unistd.h>
 
 struct advent_t
 {
