@@ -36,7 +36,6 @@ target_include_directories(${exec_NAME} SYSTEM PRIVATE include/)
 target_link_libraries(${exec_NAME} m)
 
 set_target_properties(${exec_NAME} PROPERTIES CXX_STANDARD 20)
-set_target_properties(${exec_NAME} PROPERTIES DEBUG_POSTFIX d)
 set_target_properties(${exec_NAME} PROPERTIES CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")

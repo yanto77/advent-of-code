@@ -18,7 +18,7 @@
 #ifdef NDEBUG
 #undef NDEBUG
 #include <cassert>
-#define NDEBUG
+#define NDEBUG 1
 #else
 #include <cassert>
 #endif
