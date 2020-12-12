@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 3.10)
 project (advent2020)
 
+find_package(OpenMP REQUIRED)
+
 set(exec_NAME advent2020)
 add_executable(${exec_NAME}
     src/main.cpp
@@ -33,7 +35,8 @@ add_executable(${exec_NAME}
 )
 
 target_include_directories(${exec_NAME} SYSTEM PRIVATE include/)
-target_link_libraries(${exec_NAME} m)
+target_link_libraries(${exec_NAME} PRIVATE m)
+target_link_libraries(${exec_NAME} PRIVATE OpenMP::OpenMP_CXX)
 
 set_target_properties(${exec_NAME} PROPERTIES CXX_STANDARD 20)
 set_target_properties(${exec_NAME} PROPERTIES CMAKE_EXPORT_COMPILE_COMMANDS ON)
