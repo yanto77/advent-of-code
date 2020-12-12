@@ -5,9 +5,6 @@
 #include <time.h>
 #include <unistd.h>
 
-// Allows solutions to read past the end of the input safely
-static constexpr size_t BACKSPLASH_SIZE = 1 << 20;
-
 struct advent_t
 {
     void (*fn)(const input_t&);
@@ -42,9 +39,6 @@ static const advent_t advent2020[] = {
     // { day25, "input/day25.txt" },
 };
 
-static void load_input(input_t& input, const std::string& filename);
-static void free_input(input_t& input);
-
 int main()
 {
     double total_time = 0;
@@ -66,58 +60,4 @@ int main()
     printf("Total: %ld μs\n", int64_t(total_time * 1e-3));
 
     return 0;
-}
-
-void load_input(input_t& input, const std::string& filename)
-{
-    static void* backsplash = nullptr;
-
-    int flags = MAP_PRIVATE | MAP_ANONYMOUS | (backsplash ? MAP_FIXED : 0);
-    backsplash = mmap(backsplash, BACKSPLASH_SIZE, PROT_READ, flags, -1, 0);
-    if (backsplash == MAP_FAILED)
-    {
-        perror("mmap");
-        exit(EXIT_FAILURE);
-    }
-
-    int fd = open(filename.c_str(), O_RDONLY);
-    if (fd == -1)
-    {
-        perror(filename.c_str());
-        exit(EXIT_FAILURE);
-    }
-
-    input.len = lseek(fd, 0, SEEK_END);
-    if (input.len > BACKSPLASH_SIZE)
-    {
-        fprintf(stderr, "Why is your input so big?\n");
-        exit(EXIT_FAILURE);
-    }
-
-    input.s = reinterpret_cast<char*>(mmap(backsplash, input.len, PROT_READ, MAP_PRIVATE | MAP_FIXED, fd, 0));
-    if (input.s == MAP_FAILED)
-    {
-        perror("mmap");
-        exit(EXIT_FAILURE);
-    }
-
-    if (input.s != backsplash)
-    {
-        fprintf(stderr, "Warning: Input not mapped at the expected location.\n");
-    }
-
-    if (close(fd) == -1)
-    {
-        perror(filename.c_str());
-        exit(EXIT_FAILURE);
-    }
-}
-
-void free_input(input_t& input)
-{
-    if (munmap(input.s, input.len) == -1)
-    {
-        perror("munmap");
-        exit(EXIT_FAILURE);
-    }
 }

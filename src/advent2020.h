@@ -57,6 +57,10 @@ void day25(const input_t&);
 
 // Helpers
 
+void load_input(input_t& input, const std::string& filename);
+
+void free_input(input_t& input);
+
 void parse_input(const input_t& input, std::function<void(const std::string_view&)> line_cb);
 
 int to_int(const std::string_view& sv);
