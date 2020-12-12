@@ -45,7 +45,7 @@ namespace
     }
 }
 
-void day02(input_t input)
+void day02(const input_t& input)
 {
     std::vector<input_line_t> data;
     data.reserve(1000);

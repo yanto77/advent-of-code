@@ -10,7 +10,7 @@ static constexpr size_t BACKSPLASH_SIZE = 1 << 20;
 
 struct advent_t
 {
-    void (*fn)(input_t);
+    void (*fn)(const input_t&);
     std::string input_file;
 };
 
