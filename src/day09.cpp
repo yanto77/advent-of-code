@@ -2,5 +2,5 @@
 
 void day09(const input_t& input)
 {
-    printf("Day 09: todo");
+    printf("todo");
 }

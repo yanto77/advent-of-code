@@ -56,7 +56,7 @@ void day01(const input_t& input)
         if (product2 != -1) break;
     }
 
-    printf("Day 01: %d, %d", product1, product2);
+    printf("%d, %d", product1, product2);
     assert(product1 == 1010884);
     assert(product2 == 253928438);
 }

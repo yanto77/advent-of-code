@@ -25,7 +25,7 @@ namespace
 
 void day05(const input_t& input)
 {
-    printf("Day 05: todo\n");
+    printf("todo");
 
     static_assert(convert_line("BFFFBBFRRR") == std::pair<uint8_t, uint8_t>{70, 7});
     static_assert(convert_line("FFFBBBFRRR") == std::pair<uint8_t, uint8_t>{14, 7});

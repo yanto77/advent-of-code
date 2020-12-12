@@ -73,7 +73,7 @@ void day02(const input_t& input)
         }
     }
 
-    printf("Day 02: part 1: %d, part 2: %d\n", i, j);
+    printf("part 1: %d, part 2: %d", i, j);
     assert(i == 465);
     assert(j == 294);
 }
