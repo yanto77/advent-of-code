@@ -24,7 +24,7 @@ namespace
     }
 }
 
-void day05(input_t input)
+void day05(const input_t& input)
 {
     printf("Day 05: todo\n");
 
