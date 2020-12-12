@@ -8,6 +8,12 @@
 // Allows solutions to read past the end of the input safely
 static constexpr size_t BACKSPLASH_SIZE = 1 << 20;
 
+struct advent_t
+{
+    void (*fn)(input_t);
+    std::string input_file;
+};
+
 static const advent_t advent2020[] = {
     // { day01, "input/day01.txt" },
     { day02, "input/day02.txt" },
