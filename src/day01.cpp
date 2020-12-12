@@ -1,30 +1,5 @@
 #include "advent2020.h"
 
-namespace
-{
-    std::vector<int> parse_input(const input_t& input)
-    {
-        std::vector<int> v;
-        v.reserve(1000);
-
-        for (int n = 0, i = 0; i < input.len; i++)
-        {
-            uint8_t c = input.s[i] - '0';
-            if (c < 10) // is digit
-            {
-                n = 10 * n + c;
-            }
-            else
-            {
-                v.emplace_back(n);
-                n = 0;
-            }
-        }
-
-        return v;
-    }
-}
-
 void day01(input_t input)
 {
     // Given input,
@@ -34,7 +9,12 @@ void day01(input_t input)
     // - part 2:
     //   - find three entries that sum up to 2020
     //   - return product of those entries
-    std::vector<int> v = parse_input(input);
+    std::vector<int> v;
+    v.reserve(1000);
+    parse_input(input, [&](const std::string_view& line)
+    {
+        v.emplace_back(to_int(line));
+    });
 
     std::sort(v.begin(), v.end());
 
