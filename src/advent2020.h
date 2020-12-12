@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <array>
-#include <cassert>
 #include <cctype>
 #include <climits>
 #include <cmath>
@@ -15,6 +14,14 @@
 #include <unordered_map>
 #include <vector>
 #include <x86intrin.h>
+
+#ifdef NDEBUG
+#undef NDEBUG
+#include <cassert>
+#define NDEBUG
+#else
+#include <cassert>
+#endif
 
 struct input_t
 {
