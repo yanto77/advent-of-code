@@ -29,12 +29,6 @@ struct input_t
     ssize_t len;
 };
 
-struct advent_t
-{
-    void (*fn)(input_t);
-    std::string input_file;
-};
-
 void day01(input_t);
 void day02(input_t);
 void day03(input_t);
