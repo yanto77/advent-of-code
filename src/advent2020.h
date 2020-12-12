@@ -4,7 +4,7 @@
 // #include <array>
 // #include <cctype>
 // #include <climits>
-// #include <cmath>
+#include <cmath>
 #include <cstdint>
 // #include <cstring>
 #include <functional>
@@ -63,6 +63,11 @@ void free_input(input_t& input);
 
 void parse_input(const input_t& input, std::function<void(const std::string_view&)> line_cb);
 
+/// Returns int or (-1) on failure.
 int to_int(const std::string_view& sv);
 
 char to_char(const std::string_view& sv);
+
+/// Convert full 6-char hex
+/// Expects input in form of "#123abc"
+int hex_to_dec(const std::string_view& sv);

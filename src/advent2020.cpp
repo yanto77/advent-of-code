@@ -3,6 +3,41 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <sstream>
+#include <iostream>
+
+namespace
+{
+    /// Convert single char to hex
+    // Source: https://stackoverflow.com/a/3382894
+    int hex_to_dec(unsigned char hex_digit)
+    {
+        static const signed char hex_values[256] = {
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1,
+            -1, 10, 11, 12, 13, 14, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, 10, 11, 12, 13, 14, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+        };
+
+        int value = hex_values[hex_digit];
+        if (value == -1)
+            throw std::invalid_argument("invalid hex digit");
+
+        return value;
+    }
+}
 
 void parse_input(const input_t& input, std::function<void(const std::string_view&)> line_cb)
 {
@@ -27,7 +62,7 @@ int to_int(const std::string_view& sv)
     auto result = std::from_chars(sv.data(), sv.data() + sv.size(), i);
     if (result.ec == std::errc::invalid_argument)
     {
-        assert(false);
+        return -1;
     }
 
     return i;
@@ -36,6 +71,16 @@ int to_int(const std::string_view& sv)
 char to_char(const std::string_view& sv)
 {
     return *(sv.data());
+}
+
+int hex_to_dec(const std::string_view& sv)
+{
+    return hex_to_dec(sv[1]) * 1048576 // 16^5
+         + hex_to_dec(sv[2]) * 65536   // 16^4
+         + hex_to_dec(sv[3]) * 4096    // 16^3
+         + hex_to_dec(sv[4]) * 256     // 16^2
+         + hex_to_dec(sv[5]) * 16      // 16^1
+         + hex_to_dec(sv[6]) * 1;      // 16^0
 }
 
 void load_input(input_t& input, const std::string& filename)
