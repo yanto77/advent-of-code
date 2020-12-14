@@ -55,13 +55,15 @@ void day23(const input_t&);
 void day24(const input_t&);
 void day25(const input_t&);
 
-// Helpers
+/// Input helpers
 
 void load_input(input_t& input, const std::string& filename);
 
 void free_input(input_t& input);
 
 void parse_input(const input_t& input, std::function<void(const std::string_view&)> line_cb);
+
+/// Conversion helpers
 
 /// Returns int or (-1) on failure.
 int to_int(const std::string_view& sv);
@@ -71,3 +73,30 @@ char to_char(const std::string_view& sv);
 /// Convert full 6-char hex
 /// Expects input in form of "#123abc"
 int hex_to_dec(const std::string_view& sv);
+
+/// Bit manipulation helpers
+
+template <typename T>
+constexpr void set_bit(T& trg, int bit)
+{
+    trg |= 1 << (bit);
+}
+
+template <typename T>
+constexpr bool get_bit(T num, int bit)
+{
+    return ((num >> bit) & 1) == 1;
+}
+
+template <typename T>
+constexpr uint8_t count_bits(T n)
+{
+    uint8_t count = 0;
+    while (n) {
+        count += n & 1;
+        n >>= 1;
+    }
+    return count;
+}
+
+void print_bits(uint8_t trg);

@@ -3,31 +3,6 @@
 
 namespace
 {
-    // constexpr bool is_bit_set(uint8_t num, int bit)
-    // {
-    //     return ((num >> bit) & 1) == 1;
-    // }
-
-    constexpr void set_bit(uint8_t& trg, int bit)
-    {
-        trg |= 1 << (bit);
-    }
-
-    // void print_bits(uint8_t trg)
-    // {
-    //     for (int i = 0; i < 8; ++i)
-    //     {
-    //         printf(is_bit_set(trg, i) ? "1" : "0");
-    //     }
-    // }
-
-    struct vec3i8_t
-    {
-        uint8_t x;
-        uint8_t y;
-        uint8_t z;
-    };
-
     class passport_t
     {
         private:
