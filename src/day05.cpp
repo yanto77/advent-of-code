@@ -2,8 +2,6 @@
 
 namespace
 {
-    #define SET_BIT(trg, idx) trg |= 1 << (idx)
-
     constexpr uint16_t convert_line(const std::string_view& sv)
     {
         // withing this method, we don't explicitly set 0 bits,
@@ -12,11 +10,11 @@ namespace
 
         for (uint8_t i = 0; i < 7; ++i)
             if (sv[i] == 'B')
-                SET_BIT(result, (9-i));
+                set_bit(result, (9-i));
 
         for (uint8_t i = 0; i < 3; ++i)
             if (sv[7+i] == 'R')
-                SET_BIT(result, (2-i));
+                set_bit(result, (2-i));
 
         return result;
     }
