@@ -54,9 +54,20 @@ int main()
         free_input(input);
 
         total_time += elapsed.count();
-        printf(" [%ld μs]\n", int64_t(elapsed.count() * 1e-3));
+        #ifdef __linux__
+        constexpr const char* msg = " [%ld μs]\n";
+        #elif _WIN32
+        constexpr const char* msg = " [%ld us]\n";
+        #endif
+        printf(msg, int64_t(elapsed.count() * 1e-3));
     }
 
-    printf("Total: %ld μs\n", int64_t(total_time * 1e-3));
+    #ifdef __linux__
+    constexpr const char* msg = "Total: %ld μs\n";
+    #elif _WIN32
+    constexpr const char* msg = "Total: %ld us\n";
+    #endif
+    printf(msg, int64_t(total_time * 1e-3));
+
     return 0;
 }

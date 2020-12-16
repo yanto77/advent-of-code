@@ -1,7 +1,7 @@
 #pragma once
 
 #include <algorithm>
-// #include <array>
+#include <array>
 // #include <cctype>
 // #include <climits>
 #include <cmath>
@@ -21,6 +21,11 @@
 #define NDEBUG 1
 #else
 #include <cassert>
+#endif
+
+#if defined(_MSC_VER)
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
 #endif
 
 struct input_t
