@@ -1,7 +1,15 @@
 cmake_minimum_required (VERSION 3.10)
 project (advent2020)
 
+#
+# Requirements
+#
+
 find_package(OpenMP REQUIRED)
+
+#
+# Compilation configuration (includes, links, properties)
+#
 
 set(exec_NAME advent2020)
 add_executable(${exec_NAME}
@@ -35,13 +43,18 @@ add_executable(${exec_NAME}
 )
 
 target_include_directories(${exec_NAME} SYSTEM PRIVATE include/)
-target_link_libraries(${exec_NAME} PRIVATE m)
 target_link_libraries(${exec_NAME} PRIVATE OpenMP::OpenMP_CXX)
+if (UNIX)
+    target_link_libraries(${exec_NAME} PRIVATE m)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+endif (UNIX)
 
 set_target_properties(${exec_NAME} PROPERTIES CXX_STANDARD 20)
 set_target_properties(${exec_NAME} PROPERTIES CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+#
+# Add compiler warnings
+#
 
 target_compile_options(advent2020 PRIVATE
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
@@ -68,4 +81,15 @@ target_compile_options(advent2020 PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:
         /W4
     >
+)
+
+cmake_policy(SET CMP0092 NEW) # Windows specific: Do not add /W3, as we are adding /W4 already.
+
+#
+# Copy static data relative to the executable
+#
+
+add_custom_command(TARGET ${exec_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/input" "${CMAKE_BINARY_DIR}/input"
+    COMMENT "Copying input data to build dir"
 )
