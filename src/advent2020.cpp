@@ -48,7 +48,11 @@ void parse_input(const input_t& input, std::function<void(const std::string_view
         }
         else
         {
-            std::string_view line { &input.s[i-size], size };
+#ifdef __linux__
+            std::string_view line { &input.s[i - size], size };
+#elif _WIN32
+            std::string_view line { &input.s[i - size], size - 1 }; // account for "\r\n"
+#endif
             line_cb(line);
             size = 0;
         }
