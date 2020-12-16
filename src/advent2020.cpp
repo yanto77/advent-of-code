@@ -1,10 +1,9 @@
 #include "advent2020.h"
 #include <charconv>
 #include <fcntl.h>
-#include <sys/mman.h>
-#include <unistd.h>
 #include <sstream>
 #include <iostream>
+#include <fstream>
 
 namespace
 {
@@ -85,46 +84,23 @@ int hex_to_dec(const std::string_view& sv)
 
 void load_input(input_t& input, const std::string& filename)
 {
-    static void* backsplash = nullptr;
-
-    // Allows solutions to read past the end of the input safely
-    static constexpr size_t BACKSPLASH_SIZE = 1 << 20;
-
-    int flags = MAP_PRIVATE | MAP_ANONYMOUS | (backsplash ? MAP_FIXED : 0);
-    backsplash = mmap(backsplash, BACKSPLASH_SIZE, PROT_READ, flags, -1, 0);
-    if (backsplash == MAP_FAILED)
+    std::ifstream file(filename.c_str(), std::ios::binary | std::ios::ate);
+    input.len = file.tellg();
+    if (input.len == -1)
     {
-        perror("mmap");
+        perror("filesize failed");
         exit(EXIT_FAILURE);
     }
 
-    int fd = open(filename.c_str(), O_RDONLY);
-    if (fd == -1)
+    file.seekg(0, std::ios::beg);
+    input.s = new char[input.len];
+    if (input.s == nullptr)
     {
-        perror(filename.c_str());
+        perror("allocation failed");
         exit(EXIT_FAILURE);
     }
 
-    input.len = lseek(fd, 0, SEEK_END);
-    if (input.len > BACKSPLASH_SIZE)
-    {
-        fprintf(stderr, "Why is your input so big?\n");
-        exit(EXIT_FAILURE);
-    }
-
-    input.s = reinterpret_cast<char*>(mmap(backsplash, input.len, PROT_READ, MAP_PRIVATE | MAP_FIXED, fd, 0));
-    if (input.s == MAP_FAILED)
-    {
-        perror("mmap");
-        exit(EXIT_FAILURE);
-    }
-
-    if (input.s != backsplash)
-    {
-        fprintf(stderr, "Warning: Input not mapped at the expected location.\n");
-    }
-
-    if (close(fd) == -1)
+    if (!file.read(input.s, input.len))
     {
         perror(filename.c_str());
         exit(EXIT_FAILURE);
@@ -133,11 +109,7 @@ void load_input(input_t& input, const std::string& filename)
 
 void free_input(input_t& input)
 {
-    if (munmap(input.s, input.len) == -1)
-    {
-        perror("munmap");
-        exit(EXIT_FAILURE);
-    }
+    delete[] input.s;
 }
 
 void print_bits(uint8_t trg)
