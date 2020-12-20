@@ -182,6 +182,10 @@ namespace
     }
 }
 
+void day04_test()
+{
+}
+
 void day04(const input_t& input)
 {
     std::vector<passport_t> passports;

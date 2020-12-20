@@ -60,6 +60,10 @@ namespace
     }
 }
 
+void day03_test()
+{
+}
+
 void day03(const input_t& input)
 {
     const std::array<vec2i, 5> slopes =

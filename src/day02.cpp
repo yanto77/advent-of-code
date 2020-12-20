@@ -43,6 +43,10 @@ namespace
     }
 }
 
+void day02_test()
+{
+}
+
 void day02(const input_t& input)
 {
     std::vector<input_line_t> data;

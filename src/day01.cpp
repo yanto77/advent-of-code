@@ -1,5 +1,9 @@
 #include "advent2020.h"
 
+void day01_test()
+{
+}
+
 void day01(const input_t& input)
 {
     // Given input,
