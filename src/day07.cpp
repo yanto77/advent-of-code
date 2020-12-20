@@ -103,3 +103,7 @@ void day07(const input_t& input)
         v.emplace(key, value);
     });
 }
+
+void day07_test()
+{
+}

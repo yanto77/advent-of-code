@@ -14,7 +14,9 @@ find_package(OpenMP REQUIRED)
 set(exec_NAME advent2020)
 add_executable(${exec_NAME}
     src/main.cpp
-    src/advent2020.cpp
+    src/helpers/bit_helpers.cpp
+    src/helpers/conv_helpers.cpp
+    src/helpers/input_helpers.cpp
     src/day01.cpp
     src/day02.cpp
     src/day03.cpp

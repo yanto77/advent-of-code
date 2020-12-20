@@ -56,6 +56,10 @@ void day05(const input_t& input)
     assert(my_seat_id == 615);
 }
 
+void day05_test()
+{
+}
+
 namespace // tests
 {
     static_assert(convert_line("BFFFBBFRRR") == 70 * 8 + 7);

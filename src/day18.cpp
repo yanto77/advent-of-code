@@ -4,3 +4,7 @@ void day18(const input_t& input)
 {
     printf("todo");
 }
+
+void day18_test()
+{
+}

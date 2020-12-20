@@ -48,3 +48,7 @@ void day06(const input_t& input)
     assert(acc1 == 6947);
     assert(acc2 == 3398);
 }
+
+void day06_test()
+{
+}
