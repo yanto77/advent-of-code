@@ -26,5 +26,7 @@
 #include "helpers/bit_helpers.h"
 #include "helpers/conv_helpers.h"
 #include "helpers/input_helpers.h"
+#include "helpers/string_helpers.h"
+#include "helpers/hash_helpers.h"
 
 #include "setup/days.h"

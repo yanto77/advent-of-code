@@ -16,7 +16,9 @@ add_executable(${exec_NAME}
     src/main.cpp
     src/helpers/bit_helpers.cpp
     src/helpers/conv_helpers.cpp
+    src/helpers/hash_helpers.cpp
     src/helpers/input_helpers.cpp
+    src/helpers/string_helpers.cpp
     src/day01.cpp
     src/day02.cpp
     src/day03.cpp

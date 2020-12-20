@@ -159,31 +159,11 @@ namespace
             int m_iyr; // Issue Year, uint8_t
             int m_pid; // Passport ID, uint32_t
     };
-
-
-    // Original "splitSVPtr", source: https://www.bfilipek.com/2018/07/string-view-perf-followup.html
-    std::vector<std::string_view> split(std::string_view str, std::string_view delims = " ")
-    {
-        std::vector<std::string_view> output;
-
-        for (auto first = str.data(), second = str.data(), last = first + str.size();
-            second != last && first != last;
-            first = second + 1)
-        {
-            second = std::find_first_of(first, last, std::cbegin(delims), std::cend(delims));
-
-            if (first != second)
-            {
-                output.emplace_back(first, second - first);
-            }
-        }
-
-        return output;
-    }
 }
 
 void day04_test()
 {
+    
 }
 
 void day04(const input_t& input)

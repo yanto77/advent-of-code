@@ -11,15 +11,16 @@ struct input_line_t
 
 namespace
 {
+    bool operator==(const input_line_t& a, const input_line_t& b)
+    {
+        return a.min == b.min &&
+            a.max == b.max &&
+            a.ch == b.ch &&
+            a.password == b.password;
+    }
+
     input_line_t parse_line(const std::string_view& s) noexcept
     {
-        // Input format:
-        //   %i-%i %c: %s\n
-        // Examples:
-        //   2-3 f: pfff
-        //   7-11 z: zzzzzzzzzzzz
-        //   6-19 g: gggggggggggggggggggg
-
         static constexpr auto pattern = ctll::fixed_string{ "([0-9]+)-([0-9]+) ([a-z]): ([a-z]+)$" };
         auto m = ctre::match<pattern>(s);
 
@@ -33,18 +34,21 @@ namespace
         };
     }
 
-    size_t count_occurences(const std::string_view& input, const char& ch)
+    size_t count_occurences(const std::string_view& input, const char counted_ch)
     {
-        return std::count_if(input.begin(), input.end(),
-            [&](const char& asd)
-            {
-                return asd == ch;
-            });
+        return std::count_if(input.begin(), input.end(), [&](const char ch) { return ch == counted_ch; });
     }
 }
 
 void day02_test()
 {
+    assert(parse_line("2-3 f: pfff") == input_line_t({2, 3, 'f', "pfff"}));
+    assert(parse_line("7-11 z: zzzzzzzzzzzz") == input_line_t({7, 11, 'z', "zzzzzzzzzzzz"}));
+    assert(parse_line("6-19 g: gggggggggggggggggggg") == input_line_t({6, 19, 'g', "gggggggggggggggggggg"}));
+
+    assert(count_occurences("abcdefg", 'c') == 1);
+    assert(count_occurences("abababa", 'a') == 4);
+    assert(count_occurences("abababa", 'b') == 3);
 }
 
 void day02(const input_t& input)

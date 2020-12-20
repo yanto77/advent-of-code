@@ -58,10 +58,6 @@ void day05(const input_t& input)
 
 void day05_test()
 {
-}
-
-namespace // tests
-{
     static_assert(convert_line("BFFFBBFRRR") == 70 * 8 + 7);
     static_assert(convert_line("FFFBBBFRRR") == 14 * 8 + 7);
     static_assert(convert_line("BBFFBBFRLL") == 102 * 8 + 4);
