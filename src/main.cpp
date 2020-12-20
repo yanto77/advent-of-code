@@ -4,13 +4,13 @@
 
 static std::vector<advent_t> g_advent2020 = 
 {
-    { "Day 01", "input/day01.txt", day01, day01_test },
-    { "Day 02", "input/day02.txt", day02, day02_test },
-    { "Day 03", "input/day03.txt", day03, day03_test },
-    { "Day 04", "input/day04.txt", day04, day04_test },
-    { "Day 05", "input/day05.txt", day05, day05_test },
-    { "Day 06", "input/day06.txt", day06, day06_test },
-    // { "Day 07", "input/day07.txt", day07, day07_test },
+    // { "Day 01", "input/day01.txt", day01, day01_test },
+    // { "Day 02", "input/day02.txt", day02, day02_test },
+    // { "Day 03", "input/day03.txt", day03, day03_test },
+    // { "Day 04", "input/day04.txt", day04, day04_test },
+    // { "Day 05", "input/day05.txt", day05, day05_test },
+    // { "Day 06", "input/day06.txt", day06, day06_test },
+    { "Day 07", "input/day07.txt", day07, day07_test },
     // { "Day 08", "input/day08.txt", day08, day08_test },
     // { "Day 09", "input/day09.txt", day09, day09_test },
     // { "Day 10", "input/day10.txt", day10, day10_test },
