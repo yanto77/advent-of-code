@@ -10,10 +10,10 @@ static std::vector<advent_t> g_advent2020 =
     { "Day 04", "input/day04.txt", day04, day04_test },
     { "Day 05", "input/day05.txt", day05, day05_test },
     { "Day 06", "input/day06.txt", day06, day06_test },
-    { "Day 07", "input/day07.txt", day07, day07_test },
-    { "Day 08", "input/day08.txt", day08, day08_test },
-    { "Day 09", "input/day09.txt", day09, day09_test },
-    { "Day 10", "input/day10.txt", day10, day10_test },
+    // { "Day 07", "input/day07.txt", day07, day07_test },
+    // { "Day 08", "input/day08.txt", day08, day08_test },
+    // { "Day 09", "input/day09.txt", day09, day09_test },
+    // { "Day 10", "input/day10.txt", day10, day10_test },
     // { "Day 11", "input/day11.txt", day11, day11_test },
     // { "Day 12", "input/day12.txt", day12, day12_test },
     // { "Day 13", "input/day13.txt", day13, day13_test },
@@ -55,6 +55,8 @@ int main()
     for (const auto& A : g_advent2020)
     {
         printf("%s: ", A.day_id.c_str());
+
+        A.fn_test();
 
         double day_time = measure(A);
 
