@@ -161,11 +161,6 @@ namespace
     };
 }
 
-void day04_test()
-{
-    
-}
-
 void day04(const input_t& input)
 {
     std::vector<passport_t> passports;
@@ -219,7 +214,7 @@ void day04(const input_t& input)
             ++valid_nb;
     }
 
-    printf("filled: %zu, valid: %zu", filled_nb, valid_nb);
+    // printf("filled: %zu, valid: %zu", filled_nb, valid_nb);
     assert(filled_nb == 237);
     assert(valid_nb == 172);
 
@@ -229,4 +224,9 @@ void day04(const input_t& input)
     // assert(hex_to_dec("#000010") == 16);
     // assert(hex_to_dec("#09FBF1") == 654321);
     // assert(hex_to_dec("#C0FFEE") == 12648430);
+}
+
+void day04_test()
+{
+    
 }
