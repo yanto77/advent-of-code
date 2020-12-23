@@ -47,7 +47,7 @@ namespace
 
             sv value_str { &line[5], (line.size() - 5) };
             const int16_t sign = (line[4] == '+') ? 1 : -1;
-            const int16_t value = static_cast<int16_t>(to_int(value_str));
+            const int16_t value = to_int<int16_t>(value_str);
             op.arg1 = sign * value;
 
             program.push_back(op);

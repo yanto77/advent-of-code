@@ -40,7 +40,7 @@ namespace
         {
             return 
             { 
-                static_cast<uint8_t>(to_int(m.get<1>().to_view())), 
+                to_int<uint8_t>(m.get<1>().to_view()),
                 m.get<2>().to_view() 
             };
         }

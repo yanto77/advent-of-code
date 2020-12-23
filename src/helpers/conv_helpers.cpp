@@ -35,18 +35,6 @@ namespace
     }
 }
 
-int to_int(const std::string_view& sv)
-{
-    int i;
-    auto result = std::from_chars(sv.data(), sv.data() + sv.size(), i);
-    if (result.ec == std::errc::invalid_argument)
-    {
-        return -1;
-    }
-
-    return i;
-}
-
 char to_char(const std::string_view& sv)
 {
     return *(sv.data());

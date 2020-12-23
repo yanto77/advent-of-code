@@ -17,7 +17,7 @@ void day01(const input_t& input)
     v.reserve(1000);
     parse_input(input, [&](const std::string_view& line)
     {
-        v.emplace_back(to_int(line));
+        v.emplace_back(to_int<int>(line));
     });
 
     std::sort(v.begin(), v.end());
