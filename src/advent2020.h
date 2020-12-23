@@ -28,5 +28,6 @@
 #include "helpers/input_helpers.h"
 #include "helpers/string_helpers.h"
 #include "helpers/hash_helpers.h"
+#include "helpers/print_helpers.h"
 
 #include "setup/days.h"
