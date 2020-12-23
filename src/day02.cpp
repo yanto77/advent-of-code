@@ -27,8 +27,8 @@ namespace
         // NB, No error checking done.
         return
         {
-            to_int(m.get<1>().to_view()),
-            to_int(m.get<2>().to_view()),
+            to_int<int>(m.get<1>().to_view()),
+            to_int<int>(m.get<2>().to_view()),
             to_char(m.get<3>().to_view()),
             m.get<4>().to_view()
         };

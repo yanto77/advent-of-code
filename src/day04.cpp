@@ -34,7 +34,7 @@ namespace
             void set_byr(const std::string_view& sv)
             {
                 set_bit(m_filled, Field::byr);
-                m_byr = to_int(sv);
+                m_byr = to_int<int>(sv);
 
                 if (1920 <= m_byr && m_byr <= 2002)
                 {
@@ -70,7 +70,7 @@ namespace
             void set_eyr(const std::string_view& sv)
             {
                 set_bit(m_filled, Field::eyr);
-                m_eyr = to_int(sv);
+                m_eyr = to_int<int>(sv);
 
                 if (2020 <= m_eyr && m_eyr <= 2030)
                 {
@@ -98,14 +98,14 @@ namespace
                 if (sv_copy.ends_with("in"))
                 {
                     sv_copy.remove_suffix(2);
-                    m_hgt = { to_int(sv_copy), false };
+                    m_hgt = { to_int<int>(sv_copy), false };
                     if (59 <= m_hgt.first && m_hgt.first <= 76)
                         set_bit(m_valid, Field::hgt);
                 }
                 else if (sv_copy.ends_with("cm"))
                 {
                     sv_copy.remove_suffix(2);
-                    m_hgt = { to_int(sv_copy), true };
+                    m_hgt = { to_int<int>(sv_copy), true };
                     if (150 <= m_hgt.first && m_hgt.first <= 193)
                         set_bit(m_valid, Field::hgt);
                 }
@@ -114,7 +114,7 @@ namespace
             void set_iyr(const std::string_view& sv)
             {
                 set_bit(m_filled, Field::iyr);
-                m_iyr = to_int(sv);
+                m_iyr = to_int<int>(sv);
 
                 if (2010 <= m_iyr && m_iyr <= 2020)
                 {
@@ -125,7 +125,7 @@ namespace
             void set_pid(const std::string_view& sv)
             {
                 set_bit(m_filled, Field::pid);
-                m_pid = to_int(sv);
+                m_pid = to_int<int>(sv);
 
                 if (sv.size() == 9 && m_pid != -1)
                     set_bit(m_valid, Field::pid);

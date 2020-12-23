@@ -1,10 +1,22 @@
 #pragma once
 #include <string_view>
+#include <cstdint>
+#include <charconv>
 
 /// Conversion helpers
 
-/// Returns int or (-1) on failure.
-int to_int(const std::string_view& sv);
+template<typename T>
+T to_int(const std::string_view& sv)
+{
+    T i;
+    auto result = std::from_chars(sv.data(), sv.data() + sv.size(), i);
+    if (result.ec == std::errc::invalid_argument)
+    {
+        return -1;
+    }
+
+    return i;
+}
 
 char to_char(const std::string_view& sv);
 
