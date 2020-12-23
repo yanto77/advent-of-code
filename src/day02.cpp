@@ -40,17 +40,6 @@ namespace
     }
 }
 
-void day02_test()
-{
-    assert(parse_line("2-3 f: pfff") == input_line_t({2, 3, 'f', "pfff"}));
-    assert(parse_line("7-11 z: zzzzzzzzzzzz") == input_line_t({7, 11, 'z', "zzzzzzzzzzzz"}));
-    assert(parse_line("6-19 g: gggggggggggggggggggg") == input_line_t({6, 19, 'g', "gggggggggggggggggggg"}));
-
-    assert(count_occurences("abcdefg", 'c') == 1);
-    assert(count_occurences("abababa", 'a') == 4);
-    assert(count_occurences("abababa", 'b') == 3);
-}
-
 void day02(const input_t& input)
 {
     std::vector<input_line_t> data;
@@ -81,7 +70,18 @@ void day02(const input_t& input)
         }
     }
 
-    printf("part 1: %d, part 2: %d", i, j);
+    // printf("part 1: %d, part 2: %d", i, j);
     assert(i == 465);
     assert(j == 294);
+}
+
+void day02_test()
+{
+    assert(parse_line("2-3 f: pfff") == input_line_t({2, 3, 'f', "pfff"}));
+    assert(parse_line("7-11 z: zzzzzzzzzzzz") == input_line_t({7, 11, 'z', "zzzzzzzzzzzz"}));
+    assert(parse_line("6-19 g: gggggggggggggggggggg") == input_line_t({6, 19, 'g', "gggggggggggggggggggg"}));
+
+    assert(count_occurences("abcdefg", 'c') == 1);
+    assert(count_occurences("abababa", 'a') == 4);
+    assert(count_occurences("abababa", 'b') == 3);
 }

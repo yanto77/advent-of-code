@@ -51,7 +51,7 @@ void day05(const input_t& input)
         }
     }
 
-    printf("max: %d, my: %d", max_seat_id, my_seat_id);
+    // printf("max: %d, my: %d", max_seat_id, my_seat_id);
     assert(max_seat_id == 953);
     assert(my_seat_id == 615);
 }

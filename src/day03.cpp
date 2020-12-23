@@ -60,10 +60,6 @@ namespace
     }
 }
 
-void day03_test()
-{
-}
-
 void day03(const input_t& input)
 {
     const std::array<vec2i, 5> slopes =
@@ -85,6 +81,10 @@ void day03(const input_t& input)
         result_product *= trees;
     }
 
-    printf("%zu", result_product);
+    // printf("%zu", result_product);
     assert(result_product == 3093068400);
+}
+
+void day03_test()
+{
 }
