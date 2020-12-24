@@ -50,45 +50,43 @@ namespace
         return {delta1, delta3};
     }
 
-    size_t count_variations(const std::vector<uint8_t>& data)
+    int tribonacci(int n)
     {
-        print_row(data);
-        auto copy = data;
+        if (n == 0)
+            return 0;
+        else if (n == 1 || n == 2)
+            return 1;
+        else
+            return tribonacci(n-1) + tribonacci(n-2) + tribonacci(n-3);
+    }
 
-        for (size_t i = 0; i < ((data.size() + 5) % 5); ++i)
+    size_t count_variations(const std::vector<uint8_t>& deltas)
+    {
+        size_t variants = 1;
+        int substr_counter = 0;
+
+        for (const uint8_t d: deltas)
         {
-            copy.push_back(UINT8_MAX);
-        }
-        copy.push_back(UINT8_MAX);
-
-        size_t total_variants = 1;
-
-        for (size_t i = 0; i < data.size(); i += 2)
-        {
-            uint8_t a = copy[i+0];
-            uint8_t b = copy[i+1];
-            uint8_t c = copy[i+2];
-            uint8_t d = copy[i+3];
-            uint8_t e = copy[i+4];
-            printf("- [a %d to e %d] ", a, e);
-
-            size_t variants = 1;
-
-            // skip single
-            if (0 < c-a && c-a < 4) { ++variants; printf(" +skip {b=%d}", b); }
-            if (0 < d-b && d-b < 4) { ++variants; printf(" +skip {c=%d}", c); }
-            if (0 < e-c && e-c < 4) { ++variants; printf(" +skip {d=%d}", d); }
-
-            // skip multiple
-            if (0 < d-a && d-a < 4) { ++variants; printf(" +skip {bc=%d,%d}", b, c); }
-            if (0 < e-b && e-b < 4) { ++variants; printf(" +skip {cd=%d,%d}", c, d); }
-            if (0 < c-a && c-a < 4 && 0 < e-c && e-c < 4) { ++variants; printf(" +skip {bd=%d,%d}", b, d); }
-
-            printf(" => total: %zu\n", variants);
-            total_variants *= variants;
+            if (d == 1)
+            {
+                ++substr_counter;
+            }
+            else if (d == 3)
+            {
+                // n    = 0  1  2  3  4  5  6  7
+                // trib = 0  1  1  2  4  7 13 24
+                // for specific groups, we want:
+                // "11"   -> 2
+                // "111"  -> 4
+                // "1111" -> 7
+                // etc. therefore, the indexes are shifted by one
+                variants *= tribonacci(substr_counter + 1);
+                substr_counter = 0;
+            }
+            else assert(false);
         }
 
-        return total_variants;
+        return variants;
     }
 }
 
@@ -100,8 +98,8 @@ void day10(const input_t& input)
     const auto& [delta1, delta3] = count_specific_elements(element_deltas);
     assert(delta1 * delta3 == 2664);
 
-    // size_t variations = count_variations(element_deltas);
-    // printf("variations: %lu\n", variations);
+    size_t variations = count_variations(element_deltas);
+    assert(variations == 148098383347712);
 }
 
 void day10_test()
@@ -116,8 +114,8 @@ void day10_test()
         const auto& [delta1, delta3] = count_specific_elements(deltas);
         assert(delta1 == 7 && delta3 == 5);
 
-        size_t variations = count_variations(data);
-        printf("variations: %lu\n", variations);
+        size_t variations = count_variations(deltas);
+        // printf("variations: %lu\n", variations);
         assert(variations == 8);
     }
 
@@ -132,46 +130,8 @@ void day10_test()
         const auto& [delta1, delta3] = count_specific_elements(deltas);
         assert(delta1 == 22 && delta3 == 10);
 
-        size_t variations = count_variations(data);
-        printf("variations: %lu\n", variations);
+        size_t variations = count_variations(deltas);
+        // printf("variations: %lu\n", variations);
         assert(variations == 19208);
     }
-
-    // if (false)
-    // {
-    //     std::vector<int> deltas = { 1, 2, 3 };
-
-    //     printf("\n");
-
-    //     for (auto a: deltas)
-    //     for (auto b: deltas)
-    //     for (auto c: deltas)
-    //     // for (auto d: asd)
-    //     {
-    //         // printf("numbs: %d %d %d %d, ", 0, a, a+b, a+b+c);
-    //         printf("deltas: %d %d %d, ", a, b, c);
-
-    //         printf("2sum: %d, %d, ", a+b, b+c);
-    //         printf("3sum: %d, ", a+b+c);
-            
-    //         if (a+b < 4)
-    //             printf("\n - can skip 2nd adapter");
-    //         if (b+c < 4)
-    //             printf("\n - can skip 3rd adapter");
-    //         if (a+b+c < 4)
-    //             printf("\n - can skip 2nd AND 3rd adapter");
-
-    //         // size_t variants = 1;
-    //         // if (a + b + c < 4) ++variants;
-    //         // if (a + b < 4) ++variants;
-    //         // if (b + c < 4) ++variants;
-    //         // printf("    variants: base");
-    //         // if (d_ab + d_bc + d_cd < 4) printf(" + skip_both");
-    //         // if (d_ab + d_bc < 4) printf(" + skip_b");
-    //         // if (d_bc + d_cd < 4) printf(" + skip_c");
-    //         // printf(" => %zu\n", variants);
-
-    //         printf("\n");
-    //     }
-    // }
 }
