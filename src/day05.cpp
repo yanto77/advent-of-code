@@ -10,11 +10,11 @@ namespace
 
         for (uint8_t i = 0; i < 7; ++i)
             if (sv[i] == 'B')
-                set_bit(result, (9-i));
+                set_bit(result, (9 - i));
 
         for (uint8_t i = 0; i < 3; ++i)
-            if (sv[7+i] == 'R')
-                set_bit(result, (2-i));
+            if (sv[7 + i] == 'R')
+                set_bit(result, (2 - i));
 
         return result;
     }
@@ -44,9 +44,9 @@ void day05(const input_t& input)
     // Part 2
     for (uint16_t i = 0; i < SEAT_NB - 2; ++i)
     {
-        if (seats[i] && !seats[i+1] && seats[i+2])
+        if (seats[i] && !seats[i + 1] && seats[i + 2])
         {
-            my_seat_id = i+1;
+            my_seat_id = i + 1;
             break;
         }
     }

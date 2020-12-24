@@ -25,8 +25,8 @@ std::pair<sv, sv> split_single(const sv& input, const sv& delim)
     size_t lhs_end = input.find(delim);
     size_t rhs_start = lhs_end + delim.size();
 
-    sv lhs{ &input[0], lhs_end };
-    sv rhs{ &input[rhs_start], (input.size() - rhs_start) };
+    sv lhs { &input[0], lhs_end };
+    sv rhs { &input[rhs_start], (input.size() - rhs_start) };
 
     return { lhs, rhs };
 }

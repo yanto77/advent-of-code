@@ -33,7 +33,6 @@ void day06(const input_t& input)
             v[index].p1 |= input_bits;
             v[index].p2 &= input_bits;
         }
-
     });
 
     uint16_t acc1 = 0;

@@ -31,7 +31,7 @@ namespace
 
         for (size_t i = 1; i < data.size(); ++i)
         {
-            result.push_back(data[i] - data[i-1]);
+            result.push_back(data[i] - data[i - 1]);
         }
 
         return result;
@@ -41,13 +41,15 @@ namespace
     {
         size_t delta1 = 0;
         size_t delta3 = 0;
-        for (auto delta: deltas)
+        for (auto delta : deltas)
         {
-            if (delta == 1) ++delta1;
-            else if (delta == 3) ++delta3;
+            if (delta == 1)
+                ++delta1;
+            else if (delta == 3)
+                ++delta3;
         }
 
-        return {delta1, delta3};
+        return { delta1, delta3 };
     }
 
     int tribonacci(int n)
@@ -57,7 +59,7 @@ namespace
         else if (n == 1 || n == 2)
             return 1;
         else
-            return tribonacci(n-1) + tribonacci(n-2) + tribonacci(n-3);
+            return tribonacci(n - 1) + tribonacci(n - 2) + tribonacci(n - 3);
     }
 
     size_t count_variations(const std::vector<uint8_t>& deltas)
@@ -65,7 +67,7 @@ namespace
         size_t variants = 1;
         int substr_counter = 0;
 
-        for (const uint8_t d: deltas)
+        for (const uint8_t d : deltas)
         {
             if (d == 1)
             {
@@ -83,7 +85,8 @@ namespace
                 variants *= tribonacci(substr_counter + 1);
                 substr_counter = 0;
             }
-            else assert(false);
+            else
+                assert(false);
         }
 
         return variants;

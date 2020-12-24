@@ -5,7 +5,7 @@
 size_t djb_hash(const std::string_view& sv)
 {
     size_t hash = 5381;
-    for (auto ch: sv)
+    for (auto ch : sv)
     {
         hash = 33 * hash ^ static_cast<unsigned char>(ch);
     }
@@ -17,7 +17,7 @@ size_t djb_hash(const std::string_view& sv)
 size_t fnv1a_hash(const std::string_view& sv)
 {
     size_t hash = 0x811c9dc5;
-    for (auto ch: sv)
+    for (auto ch : sv)
     {
         hash ^= static_cast<unsigned char>(ch);
         hash *= 0x01000193;

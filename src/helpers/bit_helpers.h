@@ -19,7 +19,8 @@ template <typename T>
 constexpr uint8_t count_bits(T n)
 {
     uint8_t count = 0;
-    while (n) {
+    while (n)
+    {
         count += n & 1;
         n >>= 1;
     }

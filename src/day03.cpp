@@ -10,7 +10,7 @@ namespace
     tree_map_t get_tree_map(const input_t& input)
     {
         std::array<std::array<bool, COL_N>, ROW_N> map;
-        for (auto& row: map)
+        for (auto& row : map)
         {
             row.fill(false);
         }
@@ -62,19 +62,14 @@ namespace
 
 void day03(const input_t& input)
 {
-    const std::array<vec2i, 5> slopes =
-    {
-        vec2i{1, 1},
-        vec2i{3, 1},
-        vec2i{5, 1},
-        vec2i{7, 1},
-        vec2i{1, 2},
+    const std::array<vec2i, 5> slopes = {
+        vec2i { 1, 1 }, vec2i { 3, 1 }, vec2i { 5, 1 }, vec2i { 7, 1 }, vec2i { 1, 2 },
     };
 
     const tree_map_t& map = get_tree_map(input);
 
     size_t result_product = 1; // Part 2
-    for (const vec2i& slope: slopes)
+    for (const vec2i& slope : slopes)
     {
         size_t trees = get_encountered_trees(map, slope);
         // printf("slope (%d, %d) encounters %zu trees\n", slope.x, slope.y, trees);

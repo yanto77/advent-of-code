@@ -24,9 +24,9 @@ void day01(const input_t& input)
 
     // Part 1
     int product1 = -1;
-    for (int i: v)
+    for (int i : v)
     {
-        for (int j: v)
+        for (int j : v)
         {
             if (i + j == 2020)
             {
@@ -41,11 +41,11 @@ void day01(const input_t& input)
 
     // Part 2
     int product2 = -1;
-    for (int i: v)
+    for (int i : v)
     {
-        for (int j: v)
+        for (int j : v)
         {
-            for (int k: v)
+            for (int k : v)
             {
                 if (i + j + k == 2020)
                 {
@@ -54,10 +54,12 @@ void day01(const input_t& input)
                 }
             }
 
-            if (product2 != -1) break;
+            if (product2 != -1)
+                break;
         }
 
-        if (product2 != -1) break;
+        if (product2 != -1)
+            break;
     }
 
     // printf("%d, %d", product1, product2);
