@@ -1,6 +1,6 @@
 #pragma once
-#include <string_view>
 #include <cstddef>
+#include <string_view>
 
 // D. J. Bernstein hash function
 // Modified from: https://codereview.stackexchange.com/a/85745

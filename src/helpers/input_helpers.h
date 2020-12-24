@@ -1,8 +1,8 @@
 #pragma once
 #include "../setup/input_t.h"
+#include <functional>
 #include <string>
 #include <string_view>
-#include <functional>
 
 /// Input helpers
 

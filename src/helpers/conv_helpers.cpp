@@ -43,9 +43,9 @@ char to_char(const std::string_view& sv)
 int hex_to_dec(const std::string_view& sv)
 {
     return hex_to_dec(sv[1]) * 1048576 // 16^5
-         + hex_to_dec(sv[2]) * 65536   // 16^4
-         + hex_to_dec(sv[3]) * 4096    // 16^3
-         + hex_to_dec(sv[4]) * 256     // 16^2
-         + hex_to_dec(sv[5]) * 16      // 16^1
-         + hex_to_dec(sv[6]) * 1;      // 16^0
+           + hex_to_dec(sv[2]) * 65536 // 16^4
+           + hex_to_dec(sv[3]) * 4096 // 16^3
+           + hex_to_dec(sv[4]) * 256 // 16^2
+           + hex_to_dec(sv[5]) * 16 // 16^1
+           + hex_to_dec(sv[6]) * 1; // 16^0
 }

@@ -1,11 +1,11 @@
 #pragma once
-#include <string_view>
-#include <cstdint>
 #include <charconv>
+#include <cstdint>
+#include <string_view>
 
 /// Conversion helpers
 
-template<typename T>
+template <typename T>
 T to_int(const std::string_view& sv)
 {
     T i;

@@ -1,14 +1,14 @@
 #include "advent2020.h"
 
+#include <execution>
+#include <iostream>
 #include <map>
+#include <numeric>
+#include <queue>
+#include <set>
 #include <string>
 #include <string_view>
-#include <iostream>
-#include <set>
 #include <unordered_map>
-#include <queue>
-#include <numeric>
-#include <execution>
 
 #include <3rd-party/ctre.hpp>
 
@@ -29,7 +29,7 @@ namespace
 {
     std::pair<uint8_t, sv> parse_single_bag(const sv& text)
     {
-        static constexpr auto pattern = ctll::fixed_string{ "(no|[0-9]+) ([a-z ]+) bags?$" };
+        static constexpr auto pattern = ctll::fixed_string { "(no|[0-9]+) ([a-z ]+) bags?$" };
         auto m = ctre::match<pattern>(text);
 
         if (m.get<1>().to_view() == "no")
@@ -58,17 +58,17 @@ namespace
         auto get_id = [&](const sv& key) -> size_t
         {
             auto it = result.key_dict.find(key);
-            if (it != result.key_dict.end()) 
+            if (it != result.key_dict.end())
             {
                 return it->second;
             }
-            else 
+            else
             {
                 result.key_dict.insert({ key, ++idx });
                 return idx;
             }
         };
-        
+
         // 2. Parse the strings, for example:
         //   - given: "muted plum bags contain 3 shiny brown bags, 4 shiny teal bags."
         //   - saves: MP => {{3, SB}, {4, ST}} (where MP, SB, and ST are indexes)
@@ -104,7 +104,7 @@ namespace
         {
             size_t node_to = node_queue.front();
 
-            for (const link_t& link: res.graph)
+            for (const link_t& link : res.graph)
             {
                 if (link.to == node_to)
                 {
@@ -130,7 +130,7 @@ namespace
         {
             const auto& [node_from, prev_cost] = node_queue.front();
 
-            for (const link_t& link: res.graph)
+            for (const link_t& link : res.graph)
             {
                 if (link.from == node_from)
                 {
@@ -144,7 +144,8 @@ namespace
         }
 
         size_t result = 0;
-        for (auto& n: contained) result += n.second;
+        for (auto& n : contained)
+            result += n.second;
         return result;
     }
 }
@@ -176,16 +177,15 @@ void day07_test()
     }
 
     {
-        char text[513] = 
-            "light red bags contain 1 bright white bag, 2 muted yellow bags.\n"
-            "dark orange bags contain 3 bright white bags, 4 muted yellow bags.\n"
-            "bright white bags contain 1 shiny gold bag.\n"
-            "muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.\n"
-            "shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.\n"
-            "dark olive bags contain 3 faded blue bags, 4 dotted black bags.\n"
-            "vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.\n"
-            "faded blue bags contain no other bags.\n"
-            "dotted black bags contain no other bags.\n";
+        char text[513] = "light red bags contain 1 bright white bag, 2 muted yellow bags.\n"
+                         "dark orange bags contain 3 bright white bags, 4 muted yellow bags.\n"
+                         "bright white bags contain 1 shiny gold bag.\n"
+                         "muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.\n"
+                         "shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.\n"
+                         "dark olive bags contain 3 faded blue bags, 4 dotted black bags.\n"
+                         "vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.\n"
+                         "faded blue bags contain no other bags.\n"
+                         "dotted black bags contain no other bags.\n";
 
         auto res = parse_input(input_t { text, 513 });
         const size_t con_nb = get_links_to(res, "shiny gold");
@@ -195,14 +195,13 @@ void day07_test()
     }
 
     {
-        char text[298] = 
-            "shiny gold bags contain 2 dark red bags.\n"
-            "dark red bags contain 2 dark orange bags.\n"
-            "dark orange bags contain 2 dark yellow bags.\n"
-            "dark yellow bags contain 2 dark green bags.\n"
-            "dark green bags contain 2 dark blue bags.\n"
-            "dark blue bags contain 2 dark violet bags.\n"
-            "dark violet bags contain no other bags.\n";
+        char text[298] = "shiny gold bags contain 2 dark red bags.\n"
+                         "dark red bags contain 2 dark orange bags.\n"
+                         "dark orange bags contain 2 dark yellow bags.\n"
+                         "dark yellow bags contain 2 dark green bags.\n"
+                         "dark green bags contain 2 dark blue bags.\n"
+                         "dark blue bags contain 2 dark violet bags.\n"
+                         "dark violet bags contain no other bags.\n";
         auto res = parse_input(input_t { text, 298 });
         const size_t con_nb = get_links_to(res, "shiny gold");
         const size_t con_cost = get_contained_nodes(res, "shiny gold");

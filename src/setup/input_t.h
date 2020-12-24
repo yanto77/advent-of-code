@@ -1,10 +1,10 @@
 #pragma once
 
 #if defined(_MSC_VER)
-#include <BaseTsd.h>
+    #include <BaseTsd.h>
 typedef SSIZE_T ssize_t;
 #else
-#include <unistd.h>
+    #include <unistd.h>
 #endif
 
 struct input_t

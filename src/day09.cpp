@@ -49,11 +49,11 @@ namespace
                 sum += input[j];
 
                 if (sum == target_sum)
-                    return {i, j};
+                    return { i, j };
             }
         }
 
-        return {0, 0};
+        return { 0, 0 };
     }
 
     std::pair<int64_t, int64_t> get_min_max(const std::vector<int64_t>& input, size_t start, size_t end)
@@ -67,7 +67,7 @@ namespace
             if (input[i] < min) min = input[i];
         }
 
-        return {min, max};
+        return { min, max };
     }
 }
 
@@ -84,27 +84,26 @@ void day09(const input_t& input)
 
 void day09_test()
 {
-    char text[] =
-        "35\n"
-        "20\n"
-        "15\n"
-        "25\n"
-        "47\n"
-        "40\n"
-        "62\n"
-        "55\n"
-        "65\n"
-        "95\n"
-        "102\n"
-        "117\n"
-        "150\n"
-        "182\n"
-        "127\n"
-        "219\n"
-        "299\n"
-        "277\n"
-        "309\n"
-        "576\n";
+    char text[] = "35\n"
+                  "20\n"
+                  "15\n"
+                  "25\n"
+                  "47\n"
+                  "40\n"
+                  "62\n"
+                  "55\n"
+                  "65\n"
+                  "95\n"
+                  "102\n"
+                  "117\n"
+                  "150\n"
+                  "182\n"
+                  "127\n"
+                  "219\n"
+                  "299\n"
+                  "277\n"
+                  "309\n"
+                  "576\n";
     input_t input { text, 71 };
     std::vector<int64_t> data = parse_input(input);
     assert(data[0] == 35);

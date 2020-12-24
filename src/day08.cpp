@@ -2,12 +2,12 @@
 #include <iostream>
 
 enum op_type_t : uint8_t
-{ 
+{
     ERR, // error, default value
     ACC, // accumulate `arg1`
     JMP, // translate instruction pointer by `arg1`
     NOP, // no operation
-    RET  // return from execution
+    RET // return from execution
 };
 
 struct op_t
@@ -26,8 +26,7 @@ typedef std::vector<op_t> program_t;
 
 namespace
 {
-    [[maybe_unused]]
-    void print(const program_t& prg, const registers_t& regs)
+    [[maybe_unused]] void print(const program_t& prg, const registers_t& regs)
     {
         printf(" - Program size: %zu. Registers: ip %zu, acc: %d\n", prg.size(), regs.ip, regs.acc);
     }
@@ -40,10 +39,22 @@ namespace
         parse_input(input, [&](const sv& line) 
         {
             op_t op;
-            if (line.starts_with("acc")) { op.type = op_type_t::ACC; }
-            else if (line.starts_with("jmp")) { op.type = op_type_t::JMP; }
-            else if (line.starts_with("nop")) { op.type = op_type_t::NOP; }
-            else { assert(false && "not implemented"); }
+            if (line.starts_with("acc"))
+            {
+                op.type = op_type_t::ACC;
+            }
+            else if (line.starts_with("jmp"))
+            {
+                op.type = op_type_t::JMP;
+            }
+            else if (line.starts_with("nop"))
+            {
+                op.type = op_type_t::NOP;
+            }
+            else
+            {
+                assert(false && "not implemented");
+            }
 
             sv value_str { &line[5], (line.size() - 5) };
             const int16_t sign = (line[4] == '+') ? 1 : -1;
@@ -87,17 +98,17 @@ namespace
         for (size_t i = 0; i < prg.size(); ++i)
         {
             program_t copy = prg;
-            if (copy[i].type == op_type_t::NOP) 
-            { 
-                copy[i].type = op_type_t::JMP; 
-            }
-            else if (copy[i].type == op_type_t::JMP) 
-            { 
-                copy[i].type = op_type_t::NOP; 
-            }
-            else 
+            if (copy[i].type == op_type_t::NOP)
             {
-                continue; 
+                copy[i].type = op_type_t::JMP;
+            }
+            else if (copy[i].type == op_type_t::JMP)
+            {
+                copy[i].type = op_type_t::NOP;
+            }
+            else
+            {
+                continue;
             }
 
             const registers_t& regs = execute_until_loop(copy);
@@ -114,7 +125,7 @@ namespace
 void day08(const input_t& input)
 {
     const program_t& prg = parse_input(input);
-    
+
     // Part 1
     {
         program_t copy = prg;
@@ -132,14 +143,14 @@ void day08(const input_t& input)
 void day08_test()
 {
     char input1[65] = "nop +0\n"
-        "acc +1\n"
-        "jmp +4\n"
-        "acc +3\n"
-        "jmp -3\n"
-        "acc -99\n"
-        "acc +1\n"
-        "jmp -4\n"
-        "acc +6\n";
+                      "acc +1\n"
+                      "jmp +4\n"
+                      "acc +3\n"
+                      "jmp -3\n"
+                      "acc -99\n"
+                      "acc +1\n"
+                      "jmp -4\n"
+                      "acc +6\n";
     input_t test1 { input1, 65 };
 
     program_t prg = parse_input(test1);
