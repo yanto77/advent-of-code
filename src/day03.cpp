@@ -29,19 +29,6 @@ namespace
         return map;
     }
 
-    struct vec2i
-    {
-        int x;
-        int y;
-
-        vec2i& operator+=(const vec2i& other)
-        {
-            x = x + other.x;
-            y = y + other.y;
-            return *this;
-        }
-    };
-
     size_t get_encountered_trees(const tree_map_t& map, const vec2i& slope)
     {
         vec2i pos { 0, 0 };
