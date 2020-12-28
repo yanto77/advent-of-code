@@ -110,6 +110,23 @@ namespace
         return unpadded;
     }
 
+    size_t get_occupied_seats_pt1(const seat_map_t& input, size_t cell_x, size_t cell_y)
+    {
+        size_t occupied_nb = 0;
+        for (size_t wy = 0; wy < 3; ++wy)
+        {
+            for (size_t wx = 0; wx < 3; ++wx)
+            {
+                if (wy == 1 && wx == 1)
+                    continue; // skip center
+
+                if (input[cell_y-1+wy][cell_x-1+wx] == seat_state_t::TAKEN)
+                    ++occupied_nb;
+            }
+        }
+        return occupied_nb;
+    }
+
     std::pair<size_t, seat_map_t> simulate_until_stable(const seat_map_t& input)
     {
         size_t steps = 0;
@@ -130,18 +147,7 @@ namespace
                 for (size_t x = padding.x; x < width + padding.x; ++x)
                 {
                     // Find occupied seats from the closest 3x3 window
-                    size_t occupied_nb = 0;
-                    for (size_t wy = 0; wy < 3; ++wy)
-                    {
-                        for (size_t wx = 0; wx < 3; ++wx)
-                        {
-                            if (wy == 1 && wx == 1) 
-                                continue; // skip center
-
-                            if (current[y-1+wy][x-1+wx] == seat_state_t::TAKEN)
-                                ++occupied_nb;
-                        }
-                    }
+                    size_t occupied_nb = get_occupied_seats_pt1(current, x, y);
 
                     // Update state
                     if (current[y][x] == seat_state_t::EMPTY && occupied_nb == 0)
