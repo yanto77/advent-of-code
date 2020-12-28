@@ -24,4 +24,9 @@ struct vec2i
     constexpr friend vec2i operator-(vec2i lhs, const int rhs) { lhs -= rhs; return lhs; }
     constexpr friend vec2i operator/(vec2i lhs, const int rhs) { lhs /= rhs; return lhs; }
     constexpr friend vec2i operator*(vec2i lhs, const int rhs) { lhs *= rhs; return lhs; }
+
+    constexpr friend vec2i operator+(const int lhs, vec2i rhs) { rhs += lhs; return rhs; }
+    constexpr friend vec2i operator-(const int lhs, vec2i rhs) { rhs -= lhs; return rhs; }
+    constexpr friend vec2i operator/(const int lhs, vec2i rhs) { rhs /= lhs; return rhs; }
+    constexpr friend vec2i operator*(const int lhs, vec2i rhs) { rhs *= lhs; return rhs; }
 };
