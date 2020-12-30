@@ -37,7 +37,7 @@ namespace
     }
 }
 
-void day02(const input_t& input)
+output_t day02(const input_t& input)
 {
     std::vector<input_line_t> data;
     data.reserve(1000);
@@ -47,8 +47,8 @@ void day02(const input_t& input)
         data.emplace_back(parse_line(line));
     });
 
-    int i = 0; // Part 1
-    int j = 0; // Part 2
+    size_t i = 0; // Part 1
+    size_t j = 0; // Part 2
     for (auto d : data)
     {
         // Part 1
@@ -67,9 +67,7 @@ void day02(const input_t& input)
         }
     }
 
-    // printf("part 1: %d, part 2: %d", i, j);
-    assert(i == 465);
-    assert(j == 294);
+    return { i, j };
 }
 
 void day02_test()

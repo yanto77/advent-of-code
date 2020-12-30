@@ -71,15 +71,15 @@ namespace
     }
 }
 
-void day09(const input_t& input)
+output_t day09(const input_t& input)
 {
     std::vector<int64_t> data = parse_input(input);
-    int64_t invalid_num = validate_input(data, 25);
-    assert(invalid_num == 507622668);
+    size_t invalid_num = validate_input(data, 25);
 
     const auto& [start, end] = find_continuous_set(data, invalid_num);
     const auto& [min, max] = get_min_max(data, start, end);
-    assert((min + max) == 76688505);
+
+    return { invalid_num, static_cast<size_t>(min+max) };
 }
 
 void day09_test()

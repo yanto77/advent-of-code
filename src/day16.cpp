@@ -1,8 +1,8 @@
 #include "advent2020.h"
 
-void day16(const input_t& input)
+output_t day16(const input_t& input)
 {
-    printf("todo");
+    return { 0, 0 };
 }
 
 void day16_test()

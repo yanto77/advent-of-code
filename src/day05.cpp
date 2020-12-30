@@ -20,7 +20,7 @@ namespace
     }
 }
 
-void day05(const input_t& input)
+output_t day05(const input_t& input)
 {
     uint16_t max_seat_id = 0; // Part 1
     uint16_t my_seat_id = 0; // Part 2
@@ -51,9 +51,7 @@ void day05(const input_t& input)
         }
     }
 
-    // printf("max: %d, my: %d", max_seat_id, my_seat_id);
-    assert(max_seat_id == 953);
-    assert(my_seat_id == 615);
+    return {max_seat_id, my_seat_id};
 }
 
 void day05_test()

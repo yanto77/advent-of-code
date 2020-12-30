@@ -93,16 +93,15 @@ namespace
     }
 }
 
-void day10(const input_t& input)
+output_t day10(const input_t& input)
 {
     std::vector<uint8_t> data = parse_input(input);
     std::vector<uint8_t> element_deltas = get_element_wise_deltas(data);
 
     const auto& [delta1, delta3] = count_specific_elements(element_deltas);
-    assert(delta1 * delta3 == 2664);
-
     size_t variations = count_variations(element_deltas);
-    assert(variations == 148098383347712);
+
+    return { (delta1*delta3), variations };
 }
 
 void day10_test()

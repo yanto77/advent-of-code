@@ -23,8 +23,10 @@ void parse_input(const input_t& input, std::function<void(const std::string_view
     }
 }
 
-void load_input(input_t& input, const std::string& filename)
+input_t load_input(const std::string& filename)
 {
+    input_t input;
+
     std::ifstream file(filename.c_str(), std::ios::binary | std::ios::ate);
     input.len = file.tellg();
     if (input.len == -1)
@@ -46,6 +48,8 @@ void load_input(input_t& input, const std::string& filename)
         perror(filename.c_str());
         exit(EXIT_FAILURE);
     }
+
+    return input;
 }
 
 void free_input(input_t& input)
