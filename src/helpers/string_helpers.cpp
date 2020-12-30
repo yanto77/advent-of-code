@@ -35,11 +35,6 @@ std::vector<sv> split_multi(const sv& input, char delim)
 {
     std::vector<sv> out;
 
-    // value: 3 shiny tomato bags, 2 light fuchsia bags, 1 bright salmon bag.
-    //        012345679012345679012345679012345679012345679012345679012345679
-    //                          21                     45
-    //            {0, 21 -1 = 20}         (22, 45-22 = 23 -1 = 22)
-
     size_t start = 0;
     while (start < input.size())
     {
@@ -49,10 +44,10 @@ std::vector<sv> split_multi(const sv& input, char delim)
 
         size_t substr_len = pos - start;
         out.push_back(sv(&input[start], substr_len));
-        start = pos + 2; // skip delim + whitespace after
+        start = pos + 1; // skip delim
     }
 
-    size_t last_size = input.size() - start - 1; // remove last period
+    size_t last_size = input.size() - start; // remove last period
     out.push_back(sv(&input[start], last_size));
 
     return out;

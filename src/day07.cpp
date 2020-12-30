@@ -29,7 +29,7 @@ namespace
 {
     std::pair<uint8_t, sv> parse_single_bag(const sv& text)
     {
-        static constexpr auto pattern = ctll::fixed_string { "(no|[0-9]+) ([a-z ]+) bags?$" };
+        static constexpr auto pattern = ctll::fixed_string { "\\s?(no|[0-9]+) ([a-z ]+) bags?\\.?$" };
         auto m = ctre::match<pattern>(text);
 
         if (m.get<1>().to_view() == "no")
@@ -170,9 +170,17 @@ void day07_test()
         assert(asd2.first == 1);
         assert(asd2.second == "clear fuchsia");
 
-        auto asd3 = parse_single_bag("no other bags");
-        assert(asd3.first == 0);
-        assert(asd3.second == "");
+        auto asd3 = parse_single_bag("4 striped lavender bags.");
+        assert(asd3.first == 4);
+        assert(asd3.second == "striped lavender");
+
+        auto asd4 = parse_single_bag("1 clear fuchsia bag.");
+        assert(asd4.first == 1);
+        assert(asd4.second == "clear fuchsia");
+
+        auto asd5 = parse_single_bag("no other bags");
+        assert(asd5.first == 0);
+        assert(asd5.second == "");
     }
 
     {
