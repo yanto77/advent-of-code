@@ -1,9 +1,36 @@
 #include "advent2020.h"
 
+/// line equation: y = mx + b
+struct line_t
+{
+    int m = 0;
+    int b = 0;
+
+    friend bool operator==(const line_t& lhs, const line_t& rhs)
+    {
+        return lhs.m == rhs.m && lhs.b == rhs.b;
+    }
+
+    static vec2i intersect(const line_t& lhs, const line_t& rhs)
+    {
+        auto& [a, c] = lhs;
+        auto& [b, d] = rhs;
+
+        double ab = a - b;
+        double dc = d - c;
+        if (fabs(ab) < __DBL_EPSILON__) assert(false); // parallel lines
+
+        int x = static_cast<int>(ceil(dc / ab));
+        int y = b * x + d;
+
+        return {x, y};
+    }
+};
+
 struct data_t
 {
     int t0 = 0;
-    std::vector<int> busses = {};
+    std::vector<line_t> buslines = {};
 };
 
 namespace
@@ -11,7 +38,7 @@ namespace
     data_t parse_input(const input_t& input)
     {
         data_t parsed;
-        parsed.busses.reserve(100);
+        parsed.buslines.reserve(100);
 
         bool first = true;
         parse_input(input, [&](const sv& line)
@@ -23,58 +50,54 @@ namespace
             }
             else
             {
-                for (const sv& bus: split_multi(line, ','))
-                    if (bus.data()[0] != 'x')
-                        parsed.busses.push_back(to_int<int>(bus));
+                const auto& parts = split_multi(line, ',');
+                for (size_t i = 0; i < parts.size(); ++i)
+                {
+                    if (parts[i][0] != 'x')
+                    {
+                        parsed.buslines.push_back(line_t {
+                            .m = to_int<int>(parts[i]),
+                            .b = -1 * static_cast<int>(i)
+                        });
+                    }
+                }
             }
         });
 
         return parsed;
     }
 
-    std::pair<int, int> evaluate(const data_t& data)
+    std::pair<int, int> evaluate_pt1(const data_t& data)
     {
-        int k = 2;
-        int n = static_cast<int>(data.busses.size());
+        const line_t base{0, data.t0};
+        const int n = static_cast<int>(data.buslines.size());
+
+        // Intersect all buslines with expected base-line
         std::vector<int> result { n, 0 };
-
-        while (true)
+        for (size_t i = 0; i < n; ++i)
         {
-            // Apply
-            for (int i = 0; i < n; ++i)
-                result[i] = k * data.busses[i];
-
-            // Check
-            std::pair<int, int> min { INT32_MAX, 0 }; // { value, bus ID }
-            for (int i = 0; i < n; ++i)
-                if (data.t0 < result[i] && result[i] < min.first)
-                    min = { result[i], i };
-
-            if (min.first != INT32_MAX)
-            {
-                // printf("Found min for bus %d, t1 %d, t1-t0: %d\n", data.busses[min.second], min.first, min.first - data.t0);
-                printf("k: %d\n", k);
-                return {(min.first - data.t0), data.busses[min.second]};
-            }
-
-            ++k;
+            const vec2i& point = line_t::intersect(base, { data.buslines[i].m, 0 });
+            result[i] = point.y;
         }
 
-        assert(false);
-        return {0, 0};
+        // Find result with smallest value
+        std::pair<int, int> min { INT32_MAX, 0 }; // { value, bus ID }
+        for (int i = 0; i < n; ++i)
+            if (data.t0 < result[i] && result[i] < min.first)
+                min = { result[i], i };
+
+        return {(min.first - data.t0), data.buslines[min.second].m};
     }
 }
-
 
 output_t day13(const input_t& input)
 {
     data_t data = parse_input(input);
 
-    // find 939 + x = k * y, where y is one of busses
-    const auto& [diff, bus] = evaluate(data);
+    const auto& [diff, bus] = evaluate_pt1(data);
     printf("diff: %d, bus: %d, result: %d\n", diff, bus, diff*bus);
 
-    return { 0, 0 };
+    return { static_cast<size_t>(diff*bus), 0 };
 }
 
 void day13_test()
@@ -84,10 +107,30 @@ void day13_test()
 
     data_t data = parse_input(test1);
     assert(data.t0 == 939);
-    assert(data.busses == std::vector<int>({7, 13, 59, 31, 19}));
+    assert(data.buslines == std::vector<line_t>({
+        line_t {7, 0},
+        line_t {13, -1},
+        line_t {59, -4},
+        line_t {31, -6},
+        line_t {19, -7}
+    }));
 
-    // find 939 + x = k * y, where y is one of busses
-    const auto& [diff, bus] = evaluate(data);
-    // printf("diff: %d, bus: %d, result: %d\n", diff, bus, diff*bus);
+    const auto& [diff, bus] = evaluate_pt1(data);
     assert(diff == 5 && bus == 59);
 }
+
+/*
+find n, where
+    n = (b[0] * k1) + 0 =  7 * k1 + 0
+    n = (b[1] * k2) + 1 = 13 * k2 + 1
+    n = (b[2] * k3) + 4 = 59 * k3 + 4
+    n = (b[3] * k4) + 6 = 31 * k4 + 6
+    n = (b[4] * k5) + 7 = 19 * k5 + 7
+
+1068781
+    7 * 152683 - 0  = 1068781
+    13 * 82214 - 1  = 1068781
+    59 * 18115 - 4  = 1068781
+    31 * 34477 - 6  = 1068781
+    19 * 56252 - 7  = 1068781
+*/
