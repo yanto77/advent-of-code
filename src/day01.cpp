@@ -1,10 +1,6 @@
 #include "advent2020.h"
 
-void day01_test()
-{
-}
-
-void day01(const input_t& input)
+output_t day01(const input_t& input)
 {
     // Given input,
     // - part 1:
@@ -23,7 +19,7 @@ void day01(const input_t& input)
     std::sort(v.begin(), v.end());
 
     // Part 1
-    int product1 = -1;
+    size_t product1 = 0;
     for (int i : v)
     {
         for (int j : v)
@@ -35,12 +31,12 @@ void day01(const input_t& input)
             }
         }
 
-        if (product1 != -1)
+        if (product1 != 0)
             break;
     }
 
     // Part 2
-    int product2 = -1;
+    size_t product2 = 0;
     for (int i : v)
     {
         for (int j : v)
@@ -54,15 +50,17 @@ void day01(const input_t& input)
                 }
             }
 
-            if (product2 != -1)
+            if (product2 != 0)
                 break;
         }
 
-        if (product2 != -1)
+        if (product2 != 0)
             break;
     }
 
-    // printf("%d, %d", product1, product2);
-    assert(product1 == 1010884);
-    assert(product2 == 253928438);
+    return { product1, product2 };
+}
+
+void day01_test()
+{
 }

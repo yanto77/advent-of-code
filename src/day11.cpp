@@ -14,11 +14,6 @@ namespace
         if constexpr (!DEBUG_VISUALIZE)
             return;
 
-        #define COLOR_RED()     "\033[31m"
-        #define COLOR_GREEN()   "\033[32m"
-        #define COLOR_GRAY()    "\033[37m"
-        #define COLOR_RESET()   "\033[39m"
-
         switch (seat)
         {
             case seat_state_t::FLOOR: { printf(COLOR_GRAY()  "."); break; }
@@ -237,17 +232,16 @@ namespace
     }
 }
 
-void day11(const input_t& input)
+output_t day11(const input_t& input)
 {
     seat_map_t test_map = parse_input(input);
     const auto& [steps, after_map] = simulate_until_stable(test_map, true);
     size_t occupied1 = count_occupied(after_map);
-    assert(occupied1 == 2108);
 
     const auto& [steps2, after_map2] = simulate_until_stable(test_map, false);
     size_t occupied2 = count_occupied(after_map2);
-    // printf("occupied2: %zu\n", occupied2);
-    assert(occupied2 == 1897);
+
+    return { occupied1, occupied2 };
 }
 
 void day11_test()

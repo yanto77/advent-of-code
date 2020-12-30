@@ -67,7 +67,7 @@ namespace
         return program;
     }
 
-    registers_t execute_until_loop(program_t& program)
+    registers_t execute_until_loop(program_t program)
     {
         registers_t reg;
         const size_t last_instr = (program.size() - 1);
@@ -122,22 +122,14 @@ namespace
     }
 }
 
-void day08(const input_t& input)
+output_t day08(const input_t& input)
 {
     const program_t& prg = parse_input(input);
 
-    // Part 1
-    {
-        program_t copy = prg;
-        const registers_t& reg = execute_until_loop(copy);
-        assert(reg.ip == 346 && reg.acc == 1949);
-    }
+    const auto& [reg1, acc1] = execute_until_loop(prg);
+    const auto& [reg2, acc2] = bruteforce_find(prg);
 
-    // Part 2
-    {
-        const registers_t& reg = bruteforce_find(prg);
-        assert(reg.ip == 646 && reg.acc == 2092);
-    }
+    return {static_cast<size_t>(acc1), static_cast<size_t>(acc2)};
 }
 
 void day08_test()

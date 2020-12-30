@@ -47,24 +47,21 @@ namespace
     }
 }
 
-void day03(const input_t& input)
+output_t day03(const input_t& input)
 {
-    const std::array<vec2i, 5> slopes = {
-        vec2i { 1, 1 }, vec2i { 3, 1 }, vec2i { 5, 1 }, vec2i { 7, 1 }, vec2i { 1, 2 },
-    };
-
     const tree_map_t& map = get_tree_map(input);
 
-    size_t result_product = 1; // Part 2
-    for (const vec2i& slope : slopes)
-    {
-        size_t trees = get_encountered_trees(map, slope);
-        // printf("slope (%d, %d) encounters %zu trees\n", slope.x, slope.y, trees);
-        result_product *= trees;
-    }
+    // Part 1
+    size_t product1 = get_encountered_trees(map, { 3, 1 });
 
-    // printf("%zu", result_product);
-    assert(result_product == 3093068400);
+    // Part 2
+    size_t product2 = product1;
+    product2 *= get_encountered_trees(map, vec2i { 1, 1 });
+    product2 *= get_encountered_trees(map, vec2i { 5, 1 });
+    product2 *= get_encountered_trees(map, vec2i { 7, 1 });
+    product2 *= get_encountered_trees(map, vec2i { 1, 2 });
+
+    return { product1, product2 };
 }
 
 void day03_test()

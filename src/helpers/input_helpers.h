@@ -6,7 +6,7 @@
 
 /// Input helpers
 
-void load_input(input_t& input, const std::string& filename);
+input_t load_input(const std::string& filename);
 
 void free_input(input_t& input);
 

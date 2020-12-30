@@ -150,14 +150,13 @@ namespace
     }
 }
 
-void day07(const input_t& input)
+output_t day07(const input_t& input)
 {
     result_t res = parse_input(input);
 
     const size_t con_nb = get_links_to(res, "shiny gold");
     const size_t con_cost = get_contained_nodes(res, "shiny gold");
-    assert(con_nb == 172);
-    assert(con_cost == 39645);
+    return {con_nb, con_cost};
 }
 
 void day07_test()

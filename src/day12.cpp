@@ -153,15 +153,17 @@ namespace
     }
 }
 
-void day12(const input_t& input)
+output_t day12(const input_t& input)
 {
     std::vector<order_t> orders = parse_input(input);
 
     ship_pos_t ship1 = iterate_orders_pt1(orders);
-    assert(abs(ship1.pos.x) + abs(ship1.pos.y) == 364);
-
     vec2i ship2 = iterate_orders_pt2(orders);
-    assert(abs(ship2.x) + abs(ship2.y));
+
+    return {
+        static_cast<size_t>(abs(ship1.pos.x) + abs(ship1.pos.y)),
+        static_cast<size_t>(abs(ship2.x) + abs(ship2.y))
+    };
 }
 
 void day12_test()

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <numeric>
 
-void day06(const input_t& input)
+output_t day06(const input_t& input)
 {
     struct group_t
     {
@@ -43,9 +43,7 @@ void day06(const input_t& input)
         acc2 += count_bits(v[i].p2);
     }
 
-    // printf("part1: %hu, part2: %hu", acc1, acc2);
-    assert(acc1 == 6947);
-    assert(acc2 == 3398);
+    return {acc1, acc2};
 }
 
 void day06_test()
