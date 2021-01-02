@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.10)
+cmake_minimum_required (VERSION 3.16)
 project (advent2020)
 
 #
@@ -14,11 +14,6 @@ find_package(OpenMP REQUIRED)
 set(exec_NAME advent2020)
 add_executable(${exec_NAME}
     src/main.cpp
-    src/helpers/bit_helpers.cpp
-    src/helpers/conv_helpers.cpp
-    src/helpers/hash_helpers.cpp
-    src/helpers/input_helpers.cpp
-    src/helpers/string_helpers.cpp
     src/day01.cpp
     src/day02.cpp
     src/day03.cpp
@@ -45,6 +40,8 @@ add_executable(${exec_NAME}
     src/day24.cpp
     src/day25.cpp
 )
+
+target_precompile_headers(${exec_NAME} PRIVATE src/advent2020.h)
 
 target_include_directories(${exec_NAME} SYSTEM PRIVATE include/)
 target_link_libraries(${exec_NAME} PRIVATE OpenMP::OpenMP_CXX)

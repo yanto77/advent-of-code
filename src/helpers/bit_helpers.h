@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <cstdio>
 
 /// Bit manipulation helpers
 
@@ -27,4 +28,10 @@ constexpr uint8_t count_bits(T n)
     return count;
 }
 
-void print_bits(uint8_t trg);
+inline void print_bits(uint8_t trg)
+{
+    for (int i = 0; i < 8; ++i)
+    {
+        printf(get_bit(trg, i) ? "1" : "0");
+    }
+}
