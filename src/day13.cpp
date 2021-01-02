@@ -133,4 +133,31 @@ find n, where
     59 * 18115 - 4  = 1068781
     31 * 34477 - 6  = 1068781
     19 * 56252 - 7  = 1068781
+
+x = 1068781, not really right, is it?
+    x mod 7 = 0
+    x mod 13 = 1
+    x mod 59 = 4
+    x mod 31 = 6
+    x mod 19 = 7
+
+    7 * 152683 - 0  = 1068781
+    13 * 82214 - 1  = 1068781
+    59 * 18115 - 4  = 1068781
+    31 * 34477 - 6  = 1068781
+    19 * 56252 - 7  = 1068781
+
+see also:
+* https://sites.millersville.edu/bikenaga/number-theory/systems-of-congruences/systems-of-congruences.html
+* https://www.reddit.com/r/adventofcode/comments/kc4njx/2020_day_13_solutions/ggv5a0s/?utm_source=reddit&utm_medium=web2x&context=3
+    > I found out that the "Chinese remainder theorem" was involved so I used
+    > the following videos to gain a grasp of how modular arithmetic and the theorem worked:
+    >    https://youtu.be/5OjZWSdxlU0
+    >    https://youtu.be/6dZLq77gSGU
+    >    https://youtu.be/zIFehsBHB8o
+    > also:
+    > https://www.dcode.fr/chinese-remainder
+
+* https://github.com/blu3r4y/AdventOfLanguages2020/blob/main/src/day13.cpp
+
 */
