@@ -150,7 +150,7 @@ x = 1068781, not really right, is it?
 see also:
 * https://sites.millersville.edu/bikenaga/number-theory/systems-of-congruences/systems-of-congruences.html
 * https://www.reddit.com/r/adventofcode/comments/kc4njx/2020_day_13_solutions/ggv5a0s/?utm_source=reddit&utm_medium=web2x&context=3
-    > I found out that the "Chinese remainder theorem" was involved so I used
+    > I found out that the "Chinese remainder theorem" was involved so I used 
     > the following videos to gain a grasp of how modular arithmetic and the theorem worked:
     >    https://youtu.be/5OjZWSdxlU0
     >    https://youtu.be/6dZLq77gSGU
