@@ -30,6 +30,8 @@ struct vec2
     constexpr friend vec2<T> operator-(const T lhs, vec2<T> rhs) { rhs -= lhs; return rhs; }
     constexpr friend vec2<T> operator/(const T lhs, vec2<T> rhs) { rhs /= lhs; return rhs; }
     constexpr friend vec2<T> operator*(const T lhs, vec2<T> rhs) { rhs *= lhs; return rhs; }
+
+    friend bool operator==(const vec2<T>& lhs, const vec2<T>& rhs) { return lhs.x == rhs.x && lhs.y == rhs.y; }
 };
 
 typedef vec2<int> vec2i;

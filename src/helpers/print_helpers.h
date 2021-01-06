@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "vector_helpers.h"
 
 #define COLOR_BLACK()   "\033[30m"
 #define COLOR_RED()     "\033[31m"
@@ -16,7 +17,6 @@
 template <typename T>
 void print_col(const std::vector<T>& input)
 {
-    // std::cout << "Vector:\n";
     for (const auto& d : input)
     {
         std::cout << "  " << static_cast<int>(d) << '\n';
@@ -26,10 +26,19 @@ void print_col(const std::vector<T>& input)
 template <typename T>
 void print_row(const std::vector<T>& input)
 {
-    // std::cout << "Vector:\n";
     for (const auto& d : input)
     {
         std::cout << "  " << static_cast<int>(d) << ", ";
+    }
+    std::cout << '\n';
+}
+
+template <typename T>
+void print_row(const std::vector<vec2<T>>& input)
+{
+    for (const auto& vec : input)
+    {
+        std::cout << "  (" << vec.x << ", " << vec.y << "), ";
     }
     std::cout << '\n';
 }
