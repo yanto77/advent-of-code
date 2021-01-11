@@ -52,27 +52,14 @@ namespace
         // Apply set0
         set_bitmask(addr, mask.set1);
 
-        // Apply setX
-        std::vector<uint8_t> dst_idx; // bit destination indices
-        dst_idx.reserve(MASK_BIT_COUNT / 2);
-        for (uint8_t bit = 0; bit < MASK_BIT_COUNT; ++bit)
+        // Iterate over all the possible combinations of floating bits.
+        // Ref: https://github.com/Scrumplesplunge/aoc2020/blob/master/src/day14.c
+        size_t floating_values = 0;
+        do
         {
-            if (get_bit(mask.setX, bit))
-            {
-                dst_idx.push_back(bit);
-            }
-        }
-
-        // For all possible permutations of given bits in mask.setX:
-        size_t bit_count = dst_idx.size();
-        for (int64_t perm = 0; perm < binpow(2, bit_count); ++perm)
-        {
-            // Overwrite mask's bits with bits of current permutation
-            for (uint8_t bit = 0; bit < bit_count; ++bit)
-                write_bit(addr, dst_idx[bit], get_bit(perm, bit));
-
-            memory[addr] = value;
-        }
+            memory[addr ^ floating_values] = value;
+            floating_values = (floating_values + 1 + ~mask.setX) & mask.setX;
+        } while (floating_values);
     }
 
     size_t evaluate(const input_t& input, bool part1 = true)
