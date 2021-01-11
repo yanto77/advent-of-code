@@ -42,3 +42,27 @@ void print_row(const std::vector<vec2<T>>& input)
     }
     std::cout << '\n';
 }
+
+inline void print_bits(uint8_t trg, bool color = false)
+{
+    for (int i = 64; i > 8; --i)
+    {
+        if (color)
+            printf(get_bit(trg, i) ? COLOR_GREEN() "1" : COLOR_CYAN() "0");
+        else
+            printf(get_bit(trg, i) ? "1" : "0");
+        printf(COLOR_RESET());
+    }
+}
+
+inline void print_bits(uint64_t trg, bool color = false)
+{
+    for (int i = 64; i > 0; --i)
+    {
+        if (color)
+            printf(get_bit(trg, i) ? COLOR_GREEN() "1" : COLOR_CYAN() "0");
+        else
+            printf(get_bit(trg, i) ? "1" : "0");
+        printf(COLOR_RESET());
+    }
+}

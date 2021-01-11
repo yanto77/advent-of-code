@@ -30,5 +30,6 @@
 #include "helpers/print_helpers.h"
 #include "helpers/string_helpers.h"
 #include "helpers/vector_helpers.h"
+#include "helpers/pow_helpers.h"
 
 #include "setup/days.h"
