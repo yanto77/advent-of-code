@@ -1,30 +1,30 @@
 #include "advent2020.h"
-#include <map>
-
-constexpr uint8_t MASK_BIT_COUNT = 36;
-
-typedef std::map<uint64_t, uint64_t> memory_t;
-struct mask_t
-{
-    uint64_t set0 = 0;
-    uint64_t set1 = 0;
-    uint64_t setX = 0;
-
-    void parse_from(const sv& input)
-    {
-        set0 = set1 = setX = 0;
-
-        for (size_t i = 0; i < MASK_BIT_COUNT; ++i)
-        {
-            if (input[i] == '0') set_bit(set0, 35-i);
-            else if (input[i] == '1') set_bit(set1, 35-i);
-            else if (input[i] == 'X') set_bit(setX, 35-i);
-        }
-    }
-};
+#include <unordered_map>
 
 namespace
 {
+    constexpr uint8_t MASK_BIT_COUNT = 36;
+
+    typedef std::unordered_map<uint64_t, uint64_t> memory_t;
+    struct mask_t
+    {
+        uint64_t set0 = 0;
+        uint64_t set1 = 0;
+        uint64_t setX = 0;
+
+        void parse_from(const sv& input)
+        {
+            set0 = set1 = setX = 0;
+
+            for (size_t i = 0; i < MASK_BIT_COUNT; ++i)
+            {
+                if (input[i] == '0') set_bit(set0, 35-i);
+                else if (input[i] == '1') set_bit(set1, 35-i);
+                else if (input[i] == 'X') set_bit(setX, 35-i);
+            }
+        }
+    };
+
     [[maybe_unused]]
     void custom_print_bits(uint64_t trg, bool color = false)
     {
@@ -77,8 +77,10 @@ namespace
 
     size_t evaluate(const input_t& input, bool part1 = true)
     {
-        memory_t memory;
         mask_t mask;
+
+        memory_t memory;
+        memory.reserve(part1 ? 1000 : 100000);
 
         parse_input(input, [&](const sv& line)
         {
