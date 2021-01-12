@@ -2,43 +2,23 @@
 
 namespace
 {
-    struct value_t {
-        size_t turn2 = 0;
-        size_t turn1 = 0;
-
-        friend bool operator==(const value_t& lhs, const value_t& rhs) 
-        { 
-            return lhs.turn2 == rhs.turn2 &&  lhs.turn1 == rhs.turn1;
-        }
-    };
-
     size_t solve(const std::vector<size_t>& input, size_t limit)
     {
-        std::vector<value_t> history(limit, value_t{});
+        std::vector<size_t> history(limit, 0);
+        for (size_t n = 0; n < input.size(); ++n)
+        {
+            history[input[n]] = n+1;
+        }
 
-        // history[input[0]] = {1, 1};
-        size_t value = input[0];
+        size_t value = 0;
         size_t last_diff = 0;
-
-        for (size_t n = 0; n < limit; ++n)
+        for (size_t n = input.size(); n < limit; ++n)
         {
             size_t turn = n+1;
-            value = (n < input.size()) ? input[n] : last_diff;
 
-            // printf("turn: %zu, last_value: %zu, history: {%zu, %zu}, value: %zu (%s)\n", turn, last_value, 
-            //     history[last_value].turn2, history[last_value].turn1, new_value, (n < input.size()) ? "input" : "history");
-
-            auto it = history[value];
-            if (it != value_t{})
-            {
-                last_diff = turn - it.turn2;
-                history[value] = { turn, it.turn2 };
-            }
-            else
-            {
-                last_diff = 0;
-                history[value] = { turn, turn };
-            }
+            value = last_diff;
+            last_diff = (history[value] != 0) ? (turn - history[value]) : 0;
+            history[value] = turn;
         }
 
         return value;
@@ -74,7 +54,7 @@ void day15_test()
     assert(solve({3,2,1}, 2020) == 438);
     assert(solve({3,1,2}, 2020) == 1836);
 
-    // NB: Takes approx 1 second per each call.
+    // NB: Takes approx 0.6 second per each call.
     // assert(solve({0,3,6}, 30000000) == 175594);
     // assert(solve({1,3,2}, 30000000) == 2578);
     // assert(solve({2,1,3}, 30000000) == 3544142);
