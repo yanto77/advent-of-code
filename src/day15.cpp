@@ -22,22 +22,27 @@ namespace
 
         history[input[0]] = {1, 1};
         size_t last_value = input[0];
+        size_t last_diff = 0;
 
         for (size_t n = 1; n < limit; ++n)
         {
             size_t turn = n+1;
-            size_t new_value = (n < input.size()) ?
-                input[n] :
-                history[last_value].first - history[last_value].second;
+            size_t new_value = (n < input.size()) ? input[n] : last_diff;
 
-            // printf("turn: %zu, last_value: %zu, history: {%zu, %zu}, value: %zu\n", turn, last_value,
+            // printf("turn: %zu, last_value: %zu, history: {%zu, %zu}, value: %zu\n", turn, last_value, 
             //     history[last_value].first, history[last_value].second, new_value);
 
             auto it = history.find(new_value);
-            if (it != history.end()) // found previous, do the exchange
+            if (it != history.end())
+            {
+                last_diff = turn - it->second.first;
                 it->second = { turn, it->second.first };
-            else                     // nothing found, insert new
-                history[new_value] = {turn, turn}; // initialize so that difference would be 0
+            }
+            else
+            {
+                history[new_value] = {turn, turn};
+                last_diff = 0;
+            }
 
             last_value = new_value;
         }
