@@ -20,32 +20,24 @@ namespace
         history_t history;
         history.reserve(limit);
 
-        // Pre-process
-        for (size_t n = 0; n < input.size(); ++n)
+        history[input[0]] = {1, 1};
+        size_t last_value = input[0];
+
+        for (size_t n = 1; n < limit; ++n)
         {
             size_t turn = n+1;
-            size_t value = input[n];
+            size_t new_value = (n < input.size()) ?
+                input[n] :
+                history[last_value].first - history[last_value].second;
 
-            auto it = history.find(value);
+            // printf("turn: %zu, last_value: %zu, history: {%zu, %zu}, value: %zu\n", turn, last_value,
+            //     history[last_value].first, history[last_value].second, new_value);
+
+            auto it = history.find(new_value);
             if (it != history.end()) // found previous, do the exchange
-                history[value] = {turn, (*it).second.first};
-            else                     // nothing found, insert new
-                history[value] = {turn, turn}; // initialize so that difference would be 0
-        }
-
-        // Simulate forward
-        size_t last_value = input.back();
-        for (size_t n = input.size(); n < limit; ++n)
-        {
-            size_t turn = n+1;
-            const auto& [turn2, turn1] = history[last_value];
-            size_t new_value = turn2 - turn1;
-
-            const auto& it = history.find(new_value);
-            if (it != history.end())
                 it->second = { turn, it->second.first };
-            else
-                history[new_value] = {turn, turn};
+            else                     // nothing found, insert new
+                history[new_value] = {turn, turn}; // initialize so that difference would be 0
 
             last_value = new_value;
         }
@@ -58,7 +50,6 @@ output_t day15(const input_t& input)
 {
     size_t part1 = solve({1,0,16,5,17,4}, 2020);
     size_t part2 = solve({1,0,16,5,17,4}, 30000000);
-
     return { part1, part2 };
 }
 
