@@ -44,7 +44,6 @@ add_executable(${exec_NAME}
 target_precompile_headers(${exec_NAME} PRIVATE src/advent2020.h)
 
 target_include_directories(${exec_NAME} SYSTEM PRIVATE include/)
-target_link_libraries(${exec_NAME} PRIVATE OpenMP::OpenMP_CXX)
 if (UNIX)
     target_link_libraries(${exec_NAME} PRIVATE m)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
