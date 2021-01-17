@@ -1,23 +1,103 @@
 #include "advent2020.h"
+#include <bitset>
 
-// rules for ticket fields,
-// the numbers on your ticket,
-// and the numbers on other nearby tickets
+namespace
+{
+    [[maybe_unused]]
+    void print(const std::vector<std::vector<bool>>& matrix)
+    {
+        const size_t ydim = matrix.size();
+        const size_t xdim = matrix[0].size();
 
-// Start by determining which tickets are completely invalid;
-// these are tickets that contain values which aren't valid
-// for any field. Ignore your ticket for now.
+        for (size_t y = 0; y < ydim; ++y)
+        {
+            for (size_t x = 0; x < xdim; ++x)
+            {
+                if (matrix[y][x] == 1)
+                    printf(COLOR_GREEN() "%d" COLOR_RESET(), matrix[y][x]);
+                else
+                    printf(COLOR_RED() "%d" COLOR_RESET(), matrix[y][x]);
+            }
+            printf("\n");
+        }
+    }
+}
 
 namespace
 {
     struct range_t { uint16_t min; uint16_t max; };
-    struct rule_t { sv type; range_t r1; range_t r2; };
+    struct rule_t
+    {
+        sv type;
+        range_t r1;
+        range_t r2;
+        size_t index; // index from the ticket values
+
+        bool pass(uint16_t num) const
+        {
+            return (r1.min <= num && num <= r1.max) ||
+                   (r2.min <= num && num <= r2.max);
+        }
+    };
 
     struct data_t
     {
         std::vector<uint16_t> my_ticket;
         std::vector<rule_t> rules;
-        std::vector<std::vector<bool>> type_matrix; // (value in a ticket) x (rule)
+        std::vector<std::vector<bool>> type_matrix; // ydim - ticket values, xdim - rules
+
+        void simplify_matrix()
+        {
+            const size_t ydim = my_ticket.size();
+            const size_t xdim = rules.size();
+
+            // print(type_matrix);
+
+            std::vector<std::vector<bool>> clear_copy = { ydim, std::vector<bool>(xdim, false) };
+
+            while (true)
+            {
+                ssize_t row = -1;
+                for (size_t y = 0; y < ydim; ++y)
+                {
+                    if (count_bits(type_matrix[y]) == 1)
+                    {
+                        row = y;
+                        break;
+                    }
+                }
+
+                if (row == -1)
+                {
+                    // when no single bit rows remain, the solution has been found.
+                    // alternatively there is no solution, but that doesn't happen with given input.
+                    break;
+                }
+                else
+                {
+                    clear_copy[row] = type_matrix[row];
+                    for (size_t y = 0; y < ydim; ++y)
+                    {
+                        reset_bitmask(type_matrix[y], clear_copy[row]);
+                    }
+                }
+            }
+
+            // copy clear state to actual data
+            type_matrix = clear_copy;
+
+            // print(type_matrix);
+        }
+
+        void save_rule_indexes()
+        {
+            const size_t ydim = my_ticket.size();
+            const size_t xdim = rules.size();
+            for (size_t y = 0; y < ydim; ++y)
+                for (size_t x = 0; x < xdim; ++x)
+                    if (type_matrix[y][x] == 1)
+                        rules[x].index = y;
+        }
     };
 
     struct parser_t
@@ -30,7 +110,7 @@ namespace
     {
         parser_t parser;
         data_t data;
-        data.rules.reserve(50);
+        data.rules.reserve(25);
 
         output_t out;
 
@@ -49,13 +129,24 @@ namespace
                 parser.skip_next = true;
                 switch (parser.state)
                 {
-                    case parser_t::RULES: { parser.state = parser_t::MY_TICKET; break; }
+                    case parser_t::RULES:
+                    {
+                        parser.state = parser_t::MY_TICKET;
+                        break;
+                    }
                     case parser_t::MY_TICKET:
                     {
                         parser.state = parser_t::OTHER_TICKETS;
+                        const size_t ydim = data.my_ticket.size();
+                        const size_t xdim = data.rules.size();
+                        data.type_matrix = { ydim, std::vector<bool>(xdim, true) };
                         break;
                     }
-                    case parser_t::OTHER_TICKETS: { assert(false); break; }
+                    case parser_t::OTHER_TICKETS:
+                    {
+                        assert(false);
+                        break;
+                    }
                 }
                 return;
             }
@@ -86,17 +177,29 @@ namespace
                 case parser_t::OTHER_TICKETS:
                 {
                     // Example: "7,3,47"
-                    for (uint16_t num: parse_ints<uint16_t>(line, ','))
-                    {
-                        bool passes_any = std::any_of(data.rules.begin(), data.rules.end(),
-                            [&num](const rule_t& r) {
-                                return (r.r1.min <= num && num <= r.r1.max) ||
-                                       (r.r2.min <= num && num <= r.r2.max);
-                            });
+                    const auto& other_ticket = parse_ints<uint16_t>(line, ',');
 
-                        if (!passes_any)
+                    const size_t ydim = data.my_ticket.size();
+                    const size_t xdim = data.rules.size();
+                    for (size_t y = 0; y < ydim; ++y)
+                    {
+                        const uint16_t num = other_ticket[y];
+                        bool passes_any = std::any_of(data.rules.begin(), data.rules.end(),
+                            [&num](const rule_t& r) { return r.pass(num); });
+
+                        if (!passes_any) // invalid ticket
                         {
                             out.part1 += num;
+                        }
+                        else // valid ticket
+                        {
+                            for (size_t x = 0; x < xdim; ++x)
+                            {
+                                if (!data.rules[x].pass(num))
+                                {
+                                    data.type_matrix[y][x] = false;
+                                }
+                            }
                         }
                     }
 
@@ -105,16 +208,25 @@ namespace
             }
         });
 
+        data.simplify_matrix();
+        data.save_rule_indexes();
+
+        out.part2 = 1;
+        for (const auto& rule: data.rules)
+        {
+            if (rule.type.starts_with("departure"))
+            {
+                out.part2 *= data.my_ticket[rule.index];
+            }
+        }
+
         return out;
     }
 }
 
 output_t day16(const input_t& input)
 {
-    // const auto& [part1, part2] = evaluate(input);
-    // printf("part1: %zu, part2: %zu\n", part1, part2);
-    // assert(part1 == 21956);
-    return { 0, 0 };
+    return evaluate(input);
 }
 
 void day16_test()
@@ -152,6 +264,6 @@ void day16_test()
             "5,14,9\n";
         input_t test2 { input2, 118 };
         const auto& [part1, part2] = evaluate(test2);
-        assert(part2 == 0);
+        assert(part2 == 1);
     }
 }
