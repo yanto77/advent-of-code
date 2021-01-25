@@ -66,7 +66,7 @@ int main()
             printf("  - Expected: pt1 = %zu, pt2 = %zu\n", A.answers.part1, A.answers.part2);
             printf("  - Actual  : pt1 = %zu, pt2 = %zu\n", out.part1, out.part2);
         }
-        else if (out.part1 == A.answers.part1 && out.part1 == A.answers.part1)
+        else if (out.part1 == A.answers.part1 && out.part2 == A.answers.part2)
         {
             printf(COLOR_GREEN() "%s: OK [%5ld μs]\n" COLOR_RESET(), A.day_id.c_str(), int64_t(time));
         }
