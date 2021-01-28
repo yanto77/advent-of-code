@@ -1,39 +1,28 @@
 #include "advent2020.h"
+#include <map>
+#include <stack>
 
 namespace
 {
-    enum class op_t { ADD, MULT };
-    struct stack_t { int64_t num; op_t op; };
+    typedef std::map<char, int> prec_map_t;
 
-    [[maybe_unused]]
-    void print(const std::vector<stack_t>& stacks2)
+    const prec_map_t pt1 = {{ '+', 1 }, { '*', 1 }};
+    const prec_map_t pt2 = {{ '+', 2 }, { '*', 1 }};
+
+    size_t solve_single(const prec_map_t& prec, const sv& line)
     {
-        printf("Stacks: ");
-        for (auto& stack: stacks2)
-        {
-            printf("[num: %ld, op: %c], ", stack.num, stack.op == op_t::ADD ? '+' : '*');
-        }
-        printf("\n");
-    }
+        std::stack<size_t> nums;
+        std::stack<char> ops;
 
-    int64_t solve_single(const sv& line)
-    {
-        // std::cout << line << std::endl;
-        constexpr stack_t empty_stack = { 0, op_t::ADD };
-        std::vector<stack_t> stacks { empty_stack };
-
-        auto apply = [](stack_t& to, int64_t num)
+        auto apply = [&nums, &ops](char op)
         {
-            if (to.op == op_t::ADD)
-            {
-                // printf("applying: %d + %d => %d\n", to.num, num, to.num + num);
-                to.num += num;
-            }
-            else if (to.op == op_t::MULT)
-            {
-                // printf("applying: %d * %d => %d\n", to.num, num, to.num * num);
-                to.num *= num;
-            }
+            ops.pop();
+
+            size_t n1 = nums.top();
+            nums.pop();
+
+            if (op == '*') nums.top() *= n1;
+            else if (op == '+') nums.top() += n1;
         };
 
         for (size_t n = 0; n < line.size(); ++n)
@@ -42,61 +31,86 @@ namespace
             {
                 case ' ': break;
                 case '\n': break;
-                case '-': assert(false); break;
-                case '+': stacks.back().op = op_t::ADD; break;
-                case '*': stacks.back().op = op_t::MULT; break;
                 case '(':
                 {
-                    // printf("=> push stack\n");
-                    stacks.push_back(empty_stack);
+                    ops.push(line[n]);
                     break;
                 }
                 case ')':
                 {
-                    // printf("=> pop stack, applying %d\n", stacks.back().num);
-                    auto& prev = (stacks[stacks.size() - 2]);
-                    apply(prev, stacks.back().num);
-                    stacks.pop_back();
+                    while (!ops.empty())
+                    {
+                        if (ops.top() != '(')
+                        {
+                            apply(ops.top());
+                        }
+                        else
+                        {
+                            ops.pop();
+                            break;
+                        }
+                    }
                     break;
                 }
-                default:
+                case '+':
+                case '*':
+                case '-':
+                {
+                    char op = line[n];
+                    while (!ops.empty())
+                    {
+                        char top_op = ops.top();
+                        if (top_op != '(' && prec.at(top_op) >= prec.at(op))
+                        {
+                            apply(top_op);
+                        }
+                        else break;
+                    }
+                    ops.push(op);
+                    break;
+                }
+                default: // numbers
                 {
                     size_t end = line.find_first_not_of("0123456789", n);
                     sv token { &line[n], end - n };
-                    apply(stacks.back(), to_int<uint8_t>(token));
+                    nums.push(to_int<size_t>(token));
                     n = end - 1;
                 }
             }
         }
 
-        return stacks.back().num;
+        while (!ops.empty())
+            apply(ops.top());
+
+        return nums.top();
     }
 }
 
 output_t day18(const input_t& input)
 {
-    int64_t part1 = 0;
+    size_t part1 = 0;
+    size_t part2 = 0;
     parse_input(input, [&](const sv& line)
     {
-        int64_t value = solve_single(line);
-        part1 += value;
-        printf("value: %ld\n", value);
-
+        part1 += solve_single(pt1, line);
+        part2 += solve_single(pt2, line);
     });
-    printf("part1: %ld\n", part1);
-
-    // assert(part1 != 10684594594);
-    // assert(part1 > 2094660002);
-    assert(part1 == 4696493914530);
-    return { 0, 0 };
+    return { part1, part2 };
 }
 
 void day18_test()
 {
-    assert(solve_single("1 + 2 * 3 + 4 * 5 + 6\n") == 71);
-    assert(solve_single("1 + (2 * 3) + (4 * (5 + 6))\n") == 51);
-    assert(solve_single("2 * 3 + (4 * 5)\n") == 26);
-    assert(solve_single("5 + (8 * 3 + 9 + 3 * 4 * 3)\n") == 437);
-    assert(solve_single("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))\n") == 12240);
-    assert(solve_single("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2\n") == 13632);
+    assert(solve_single(pt1, "1 + 2 * 3 + 4 * 5 + 6\n") == 71);
+    assert(solve_single(pt1, "1 + (2 * 3) + (4 * (5 + 6))\n") == 51);
+    assert(solve_single(pt1, "2 * 3 + (4 * 5)\n") == 26);
+    assert(solve_single(pt1, "5 + (8 * 3 + 9 + 3 * 4 * 3)\n") == 437);
+    assert(solve_single(pt1, "5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))\n") == 12240);
+    assert(solve_single(pt1, "((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2\n") == 13632);
+
+    assert(solve_single(pt2, "1 + 2 * 3 + 4 * 5 + 6\n") == 231);
+    assert(solve_single(pt2, "1 + (2 * 3) + (4 * (5 + 6))\n") == 51);
+    assert(solve_single(pt2, "2 * 3 + (4 * 5)\n") == 46);
+    assert(solve_single(pt2, "5 + (8 * 3 + 9 + 3 * 4 * 3)\n") == 1445);
+    assert(solve_single(pt2, "5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))\n") == 669060);
+    assert(solve_single(pt2, "((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2\n") == 23340);
 }
