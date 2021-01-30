@@ -32,5 +32,6 @@
 #include "helpers/vec2.h"
 #include "helpers/vec3.h"
 #include "helpers/pow_helpers.h"
+#include "helpers/parse_helpers.h"
 
 #include "setup/days.h"
