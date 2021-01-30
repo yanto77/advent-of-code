@@ -56,27 +56,3 @@ inline std::vector<sv> split_multi(const sv& input, char delim)
 
     return out;
 }
-
-template <typename T>
-inline std::vector<T> parse_ints(const sv& input, char delim)
-{
-    std::vector<T> out;
-
-    size_t start = 0;
-    while (start < input.size())
-    {
-        size_t pos = input.find_first_of(delim, start);
-        if (pos == sv::npos)
-            break;
-
-        size_t substr_len = pos - start;
-        out.push_back(to_int<T>(sv{ &input[start], substr_len }));
-
-        start = pos + 1; // skip delim
-    }
-
-    size_t last_size = input.size() - start; // remove last period
-    out.push_back(to_int<T>(sv{ &input[start], last_size }));
-
-    return out;
-}

@@ -71,9 +71,8 @@ namespace
                 }
                 default: // numbers
                 {
-                    size_t end = line.find_first_not_of("0123456789", n);
-                    sv token { &line[n], end - n };
-                    nums.push(to_int<size_t>(token));
+                    const auto& [num, end] = parse_num<size_t>(line, n);
+                    nums.push(num);
                     n = end - 1;
                 }
             }
