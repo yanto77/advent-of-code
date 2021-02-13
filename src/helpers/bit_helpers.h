@@ -51,7 +51,6 @@ constexpr bool get_bit(T num, size_t bit)
     return ((num >> bit) & 1) == 1;
 }
 
-
 template <typename T>
 constexpr uint8_t count_bits(T n)
 {
@@ -72,4 +71,12 @@ inline uint8_t count_bits(const std::vector<bool>& bits)
         count += bit & 1;
     }
     return count;
+}
+
+/// appends bits from `rhs` to `lhs`.
+/// for example, (lhs b010) + (rhs b001, len 2) => (b1001)
+template <typename T>
+constexpr T append_bits(const T& lhs, const T& rhs, size_t rhs_len)
+{
+    return (lhs << rhs_len) | rhs;
 }
