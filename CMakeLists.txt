@@ -2,12 +2,6 @@ cmake_minimum_required (VERSION 3.16)
 project (advent2020)
 
 #
-# Requirements
-#
-
-find_package(OpenMP REQUIRED)
-
-#
 # Compilation configuration (includes, links, properties)
 #
 
@@ -45,7 +39,6 @@ target_precompile_headers(${exec_NAME} PRIVATE src/advent2020.h)
 
 target_include_directories(${exec_NAME} SYSTEM PRIVATE include/)
 if (UNIX)
-    target_link_libraries(${exec_NAME} PRIVATE m)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
 endif (UNIX)
 

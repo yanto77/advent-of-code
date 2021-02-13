@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <bitset>
 #include "vec2.h"
 
 
@@ -66,7 +67,7 @@ void print_row(const std::vector<vec2<T>>& input)
 
 inline void print_bits(uint8_t trg, bool color = false)
 {
-    for (int i = 64; i > 8; --i)
+    for (int i = 7; i >= 0; --i)
     {
         if (color)
             printf(get_bit(trg, i) ? COLOR_GREEN() "1" : COLOR_CYAN() "0");
@@ -78,12 +79,25 @@ inline void print_bits(uint8_t trg, bool color = false)
 
 inline void print_bits(uint64_t trg, bool color = false)
 {
-    for (int i = 64; i > 0; --i)
+    for (int i = 63; i >= 0; --i)
     {
         if (color)
             printf(get_bit(trg, i) ? COLOR_GREEN() "1" : COLOR_CYAN() "0");
         else
             printf(get_bit(trg, i) ? "1" : "0");
+        printf(COLOR_RESET());
+    }
+}
+
+template <size_t T>
+inline void print_bits(std::bitset<T> trg, bool color = false)
+{
+    for (int i = T - 1; i >= 0; --i)
+    {
+        if (color)
+            printf(trg.test(i) ? COLOR_GREEN() "1" : COLOR_CYAN() "0");
+        else
+            printf(trg.test(i) ? "1" : "0");
         printf(COLOR_RESET());
     }
 }
