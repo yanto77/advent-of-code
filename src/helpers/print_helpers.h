@@ -50,9 +50,9 @@ void print_row(const std::vector<T>& input)
 {
     for (const auto& d : input)
     {
-        std::cout << "  " << static_cast<int>(d) << ", ";
+        printf("%d, ", static_cast<int>(d));
     }
-    std::cout << '\n';
+    printf("\n");
 }
 
 template <typename T>
