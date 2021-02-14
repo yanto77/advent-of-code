@@ -153,26 +153,39 @@ namespace
             std::bitset<256> r42 = get_as_bitset(42);
             std::bitset<256> r31 = get_as_bitset(31);
 
-            size_t part1 = 0; // messages matching rule 0: [42 42 31]
+            const size_t len = m_dnf_rules[42].front().len;
+
+            // pt1: match: 0=(42 42 31)
+            size_t part1 = 0;
+            // pt2: match: 0=(8 11), 8=(42 | 42 8), 11=(42 31 | 42 11 31)
+            size_t part2 = 0;
+
             for (const sv& msg: m_messages)
             {
+                bool fail = false;
                 int r42_match = 0, r31_match = 0;
-                for (size_t ch = 0; ch < msg.size(); ch += 8)
+
+                for (size_t ch = 0; ch < msg.size(); ch += len)
                 {
                     uint8_t result = 0;
-                    for (size_t bit = 0; bit < 8; ++bit)
+                    for (size_t bit = 0; bit < len; ++bit)
                         if (msg[ch + bit] == 'a')
-                            set_bit(result, 7 - bit);
+                            set_bit(result, len - 1 - bit);
+
+                    if (r42.test(result) && r31_match != 0)
+                        fail = true;
 
                     if (r42.test(result)) ++r42_match;
                     if (r31.test(result)) ++r31_match;
                 }
-                
-                if (r42_match == 2 && r31_match == 1)
-                    ++part1;
+
+                if (fail) continue;
+
+                part1 += static_cast<int>(r42_match == 2 && r31_match == 1);
+                part2 += static_cast<int>(r42_match > r31_match && r31_match > 0);
             }
 
-            return {part1, 0};
+            return {part1, part2};
         }
     };
 }
@@ -188,4 +201,60 @@ void day19_test()
 {
     static_assert(append_bits<int>(0b010, 0b001, 2) == 0b1001);
     static_assert(append_bits<int>(0b010, 0b001, 1) == 0b101);
+
+    char text1[855] =
+        "42: 9 14 | 10 1\n"
+        "9: 14 27 | 1 26\n"
+        "10: 23 14 | 28 1\n"
+        "1: \"a\"\n"
+        "11: 42 31\n"
+        "5: 1 14 | 15 1\n"
+        "19: 14 1 | 14 14\n"
+        "12: 24 14 | 19 1\n"
+        "16: 15 1 | 14 14\n"
+        "31: 14 17 | 1 13\n"
+        "6: 14 14 | 1 14\n"
+        "2: 1 24 | 14 4\n"
+        "0: 8 11\n"
+        "13: 14 3 | 1 12\n"
+        "15: 1 | 14\n"
+        "17: 14 2 | 1 7\n"
+        "23: 25 1 | 22 14\n"
+        "28: 16 1\n"
+        "4: 1 1\n"
+        "20: 14 14 | 1 15\n"
+        "3: 5 14 | 16 1\n"
+        "27: 1 6 | 14 18\n"
+        "14: \"b\"\n"
+        "21: 14 1 | 1 14\n"
+        "25: 1 1 | 1 14\n"
+        "22: 14 14\n"
+        "8: 42\n"
+        "26: 14 22 | 1 20\n"
+        "18: 15 15\n"
+        "7: 14 5 | 1 21\n"
+        "24: 14 1\n"
+        "\n"
+        "abbbbbabbbaaaababbaabbbbabababbbabbbbbbabaaaa\n"
+        "bbabbbbaabaabba\n"
+        "babbbbaabbbbbabbbbbbaabaaabaaa\n"
+        "aaabbbbbbaaaabaababaabababbabaaabbababababaaa\n"
+        "bbbbbbbaaaabbbbaaabbabaaa\n"
+        "bbbababbbbaaaaaaaabbababaaababaabab\n"
+        "ababaaaaaabaaab\n"
+        "ababaaaaabbbaba\n"
+        "baabbaaaabbaaaababbaababb\n"
+        "abbbbabbbbaaaababbbbbbaaaababb\n"
+        "aaaaabbaabaaaaababaa\n"
+        "aaaabbaaaabbaaa\n"
+        "aaaabbaabbaaaaaaabbbabbbaaabbaabaaa\n"
+        "babaaabbbaaabaababbaabababaaab\n"
+        "aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba\n"
+        "\n";
+    input_t test1 { text1, 855 };
+
+    solver s;
+    s.parse(test1);
+    auto out = s.solve();
+    assert(out.part1 == 3 && out.part2 == 12);
 }
