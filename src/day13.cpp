@@ -68,10 +68,10 @@ namespace
         // Consider input vec2i's to contain {m, b} pairs for
         // a system of linear equations: y = (m)x + (b),
         const vec2i base{0, data.t0};
-        const int n = static_cast<int>(data.buslines.size());
+        const size_t n = data.buslines.size();
 
         // Intersect all buslines with expected base-line
-        std::vector<int> result { n, 0 };
+        std::vector<int> result(n, 0);
         for (size_t i = 0; i < n; ++i)
         {
             const vec2i& point = intersect(base, { data.buslines[i].y, 0 });
