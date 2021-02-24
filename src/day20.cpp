@@ -454,8 +454,8 @@ namespace
 
     size_t eval_part2(tile_t* top_left_corner)
     {
-        print_tile_map_ids(top_left_corner);
-        print_tile_map_contents(top_left_corner);
+        // print_tile_map_ids(top_left_corner);
+        // print_tile_map_contents(top_left_corner);
 
         auto map = combine_tiles(top_left_corner);
         const auto& monster = get_monster();
@@ -467,8 +467,8 @@ namespace
         bool orientation_found = false;
         for (const auto& orientation: ORIENTATIONS)
         {
-            auto s = orientation.sides;
-            printf("checking orientation: %d %d %d %d\n", s[0], s[1], s[2], s[3]);
+            // auto s = orientation.sides;
+            // printf("checking orientation: %d %d %d %d\n", s[0], s[1], s[2], s[3]);
             auto copy = orientation.fn2(map);
 
             for (size_t map_r = 0; map_r < N - mNr; ++map_r)
@@ -507,29 +507,33 @@ namespace
 
             if (orientation_found)
             {
-                printf(COLOR_GREEN() "found the orientation!\n" COLOR_RESET());
+                // printf(COLOR_GREEN() "found the orientation!\n" COLOR_RESET());
                 map = copy;
                 break;
             }
         }
 
-        printf("map:\n");
+        // printf("map:\n");
         size_t part2 = 0;
         for (const auto& row: map)
         {
             for (int col: row)
             {
                 if (col == 2)
-                    printf(COLOR_RED() "O" COLOR_RESET());
+                {
+                    // printf(COLOR_RED() "O" COLOR_RESET());
+                }
                 else if (col == 1)
                 {
-                    printf(COLOR_GREEN() "#" COLOR_RESET());
+                    // printf(COLOR_GREEN() "#" COLOR_RESET());
                     ++part2;
                 }
                 else
-                    printf(COLOR_GRAY() "." COLOR_RESET());
+                {
+                    // printf(COLOR_GRAY() "." COLOR_RESET());
+                }
             }
-            printf("\n");
+            // printf("\n");
         }
 
         return part2;
