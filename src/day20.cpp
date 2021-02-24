@@ -4,23 +4,16 @@ namespace
 {
     enum side_t { TOP, RIGHT, BOTTOM, LEFT };
     constexpr std::array<side_t, 4> SIDES = { TOP, RIGHT, BOTTOM, LEFT };
-    constexpr std::array<std::array<int, 4>, 8> ORIENTATIONS = {
-        std::array<int, 4>{ 0, 1, 2, 3 }, // rot0
-        std::array<int, 4>{ 3, 0, 1, 2 }, // rot90
-        std::array<int, 4>{ 2, 3, 0, 1 }, // rot180
-        std::array<int, 4>{ 1, 2, 3, 0 }, // rot270
-        std::array<int, 4>{ 0, 3, 2, 1 }, // flip0
-        std::array<int, 4>{ 1, 0, 3, 2 }, // flip90
-        std::array<int, 4>{ 2, 1, 0, 3 }, // flip180
-        std::array<int, 4>{ 3, 2, 1, 0 }, // flip270
-    };
+    constexpr size_t OUTER_N = 10;
+    constexpr size_t INNER_N = 8;
+
 
     struct tile_t
     {
         // matrix of 10 x 10 pixels
         size_t id = 0;
-        std::array<std::array<bool, 10>, 4> sides = {};
-        std::array<std::array<bool, 8>, 8> inner = {};
+        std::array<std::array<bool, OUTER_N>, 4> sides = {};
+        std::array<std::array<bool, INNER_N>, INNER_N> inner = {};
         std::array<tile_t*, 4> side_tiles = {};
         bool visited = false;
 
@@ -172,23 +165,6 @@ namespace
         return corners;
     }
 
-    void print_tile_map_ids(tile_t* top_left_corner)
-    {
-        tile_t* row = top_left_corner;
-        while (row != nullptr)
-        {
-            tile_t* col = row;
-            while (col != nullptr)
-            {
-                printf(" %zu ", col->id);
-                col = col->side_tiles[RIGHT];
-            }
-
-            printf("\n");
-            row = row->side_tiles[BOTTOM];
-        }
-    }
-
     tile_t* get_left_top_corner(const std::array<tile_t*, 4>& corners)
     {
         for (auto corner: corners)
@@ -197,6 +173,113 @@ namespace
 
         return nullptr;
     }
+
+
+    // tile_t* mirror(tile_t*)
+    // {
+    //     printf("test");
+    //     std::array<std::array<bool, 8>, 8> out;
+    // }
+    // typedef std::function<void(tile_t*)> tile_fn_t;
+    // typedef std::pair<std::array<int, 4>, tile_fn_t> orientation_t;
+
+    struct orientation_t
+    {
+        std::array<int, 4> sides;
+        std::function<void(tile_t*)> fn;
+        std::function<std::vector<std::vector<uint8_t>>(std::vector<std::vector<uint8_t>>)> fn2;
+    };
+
+    void flip(tile_t* t)
+    {
+        std::array<std::array<bool, INNER_N>, INNER_N> out;
+        for (size_t row = 0; row < INNER_N; row++)
+        {
+            for (size_t col = 0; col < INNER_N; col++)
+            {
+                out[row][INNER_N-1-col] = t->inner[row][col];
+            }
+        }
+        t->inner = out;
+    }
+
+    void rot90(tile_t* t)
+    {
+        std::array<std::array<bool, INNER_N>, INNER_N> out;
+        for (size_t r = 0; r < INNER_N; r++)
+        {
+            for (size_t c = 0; c < INNER_N; c++)
+            {
+                out[c][INNER_N-1-r] = t->inner[r][c];
+            }
+        }
+        t->inner = out;
+    }
+
+    std::vector<std::vector<uint8_t>> flip(const std::vector<std::vector<uint8_t>>& in)
+    {
+        const size_t N = in.size();
+        std::vector<std::vector<uint8_t>> copy(N, std::vector<uint8_t>(N, 0));
+
+        for (size_t row = 0; row < N; row++)
+        {
+            for (size_t col = 0; col < N; col++)
+            {
+                copy[row][N-1-col] = in[row][col];
+            }
+        }
+        return copy;
+    }
+
+    std::vector<std::vector<uint8_t>> rot90(const std::vector<std::vector<uint8_t>>& in)
+    {
+        const size_t N = in.size();
+        std::vector<std::vector<uint8_t>> copy(N, std::vector<uint8_t>(N, 0));
+
+        for (size_t row = 0; row < N; row++)
+        {
+            for (size_t col = 0; col < N; col++)
+            {
+                copy[col][N-1-row] = in[row][col];
+            }
+        }
+        return copy;
+    }
+
+    const std::array<orientation_t, 8> ORIENTATIONS = {
+        orientation_t{ // rot0
+            .sides = { 0, 1, 2, 3 },
+            .fn = [](tile_t* t) {},
+            .fn2 = [](auto t) { return t; }},
+        orientation_t{ // rot90
+            .sides = { 3, 0, 1, 2 },
+            .fn = [](tile_t* t) { rot90(t); },
+            .fn2 = [](auto t) { return rot90(t); }},
+        orientation_t{ // rot180
+            .sides = { 2, 3, 0, 1 },
+            .fn = [](tile_t* t) { rot90(t); rot90(t); },
+            .fn2 = [](auto t) { t = rot90(t); t = rot90(t); return t; }},
+        orientation_t{ // rot270
+            .sides = { 1, 2, 3, 0 },
+            .fn = [](tile_t* t) { rot90(t); rot90(t); rot90(t); },
+            .fn2 = [](auto t) { t = rot90(t); t = rot90(t); t = rot90(t); return t; }},
+        orientation_t{ // flip0
+            .sides = { 0, 3, 2, 1 },
+            .fn = [](tile_t* t) { flip(t); },
+            .fn2 = [](auto t) { return flip(t); }},
+        orientation_t{ // flip90
+            .sides = { 1, 0, 3, 2 },
+            .fn = [](tile_t* t) { flip(t); rot90(t); },
+            .fn2 = [](auto t) { t = flip(t); t = rot90(t); return t; }},
+        orientation_t{ // flip180
+            .sides = { 2, 1, 0, 3 },
+            .fn = [](tile_t* t) { flip(t); rot90(t); rot90(t); },
+            .fn2 = [](auto t) { t = flip(t); t = rot90(t); t = rot90(t); return t; }},
+        orientation_t{ // flip270
+            .sides = { 3, 2, 1, 0 },
+            .fn = [](tile_t* t) { flip(t); rot90(t); rot90(t); rot90(t); },
+            .fn2 = [](auto t) { t = flip(t); t = rot90(t); t = rot90(t); t = rot90(t); return t; }},
+    };
 
     void orient_tiles(const std::array<tile_t*, 4>& corners)
     {
@@ -219,7 +302,7 @@ namespace
                     std::array<tile_t*, 4> sides;
                     for (size_t i = 0; i < 4; ++i)
                     {
-                        sides[i] = next_tile->side_tiles[o[i]];
+                        sides[i] = next_tile->side_tiles[o.sides[i]];
                     }
 
                     const side_t op_dir = static_cast<side_t>((dir + 2) % 4); // opposite direction
@@ -230,8 +313,13 @@ namespace
 
                     if (tile == sides[op_dir] && hook2 == sides[hook_dir])
                     {
+                        // printf("preparing %zu: ", next_tile->id);
+
                         next_tile->side_tiles = sides;
+                        o.fn(next_tile);
+
                         match = true;
+                        break;
                     }
                 }
 
@@ -251,6 +339,201 @@ namespace
                 break;
         }
     }
+
+    std::vector<std::vector<uint8_t>> combine_tiles(tile_t* top_left_corner)
+    {
+        size_t N = 0;
+        {
+            tile_t* row = top_left_corner;
+            while (row != nullptr)
+            {
+                ++N;
+                row = row->side_tiles[BOTTOM];
+            }
+        }
+        N *= INNER_N; // tile count to cell count
+
+        std::vector<std::vector<uint8_t>> map(N, std::vector<uint8_t>(N, 0));
+        {
+            tile_t* row = top_left_corner;
+            size_t tile_row_idx = 0;
+            while (row != nullptr)
+            {
+                for (size_t cell_row = 0; cell_row < INNER_N; ++cell_row)
+                {
+                    tile_t* col = row;
+                    size_t tile_col_idx = 0;
+                    while (col != nullptr)
+                    {
+                        for (size_t cell_col = 0; cell_col < INNER_N; ++cell_col)
+                        {
+                            size_t out_row = INNER_N * tile_row_idx + cell_row;
+                            size_t out_col = INNER_N * tile_col_idx + cell_col;
+                            map[out_row][out_col] = col->inner[cell_row][cell_col];
+                        }
+
+                        col = col->side_tiles[RIGHT];
+                        ++tile_col_idx;
+                    }
+                }
+
+                row = row->side_tiles[BOTTOM];
+                ++tile_row_idx;
+            }
+        }
+
+        return map;
+    }
+}
+
+namespace
+{
+    [[maybe_unused]]
+    void print_tile_map_ids(tile_t* top_left_corner)
+    {
+        tile_t* row = top_left_corner;
+        while (row != nullptr)
+        {
+            tile_t* col = row;
+            while (col != nullptr)
+            {
+                printf(" %zu ", col->id);
+                col = col->side_tiles[RIGHT];
+            }
+
+            printf("\n");
+            row = row->side_tiles[BOTTOM];
+        }
+    }
+
+    [[maybe_unused]]
+    void print_tile_map_contents(tile_t* top_left_corner)
+    {
+        tile_t* row = top_left_corner;
+        while (row != nullptr)
+        {
+            for (size_t cell_row = 0; cell_row < 8; ++cell_row)
+            {
+                tile_t* col = row;
+                while (col != nullptr)
+                {
+                    for (size_t cell_col = 0; cell_col < 8; ++cell_col)
+                    {
+                        if (col->inner[cell_row][cell_col])
+                            printf(COLOR_GREEN() "#" COLOR_RESET());
+                        else
+                            printf(COLOR_GRAY() "." COLOR_RESET());
+                    }
+
+                    printf(" ");
+                    col = col->side_tiles[RIGHT];
+                }
+                printf("\n");
+            }
+
+            printf("\n");
+            row = row->side_tiles[BOTTOM];
+        }
+    }
+
+    constexpr auto get_monster()
+    {
+        constexpr std::array<const char*, 3> input = {
+            "                  # ",
+            "#    ##    ##    ###",
+            " #  #  #  #  #  #   "
+        };
+
+        std::array<std::array<bool, 20>, 3> monster {};
+        for (size_t row = 0; row < input.size(); ++row)
+            for (size_t col = 0; input[row][col] != '\0'; ++col)
+                monster[row][col] = (input[row][col] == '#');
+
+        return monster;
+    }
+
+    size_t eval_part2(tile_t* top_left_corner)
+    {
+        print_tile_map_ids(top_left_corner);
+        print_tile_map_contents(top_left_corner);
+
+        auto map = combine_tiles(top_left_corner);
+        const auto& monster = get_monster();
+
+        const size_t N = map.size();
+        const size_t mNr = monster.size();
+        const size_t mNc = monster[0].size();
+
+        bool orientation_found = false;
+        for (const auto& orientation: ORIENTATIONS)
+        {
+            auto s = orientation.sides;
+            printf("checking orientation: %d %d %d %d\n", s[0], s[1], s[2], s[3]);
+            auto copy = orientation.fn2(map);
+
+            for (size_t map_r = 0; map_r < N - mNr; ++map_r)
+            {
+                for (size_t map_c = 0; map_c < N; ++map_c)
+                {
+                    bool match = true;
+                    for (size_t mon_r = 0; mon_r < mNr && match; ++mon_r)
+                    {
+                        for (size_t mon_c = 0; mon_c < mNc && match; ++mon_c)
+                        {
+                            int in = monster[mon_r][mon_c] ? 1 : 0;
+                            if (in == 1 && in != copy[map_r + mon_r][map_c + mon_c])
+                            {
+                                match = false;
+                            }
+                        }
+                    }
+
+                    if (match)
+                    {
+                        orientation_found = true;
+                        for (size_t mon_r = 0; mon_r < mNr; ++mon_r)
+                        {
+                            for (size_t mon_c = 0; mon_c < mNc; ++mon_c)
+                            {
+                                if (monster[mon_r][mon_c])
+                                {
+                                    copy[map_r + mon_r][map_c + mon_c] = 2;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (orientation_found)
+            {
+                printf(COLOR_GREEN() "found the orientation!\n" COLOR_RESET());
+                map = copy;
+                break;
+            }
+        }
+
+        printf("map:\n");
+        size_t part2 = 0;
+        for (const auto& row: map)
+        {
+            for (int col: row)
+            {
+                if (col == 2)
+                    printf(COLOR_RED() "O" COLOR_RESET());
+                else if (col == 1)
+                {
+                    printf(COLOR_GREEN() "#" COLOR_RESET());
+                    ++part2;
+                }
+                else
+                    printf(COLOR_GRAY() "." COLOR_RESET());
+            }
+            printf("\n");
+        }
+
+        return part2;
+    }
 }
 
 output_t day20(const input_t& input)
@@ -267,9 +550,9 @@ output_t day20(const input_t& input)
     orient_tiles(corners);
 
     tile_t* top_left_corner = get_left_top_corner(corners);
-    print_tile_map_ids(top_left_corner);
+    size_t part2 = eval_part2(top_left_corner);
 
-    return { prod, 0 };
+    return { prod, part2 };
 }
 
 void day20_test()
@@ -331,6 +614,7 @@ void day20_test()
         orient_tiles(corners);
 
         tile_t* top_left_corner = get_left_top_corner(corners);
-        print_tile_map_ids(top_left_corner);
+        size_t part_2 = eval_part2(top_left_corner);
+        assert(part_2 == 273);
     }
 }
