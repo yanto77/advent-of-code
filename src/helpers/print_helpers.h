@@ -45,6 +45,26 @@ void print_col(const std::vector<T>& input)
     }
 }
 
+template <typename T, size_t N>
+void print_row(const std::array<T, N>& input)
+{
+    for (const auto& d : input)
+    {
+        printf("%d, ", static_cast<int>(d));
+    }
+    printf("\n");
+}
+
+template <size_t N>
+inline void print_row(const std::array<std::string_view, N>& input)
+{
+    for (const auto& d : input)
+    {
+        std::cout << "[" << d << "], ";
+    }
+    printf("\n");
+}
+
 template <typename T>
 void print_row(const std::vector<T>& input)
 {
