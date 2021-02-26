@@ -55,6 +55,16 @@ void print_row(const std::vector<T>& input)
     printf("\n");
 }
 
+template <>
+inline void print_row(const std::vector<std::string_view>& input)
+{
+    for (const auto& d : input)
+    {
+        std::cout << "[" << d << "], ";
+    }
+    printf("\n");
+}
+
 template <typename T>
 void print_row(const std::vector<vec2<T>>& input)
 {
