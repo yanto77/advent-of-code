@@ -35,24 +35,30 @@ inline std::pair<sv, sv> split_single(const sv& input, const sv& delim)
     return { lhs, rhs };
 }
 
-inline std::vector<sv> split_multi(const sv& input, char delim)
+inline std::vector<sv> split_multi(const sv& input, const sv& delim)
 {
     std::vector<sv> out;
 
     size_t start = 0;
     while (start < input.size())
     {
-        size_t pos = input.find_first_of(delim, start);
+        size_t pos = input.find(delim, start);
         if (pos == sv::npos)
-            break;
+        {
+            if (start < input.size()) // fill in the last part
+                out.push_back(sv{ &input[start], input.size() - start });
 
-        size_t substr_len = pos - start;
-        out.push_back(sv(&input[start], substr_len));
-        start = pos + 1; // skip delim
+            break;
+        }
+
+        out.push_back(sv { &input[start], pos - start });
+        start = pos + delim.size();
     }
 
-    size_t last_size = input.size() - start; // remove last period
-    out.push_back(sv(&input[start], last_size));
-
     return out;
+}
+
+inline std::vector<sv> split_multi(const sv& input, char delim)
+{
+    return split_multi(input, sv { &delim, 1 });
 }

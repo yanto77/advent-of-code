@@ -74,10 +74,12 @@ namespace
         //   - saves: MP => {{3, SB}, {4, ST}} (where MP, SB, and ST are indexes)
         parse_input(input, [&](const sv& line) 
         {
-            const auto& [node_from, value] = split_single(line, " bags contain ");
+            auto [node_from, value] = split_single(line, " bags contain ");
             const auto from_id = get_id(node_from);
 
-            for (const sv& part : split_multi(value, ','))
+            value.remove_suffix(1); // remove last period
+
+            for (const sv& part : split_multi(value, ", "))
             {
                 const auto& [cost, node_to] = parse_single_bag(part);
                 if (cost != 0)
