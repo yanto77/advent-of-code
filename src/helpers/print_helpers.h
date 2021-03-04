@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <bitset>
+#include <deque>
 #include "vec2.h"
 
 
@@ -67,6 +68,16 @@ inline void print_row(const std::array<std::string_view, N>& input)
 
 template <typename T>
 void print_row(const std::vector<T>& input)
+{
+    for (const auto& d : input)
+    {
+        printf("%d, ", static_cast<int>(d));
+    }
+    printf("\n");
+}
+
+template <typename T>
+void print_row(const std::deque<T>& input)
 {
     for (const auto& d : input)
     {
