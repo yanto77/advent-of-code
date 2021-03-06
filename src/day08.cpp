@@ -129,20 +129,20 @@ output_t day08(const input_t& input)
     const auto& [reg1, acc1] = execute_until_loop(prg);
     const auto& [reg2, acc2] = bruteforce_find(prg);
 
-    return {static_cast<size_t>(acc1), static_cast<size_t>(acc2)};
+    return { static_cast<size_t>(acc1), static_cast<size_t>(acc2) };
 }
 
 void day08_test()
 {
     char input1[] = "nop +0\n"
-                      "acc +1\n"
-                      "jmp +4\n"
-                      "acc +3\n"
-                      "jmp -3\n"
-                      "acc -99\n"
-                      "acc +1\n"
-                      "jmp -4\n"
-                      "acc +6\n";
+                    "acc +1\n"
+                    "jmp +4\n"
+                    "acc +3\n"
+                    "jmp -3\n"
+                    "acc -99\n"
+                    "acc +1\n"
+                    "jmp -4\n"
+                    "acc +6\n";
     input_t test1 { input1, sizeof(input1) };
 
     program_t prg = parse_input(test1);

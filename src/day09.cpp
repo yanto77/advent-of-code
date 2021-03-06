@@ -79,7 +79,7 @@ output_t day09(const input_t& input)
     const auto& [start, end] = find_continuous_set(data, invalid_num);
     const auto& [min, max] = get_min_max(data, start, end);
 
-    return { invalid_num, static_cast<size_t>(min+max) };
+    return { invalid_num, static_cast<size_t>(min + max) };
 }
 
 void day09_test()

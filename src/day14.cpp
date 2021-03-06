@@ -88,7 +88,10 @@ namespace
         });
 
         size_t sum = 0;
-        for (const auto& [key, value]: memory) { sum += value; }
+        for (const auto& [key, value] : memory)
+        {
+            sum += value;
+        }
         return sum;
     }
 }
@@ -102,20 +105,18 @@ output_t day14(const input_t& input)
 
 void day14_test()
 {
-    char input1[] =
-        "mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X\n"
-        "mem[8] = 11\n"
-        "mem[7] = 101\n"
-        "mem[8] = 0\n";
+    char input1[] = "mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X\n"
+                    "mem[8] = 11\n"
+                    "mem[7] = 101\n"
+                    "mem[8] = 0\n";
     input_t test1 { input1, sizeof(input1) };
     size_t test1_out = evaluate(test1, true);
     assert(test1_out == 165);
 
-    char input2[] =
-        "mask = 000000000000000000000000000000X1001X\n"
-        "mem[42] = 100\n"
-        "mask = 00000000000000000000000000000000X0XX\n"
-        "mem[26] = 1\n";
+    char input2[] = "mask = 000000000000000000000000000000X1001X\n"
+                    "mem[42] = 100\n"
+                    "mask = 00000000000000000000000000000000X0XX\n"
+                    "mem[26] = 1\n";
     input_t test2 { input2, sizeof(input2) };
     size_t test2_out = evaluate(test2, false);
     assert(test2_out == 208);

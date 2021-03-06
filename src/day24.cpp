@@ -37,8 +37,8 @@ namespace
     size_t count_flipped(const hex_map_t& map)
     {
         size_t count = 0;
-        for (const auto& column: map)
-            for (bool cell: column)
+        for (const auto& column : map)
+            for (bool cell : column)
                 count += static_cast<int>(cell);
         return count;
     }
@@ -58,7 +58,7 @@ namespace
                     };
 
                     size_t neighbors = 0;
-                    for (const auto& dir: directions)
+                    for (const auto& dir : directions)
                     {
                         neighbors += static_cast<int>(map[y + dir.y][x + dir.x]);
                     }
@@ -94,27 +94,26 @@ output_t day24(const input_t& input)
 
 void day24_test()
 {
-    char text1[641] =
-        "sesenwnenenewseeswwswswwnenewsewsw\n"
-        "neeenesenwnwwswnenewnwwsewnenwseswesw\n"
-        "seswneswswsenwwnwse\n"
-        "nwnwneseeswswnenewneswwnewseswneseene\n"
-        "swweswneswnenwsewnwneneseenw\n"
-        "eesenwseswswnenwswnwnwsewwnwsene\n"
-        "sewnenenenesenwsewnenwwwse\n"
-        "wenwwweseeeweswwwnwwe\n"
-        "wsweesenenewnwwnwsenewsenwwsesesenwne\n"
-        "neeswseenwwswnwswswnw\n"
-        "nenwswwsewswnenenewsenwsenwnesesenew\n"
-        "enewnwewneswsewnwswenweswnenwsenwsw\n"
-        "sweneswneswneneenwnewenewwneswswnese\n"
-        "swwesenesewenwneswnwwneseswwne\n"
-        "enesenwswwswneneswsenwnewswseenwsese\n"
-        "wnwnesenesenenwwnenwsewesewsesesew\n"
-        "nenewswnwewswnenesenwnesewesw\n"
-        "eneswnwswnwsenenwnwnwwseeswneewsenese\n"
-        "neswnwewnwnwseenwseesewsenwsweewe\n"
-        "wseweeenwnesenwwwswnew\n";
+    char text1[641] = "sesenwnenenewseeswwswswwnenewsewsw\n"
+                      "neeenesenwnwwswnenewnwwsewnenwseswesw\n"
+                      "seswneswswsenwwnwse\n"
+                      "nwnwneseeswswnenewneswwnewseswneseene\n"
+                      "swweswneswnenwsewnwneneseenw\n"
+                      "eesenwseswswnenwswnwnwsewwnwsene\n"
+                      "sewnenenenesenwsewnenwwwse\n"
+                      "wenwwweseeeweswwwnwwe\n"
+                      "wsweesenenewnwwnwsenewsenwwsesesenwne\n"
+                      "neeswseenwwswnwswswnw\n"
+                      "nenwswwsewswnenenewsenwsenwnesesenew\n"
+                      "enewnwewneswsewnwswenweswnenwsenwsw\n"
+                      "sweneswneswneneenwnewenewwneswswnese\n"
+                      "swwesenesewenwneswnwwneseswwne\n"
+                      "enesenwswwswneneswsenwnewswseenwsese\n"
+                      "wnwnesenesenenwwnenwsewesewsesesew\n"
+                      "nenewswnwewswnenesenwnesewesw\n"
+                      "eneswnwswnwsenenwnwnwwseeswneewsenese\n"
+                      "neswnwewnwnwseenwseesewsenwsweewe\n"
+                      "wseweeenwnesenwwwswnew\n";
     input_t test1 { text1, sizeof(text1) };
 
     const auto& init_map = parse_and_fill(test1);

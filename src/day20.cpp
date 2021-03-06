@@ -2,7 +2,13 @@
 
 namespace
 {
-    enum side_t { TOP, RIGHT, BOTTOM, LEFT };
+    enum side_t
+    {
+        TOP,
+        RIGHT,
+        BOTTOM,
+        LEFT
+    };
     constexpr std::array<side_t, 4> SIDES = { TOP, RIGHT, BOTTOM, LEFT };
     constexpr size_t OUTER_N = 10;
     constexpr size_t INNER_N = 8;
@@ -66,7 +72,7 @@ namespace
             {
                 // assumes IDs are 4-num
                 tile = {};
-                tile.id = to_int<int>(sv{ line.data() + 5, 4 });
+                tile.id = to_int<int>(sv { line.data() + 5, 4 });
 
                 state = MAP;
                 row = 0;
@@ -80,7 +86,7 @@ namespace
                         const bool value = (line[col] == '#');
 
                         if (col != 0 && col != 9 && row != 0 && row != 9)
-                            tile.inner[row-1][col-1] = value;
+                            tile.inner[row - 1][col - 1] = value;
 
                         if (col == 0)
                             tile.sides[LEFT][row] = value;
@@ -108,12 +114,12 @@ namespace
 
     void check_two_tiles(std::vector<tile_t>& tiles, size_t t1, size_t t2)
     {
-        for (const side_t s1: SIDES)
+        for (const side_t s1 : SIDES)
         {
             if (tiles[t1].side_tiles[s1] != nullptr)
                 continue;
 
-            for (const side_t s2: SIDES)
+            for (const side_t s2 : SIDES)
             {
                 if (tiles[t2].side_tiles[s2] != nullptr)
                     continue;
@@ -147,7 +153,7 @@ namespace
             }
         }
 
-        std::array<tile_t*, 4> corners = { };
+        std::array<tile_t*, 4> corners = {};
         size_t idx = 0;
         for (size_t t = 0; t < tiles.size(); ++t)
         {
@@ -166,13 +172,12 @@ namespace
 
     tile_t* get_left_top_corner(const std::array<tile_t*, 4>& corners)
     {
-        for (auto corner: corners)
+        for (auto corner : corners)
             if (corner->side_tiles[TOP] == nullptr && corner->side_tiles[RIGHT] != nullptr)
                 return corner;
 
         return nullptr;
     }
-
 
     // tile_t* mirror(tile_t*)
     // {
@@ -196,7 +201,7 @@ namespace
         {
             for (size_t col = 0; col < INNER_N; col++)
             {
-                out[row][INNER_N-1-col] = t->inner[row][col];
+                out[row][INNER_N - 1 - col] = t->inner[row][col];
             }
         }
         t->inner = out;
@@ -209,7 +214,7 @@ namespace
         {
             for (size_t c = 0; c < INNER_N; c++)
             {
-                out[c][INNER_N-1-r] = t->inner[r][c];
+                out[c][INNER_N - 1 - r] = t->inner[r][c];
             }
         }
         t->inner = out;
@@ -224,7 +229,7 @@ namespace
         {
             for (size_t col = 0; col < N; col++)
             {
-                copy[row][N-1-col] = in[row][col];
+                copy[row][N - 1 - col] = in[row][col];
             }
         }
         return copy;
@@ -296,7 +301,7 @@ namespace
                 tile->visited = true;
 
                 bool match = false; // safe-guard; there MUST be one orientation that will match
-                for (const auto& o: ORIENTATIONS)
+                for (const auto& o : ORIENTATIONS)
                 {
                     std::array<tile_t*, 4> sides;
                     for (size_t i = 0; i < 4; ++i)
@@ -464,7 +469,7 @@ namespace
         const size_t mNc = monster[0].size();
 
         bool orientation_found = false;
-        for (const auto& orientation: ORIENTATIONS)
+        for (const auto& orientation : ORIENTATIONS)
         {
             // auto s = orientation.sides;
             // printf("checking orientation: %d %d %d %d\n", s[0], s[1], s[2], s[3]);
@@ -514,9 +519,9 @@ namespace
 
         // printf("map:\n");
         size_t part2 = 0;
-        for (const auto& row: map)
+        for (const auto& row : map)
         {
-            for (int col: row)
+            for (int col : row)
             {
                 if (col == 2)
                 {
@@ -545,7 +550,7 @@ output_t day20(const input_t& input)
     const auto& corners = get_corners(tiles);
 
     size_t prod = 1;
-    for (auto* corner: corners)
+    for (auto* corner : corners)
     {
         prod *= corner->id;
     }
@@ -560,43 +565,42 @@ output_t day20(const input_t& input)
 
 void day20_test()
 {
-    char text1[] =
-        "Tile 2311:\n"
-        "..##.#..#.\n##..#.....\n#...##..#.\n####.#...#\n##.##.###.\n"
-        "##...#.###\n.#.#.#..##\n..#....#..\n###...#.#.\n..###..###\n"
-        "\n"
-        "Tile 1951:\n"
-        "#.##...##.\n#.####...#\n.....#..##\n#...######\n.##.#....#\n"
-        ".###.#####\n###.##.##.\n.###....#.\n..#.#..#.#\n#...##.#..\n"
-        "\n"
-        "Tile 1171:\n"
-        "####...##.\n#..##.#..#\n##.#..#.#.\n.###.####.\n..###.####\n"
-        ".##....##.\n.#...####.\n#.##.####.\n####..#...\n.....##...\n"
-        "\n"
-        "Tile 1427:\n"
-        "###.##.#..\n.#..#.##..\n.#.##.#..#\n#.#.#.##.#\n....#...##\n"
-        "...##..##.\n...#.#####\n.#.####.#.\n..#..###.#\n..##.#..#.\n"
-        "\n"
-        "Tile 1489:\n"
-        "##.#.#....\n..##...#..\n.##..##...\n..#...#...\n#####...#.\n"
-        "#..#.#.#.#\n...#.#.#..\n##.#...##.\n..##.##.##\n###.##.#..\n"
-        "\n"
-        "Tile 2473:\n"
-        "#....####.\n#..#.##...\n#.##..#...\n######.#.#\n.#...#.#.#\n"
-        ".#########\n.###.#..#.\n########.#\n##...##.#.\n..###.#.#.\n"
-        "\n"
-        "Tile 2971:\n"
-        "..#.#....#\n#...###...\n#.#.###...\n##.##..#..\n.#####..##\n"
-        ".#..####.#\n#..#.#..#.\n..####.###\n..#.#.###.\n...#.#.#.#\n"
-        "\n"
-        "Tile 2729:\n"
-        "...#.#.#.#\n####.#....\n..#.#.....\n....#..#.#\n.##..##.#.\n"
-        ".#.####...\n####.#.#..\n##.####...\n##..#.##..\n#.##...##.\n"
-        "\n"
-        "Tile 3079:\n"
-        "#.#.#####.\n.#..######\n..#.......\n######....\n####.#..#.\n"
-        ".#...#.##.\n#.#####.##\n..#.###...\n..#.......\n..#.###...\n"
-        "\n";
+    char text1[] = "Tile 2311:\n"
+                   "..##.#..#.\n##..#.....\n#...##..#.\n####.#...#\n##.##.###.\n"
+                   "##...#.###\n.#.#.#..##\n..#....#..\n###...#.#.\n..###..###\n"
+                   "\n"
+                   "Tile 1951:\n"
+                   "#.##...##.\n#.####...#\n.....#..##\n#...######\n.##.#....#\n"
+                   ".###.#####\n###.##.##.\n.###....#.\n..#.#..#.#\n#...##.#..\n"
+                   "\n"
+                   "Tile 1171:\n"
+                   "####...##.\n#..##.#..#\n##.#..#.#.\n.###.####.\n..###.####\n"
+                   ".##....##.\n.#...####.\n#.##.####.\n####..#...\n.....##...\n"
+                   "\n"
+                   "Tile 1427:\n"
+                   "###.##.#..\n.#..#.##..\n.#.##.#..#\n#.#.#.##.#\n....#...##\n"
+                   "...##..##.\n...#.#####\n.#.####.#.\n..#..###.#\n..##.#..#.\n"
+                   "\n"
+                   "Tile 1489:\n"
+                   "##.#.#....\n..##...#..\n.##..##...\n..#...#...\n#####...#.\n"
+                   "#..#.#.#.#\n...#.#.#..\n##.#...##.\n..##.##.##\n###.##.#..\n"
+                   "\n"
+                   "Tile 2473:\n"
+                   "#....####.\n#..#.##...\n#.##..#...\n######.#.#\n.#...#.#.#\n"
+                   ".#########\n.###.#..#.\n########.#\n##...##.#.\n..###.#.#.\n"
+                   "\n"
+                   "Tile 2971:\n"
+                   "..#.#....#\n#...###...\n#.#.###...\n##.##..#..\n.#####..##\n"
+                   ".#..####.#\n#..#.#..#.\n..####.###\n..#.#.###.\n...#.#.#.#\n"
+                   "\n"
+                   "Tile 2729:\n"
+                   "...#.#.#.#\n####.#....\n..#.#.....\n....#..#.#\n.##..##.#.\n"
+                   ".#.####...\n####.#.#..\n##.####...\n##..#.##..\n#.##...##.\n"
+                   "\n"
+                   "Tile 3079:\n"
+                   "#.#.#####.\n.#..######\n..#.......\n######....\n####.#..#.\n"
+                   ".#...#.##.\n#.#####.##\n..#.###...\n..#.......\n..#.###...\n"
+                   "\n";
     input_t test1 { text1, sizeof(text1) };
 
     auto tiles = parse_tiles(test1);
@@ -605,7 +609,7 @@ void day20_test()
     // Part 1
     {
         size_t prod = 1;
-        for (auto* corner: corners)
+        for (auto* corner : corners)
         {
             prod *= corner->id;
         }

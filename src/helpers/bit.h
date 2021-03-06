@@ -66,7 +66,7 @@ constexpr uint8_t count_bits(T n)
 inline uint8_t count_bits(const std::vector<bool>& bits)
 {
     uint8_t count = 0;
-    for (bool bit: bits)
+    for (bool bit : bits)
     {
         count += bit & 1;
     }

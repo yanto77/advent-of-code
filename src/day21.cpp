@@ -4,7 +4,7 @@ namespace
 {
     struct ingredient_t
     {
-        enum allergen_t: uint8_t
+        enum allergen_t : uint8_t
         {
             DAIRY,
             EGGS,
@@ -16,11 +16,11 @@ namespace
             WHEAT,
         };
         std::array<uint64_t, 8> allergens {};
-        size_t count {1};
+        size_t count { 1 };
 
         void sum(const std::vector<sv>& input)
         {
-            for (const auto& a: input)
+            for (const auto& a : input)
             {
                 if (a == "dairy") ++allergens[DAIRY];
                 else if (a == "eggs") ++allergens[EGGS];
@@ -45,7 +45,7 @@ namespace
         {
             std::array<uint64_t, 8> max_values {};
             std::array<sv, 8> max_value_names {};
-            for (const auto& [name, ingredient]: ingr_map)
+            for (const auto& [name, ingredient] : ingr_map)
             {
                 for (size_t idx = 0; idx < 8; ++idx)
                 {
@@ -77,7 +77,7 @@ namespace
             if (!at_least_one)
                 break;
 
-            for (auto& [name, ingredient]: ingr_map)
+            for (auto& [name, ingredient] : ingr_map)
             {
                 for (size_t idx = 0; idx < 8; ++idx)
                     if (max_value_names[idx] != "")
@@ -106,7 +106,7 @@ namespace
             // printf(" - ingr: "); print_row(ingredients);
             // printf(" - allerg: "); print_row(allergens);
 
-            for (const sv& ingr: ingredients)
+            for (const sv& ingr : ingredients)
             {
                 // printf("- adding to: "); std::cout << ingr << std::endl;
                 auto it = ingr_map.find(ingr);
@@ -117,7 +117,7 @@ namespace
                 }
                 else
                 {
-                    auto [it2, inserted] = ingr_map.emplace(ingr, ingredient_t{});
+                    auto [it2, inserted] = ingr_map.emplace(ingr, ingredient_t {});
                     it2->second.sum(allergens);
                 }
             }
@@ -126,7 +126,7 @@ namespace
         const auto& allergens = decide_allergens(ingr_map);
 
         size_t part1 = 0;
-        for (const auto& [name, value]: ingr_map)
+        for (const auto& [name, value] : ingr_map)
         {
             if (get_index_of(allergens, name) == -1)
             {
@@ -143,7 +143,7 @@ output_t day21(const input_t& input)
     const auto& [part1, part2] = evaluate(input);
 
     // TODO: add this into main.cpp validation?
-    std::array<sv, 8> expected {"cljf", "frtfg", "vvfjj", "qmrps", "hvnkk", "qnvx", "cpxmpc", "qsjszn"};
+    std::array<sv, 8> expected { "cljf", "frtfg", "vvfjj", "qmrps", "hvnkk", "qnvx", "cpxmpc", "qsjszn" };
     assert(part2 == expected);
 
     return { part1, 1 };
@@ -151,11 +151,10 @@ output_t day21(const input_t& input)
 
 void day21_test()
 {
-    char text1[] =
-        "mxmxvkd kfcds sqjhc nhms (contains dairy, fish)\n"
-        "trh fvjkl sbzzf mxmxvkd (contains dairy)\n"
-        "sqjhc fvjkl (contains soy)\n"
-        "sqjhc mxmxvkd sbzzf (contains fish)\n";
+    char text1[] = "mxmxvkd kfcds sqjhc nhms (contains dairy, fish)\n"
+                   "trh fvjkl sbzzf mxmxvkd (contains dairy)\n"
+                   "sqjhc fvjkl (contains soy)\n"
+                   "sqjhc mxmxvkd sbzzf (contains fish)\n";
     input_t input1 { text1, sizeof(text1) };
 
     const auto& [part1, part2] = evaluate(input1);

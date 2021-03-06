@@ -2,10 +2,10 @@
 
 namespace
 {
-    struct rule_t 
-    { 
+    struct rule_t
+    {
         uint8_t mask;
-        int8_t len; 
+        int8_t len;
 
         friend rule_t concat(const rule_t& r1, const rule_t& r2)
         {
@@ -15,7 +15,7 @@ namespace
             };
         }
     };
-    
+
     class solver
     {
         // Rules parsed into DNF (r1 OR r2 OR ...), where {r1, r2} are rule_t
@@ -77,11 +77,11 @@ namespace
             const auto& rule = rules[idx];
             if (rule[0] == 0) // rule is pure value rule
             {
-                m_dnf_rules[idx].emplace_back(rule_t{.mask = rule[1], .len = 1});
+                m_dnf_rules[idx].emplace_back(rule_t { .mask = rule[1], .len = 1 });
             }
             else
             {
-                for (int i: {0, 2})
+                for (int i : { 0, 2 })
                 {
                     // 0: 8 11              => [ 8,  11,   0,   0]
                     // 1: 2 120 | 120 131   => [ 2, 120, 120, 131]
@@ -92,10 +92,10 @@ namespace
                         break;
 
                     construct_subrule(rules, rule[i]);
-                    construct_subrule(rules, rule[i+1]);
+                    construct_subrule(rules, rule[i + 1]);
 
-                    for (auto p1: m_dnf_rules[rule[i]])
-                        for (auto p2: m_dnf_rules[rule[i+1]])
+                    for (auto p1 : m_dnf_rules[rule[i]])
+                        for (auto p2 : m_dnf_rules[rule[i + 1]])
                             m_dnf_rules[idx].emplace_back(concat(p1, p2));
                 }
             }
@@ -104,7 +104,7 @@ namespace
         std::bitset<256> get_as_bitset(size_t idx) const
         {
             std::bitset<256> mask;
-            for (const rule_t& rule_part: m_dnf_rules[idx])
+            for (const rule_t& rule_part : m_dnf_rules[idx])
                 mask.set(rule_part.mask);
 
             return mask;
@@ -141,7 +141,7 @@ namespace
 
             // The actual 0th rule is processed implicitly afterwards. This allows
             // handling [x, 0, y, 0] cases gracefully.
-            m_dnf_rules[0].emplace_back(rule_t{0, 0}); 
+            m_dnf_rules[0].emplace_back(rule_t { 0, 0 });
 
             construct_subrule(rules, 42);
             construct_subrule(rules, 31);
@@ -159,7 +159,7 @@ namespace
             // pt2: match: 0=(8 11), 8=(42 | 42 8), 11=(42 31 | 42 11 31)
             size_t part2 = 0;
 
-            for (const sv& msg: m_messages)
+            for (const sv& msg : m_messages)
             {
                 bool fail = false;
                 int r42_match = 0, r31_match = 0;
@@ -178,13 +178,14 @@ namespace
                     if (r31.test(result)) ++r31_match;
                 }
 
-                if (fail) continue;
+                if (fail)
+                    continue;
 
                 part1 += static_cast<int>(r42_match == 2 && r31_match == 1);
                 part2 += static_cast<int>(r42_match > r31_match && r31_match > 0);
             }
 
-            return {part1, part2};
+            return { part1, part2 };
         }
     };
 }
@@ -201,55 +202,54 @@ void day19_test()
     static_assert(append_bits<int>(0b010, 0b001, 2) == 0b1001);
     static_assert(append_bits<int>(0b010, 0b001, 1) == 0b101);
 
-    char text1[] =
-        "42: 9 14 | 10 1\n"
-        "9: 14 27 | 1 26\n"
-        "10: 23 14 | 28 1\n"
-        "1: \"a\"\n"
-        "11: 42 31\n"
-        "5: 1 14 | 15 1\n"
-        "19: 14 1 | 14 14\n"
-        "12: 24 14 | 19 1\n"
-        "16: 15 1 | 14 14\n"
-        "31: 14 17 | 1 13\n"
-        "6: 14 14 | 1 14\n"
-        "2: 1 24 | 14 4\n"
-        "0: 8 11\n"
-        "13: 14 3 | 1 12\n"
-        "15: 1 | 14\n"
-        "17: 14 2 | 1 7\n"
-        "23: 25 1 | 22 14\n"
-        "28: 16 1\n"
-        "4: 1 1\n"
-        "20: 14 14 | 1 15\n"
-        "3: 5 14 | 16 1\n"
-        "27: 1 6 | 14 18\n"
-        "14: \"b\"\n"
-        "21: 14 1 | 1 14\n"
-        "25: 1 1 | 1 14\n"
-        "22: 14 14\n"
-        "8: 42\n"
-        "26: 14 22 | 1 20\n"
-        "18: 15 15\n"
-        "7: 14 5 | 1 21\n"
-        "24: 14 1\n"
-        "\n"
-        "abbbbbabbbaaaababbaabbbbabababbbabbbbbbabaaaa\n"
-        "bbabbbbaabaabba\n"
-        "babbbbaabbbbbabbbbbbaabaaabaaa\n"
-        "aaabbbbbbaaaabaababaabababbabaaabbababababaaa\n"
-        "bbbbbbbaaaabbbbaaabbabaaa\n"
-        "bbbababbbbaaaaaaaabbababaaababaabab\n"
-        "ababaaaaaabaaab\n"
-        "ababaaaaabbbaba\n"
-        "baabbaaaabbaaaababbaababb\n"
-        "abbbbabbbbaaaababbbbbbaaaababb\n"
-        "aaaaabbaabaaaaababaa\n"
-        "aaaabbaaaabbaaa\n"
-        "aaaabbaabbaaaaaaabbbabbbaaabbaabaaa\n"
-        "babaaabbbaaabaababbaabababaaab\n"
-        "aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba\n"
-        "\n";
+    char text1[] = "42: 9 14 | 10 1\n"
+                   "9: 14 27 | 1 26\n"
+                   "10: 23 14 | 28 1\n"
+                   "1: \"a\"\n"
+                   "11: 42 31\n"
+                   "5: 1 14 | 15 1\n"
+                   "19: 14 1 | 14 14\n"
+                   "12: 24 14 | 19 1\n"
+                   "16: 15 1 | 14 14\n"
+                   "31: 14 17 | 1 13\n"
+                   "6: 14 14 | 1 14\n"
+                   "2: 1 24 | 14 4\n"
+                   "0: 8 11\n"
+                   "13: 14 3 | 1 12\n"
+                   "15: 1 | 14\n"
+                   "17: 14 2 | 1 7\n"
+                   "23: 25 1 | 22 14\n"
+                   "28: 16 1\n"
+                   "4: 1 1\n"
+                   "20: 14 14 | 1 15\n"
+                   "3: 5 14 | 16 1\n"
+                   "27: 1 6 | 14 18\n"
+                   "14: \"b\"\n"
+                   "21: 14 1 | 1 14\n"
+                   "25: 1 1 | 1 14\n"
+                   "22: 14 14\n"
+                   "8: 42\n"
+                   "26: 14 22 | 1 20\n"
+                   "18: 15 15\n"
+                   "7: 14 5 | 1 21\n"
+                   "24: 14 1\n"
+                   "\n"
+                   "abbbbbabbbaaaababbaabbbbabababbbabbbbbbabaaaa\n"
+                   "bbabbbbaabaabba\n"
+                   "babbbbaabbbbbabbbbbbaabaaabaaa\n"
+                   "aaabbbbbbaaaabaababaabababbabaaabbababababaaa\n"
+                   "bbbbbbbaaaabbbbaaabbabaaa\n"
+                   "bbbababbbbaaaaaaaabbababaaababaabab\n"
+                   "ababaaaaaabaaab\n"
+                   "ababaaaaabbbaba\n"
+                   "baabbaaaabbaaaababbaababb\n"
+                   "abbbbabbbbaaaababbbbbbaaaababb\n"
+                   "aaaaabbaabaaaaababaa\n"
+                   "aaaabbaaaabbaaa\n"
+                   "aaaabbaabbaaaaaaabbbabbbaaabbaabaaa\n"
+                   "babaaabbbaaabaababbaabababaaab\n"
+                   "aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba\n"
+                   "\n";
     input_t test1 { text1, sizeof(text1) };
 
     solver s;

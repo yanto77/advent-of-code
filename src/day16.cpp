@@ -24,7 +24,11 @@ namespace
 
 namespace
 {
-    struct range_t { uint16_t min; uint16_t max; };
+    struct range_t
+    {
+        uint16_t min;
+        uint16_t max;
+    };
     struct rule_t
     {
         sv type;
@@ -160,11 +164,9 @@ namespace
                     const auto& [range1, range2] = split_single(ranges, " or ");
                     const auto& [r1_min, r1_max] = split_single(range1, "-");
                     const auto& [r2_min, r2_max] = split_single(range2, "-");
-                    data.rules.push_back({
-                        .type = type,
-                        .r1 = {to_int<uint16_t>(r1_min), to_int<uint16_t>(r1_max)},
-                        .r2 = {to_int<uint16_t>(r2_min), to_int<uint16_t>(r2_max)}
-                    });
+                    data.rules.push_back({ .type = type,
+                                           .r1 = { to_int<uint16_t>(r1_min), to_int<uint16_t>(r1_max) },
+                                           .r2 = { to_int<uint16_t>(r2_min), to_int<uint16_t>(r2_max) } });
                     break;
                 }
                 case parser_t::MY_TICKET:
@@ -211,7 +213,7 @@ namespace
         data.save_rule_indexes();
 
         out.part2 = 1;
-        for (const auto& rule: data.rules)
+        for (const auto& rule : data.rules)
         {
             if (rule.type.starts_with("departure"))
             {
@@ -249,18 +251,17 @@ void day16_test()
     //     assert(part1 == 71);
     // }
     {
-        char input2[] =
-            "class: 0-1 or 4-19\n"
-            "row: 0-5 or 8-19\n"
-            "seat: 0-13 or 16-19\n"
-            "\n"
-            "your ticket:\n"
-            "11,12,13\n"
-            "\n"
-            "nearby tickets:\n"
-            "3,9,18\n"
-            "15,1,5\n"
-            "5,14,9\n";
+        char input2[] = "class: 0-1 or 4-19\n"
+                        "row: 0-5 or 8-19\n"
+                        "seat: 0-13 or 16-19\n"
+                        "\n"
+                        "your ticket:\n"
+                        "11,12,13\n"
+                        "\n"
+                        "nearby tickets:\n"
+                        "3,9,18\n"
+                        "15,1,5\n"
+                        "5,14,9\n";
         input_t test2 { input2, sizeof(input2) };
         const auto& [part1, part2] = evaluate(test2);
         assert(part2 == 1);

@@ -18,7 +18,7 @@ inline std::vector<sv> split_multi(const sv& input, const sv& delim)
         if (pos == sv::npos)
         {
             if (start < input.size()) // fill in the last part
-                out.push_back(sv{ &input[start], input.size() - start });
+                out.push_back(sv { &input[start], input.size() - start });
 
             break;
         }
