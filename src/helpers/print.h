@@ -1,9 +1,7 @@
 #pragma once
 #include <iostream>
 #include <bitset>
-#include <deque>
 #include "vec2.h"
-
 
 #define STR(x) #x
 #define XSTR(x) STR(x)
@@ -35,60 +33,31 @@
 #define COLOR_RESET()   "\033[39m"
 #endif
 
+// TODO: to_string() methods?
 
-template <typename T>
-void print_col(const std::vector<T>& input)
+template <typename cnt>
+void print_col(const cnt& data)
 {
-    for (const auto& d : input)
+    for (const auto& d : data)
     {
-        std::cout << "  " << static_cast<int>(d) << '\n';
+        printf("%d\n", static_cast<int>(d));
     }
 }
 
-template <typename T, size_t N>
-void print_row(const std::array<T, N>& input)
+template <typename cnt>
+void print_row(const cnt& data)
 {
-    for (const auto& d : input)
-    {
-        printf("%d, ", static_cast<int>(d));
-    }
-    printf("\n");
-}
-
-template <size_t N>
-inline void print_row(const std::array<std::string_view, N>& input)
-{
-    for (const auto& d : input)
-    {
-        std::cout << "[" << d << "], ";
-    }
-    printf("\n");
-}
-
-template <typename T>
-void print_row(const std::vector<T>& input)
-{
-    for (const auto& d : input)
+    for (const auto& d : data)
     {
         printf("%d, ", static_cast<int>(d));
     }
     printf("\n");
 }
 
-template <typename T>
-void print_row(const std::deque<T>& input)
+template <typename cnt>
+void print_row_text(const cnt& data)
 {
-    for (const auto& d : input)
-    {
-        printf("%d, ", static_cast<int>(d));
-    }
-    printf("\n");
-}
-
-template <>
-inline void print_row(const std::vector<std::string_view>& input)
-{
-    for (const auto& d : input)
+    for (const auto& d : data)
     {
         std::cout << "[" << d << "], ";
     }
@@ -105,39 +74,28 @@ void print_row(const std::vector<vec2<T>>& input)
     std::cout << '\n';
 }
 
-inline void print_bits(uint8_t trg, bool color = false)
+template <typename T, size_t N = sizeof(T)>
+void print_bits(T data, bool color = false)
 {
-    for (int i = 7; i >= 0; --i)
+    for (int i = N - 1; i >= 0; --i)
     {
         if (color)
-            printf(get_bit(trg, i) ? COLOR_GREEN() "1" : COLOR_CYAN() "0");
+            printf(get_bit(data, i) ? COLOR_GREEN() "1" : COLOR_CYAN() "0");
         else
-            printf(get_bit(trg, i) ? "1" : "0");
+            printf(get_bit(data, i) ? "1" : "0");
         printf(COLOR_RESET());
     }
 }
 
-inline void print_bits(uint64_t trg, bool color = false)
+template <size_t N>
+void print_bits(std::bitset<N> data, bool color = false)
 {
-    for (int i = 63; i >= 0; --i)
+    for (int i = N - 1; i >= 0; --i)
     {
         if (color)
-            printf(get_bit(trg, i) ? COLOR_GREEN() "1" : COLOR_CYAN() "0");
+            printf(data.test(i) ? COLOR_GREEN() "1" : COLOR_CYAN() "0");
         else
-            printf(get_bit(trg, i) ? "1" : "0");
-        printf(COLOR_RESET());
-    }
-}
-
-template <size_t T>
-inline void print_bits(std::bitset<T> trg, bool color = false)
-{
-    for (int i = T - 1; i >= 0; --i)
-    {
-        if (color)
-            printf(trg.test(i) ? COLOR_GREEN() "1" : COLOR_CYAN() "0");
-        else
-            printf(trg.test(i) ? "1" : "0");
+            printf(data.test(i) ? "1" : "0");
         printf(COLOR_RESET());
     }
 }
