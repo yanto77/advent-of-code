@@ -32,7 +32,7 @@ namespace
     }
 }
 
-output_t day25(const input_t& input)
+output_t day25(const input_t& /* input */)
 {
     size_t key1 = transform(8335663, get_loop_size(8614349));
     size_t key2 = transform(8614349, get_loop_size(8335663));

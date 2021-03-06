@@ -248,7 +248,7 @@ namespace
     const std::array<orientation_t, 8> ORIENTATIONS = {
         orientation_t{ // rot0
             .sides = { 0, 1, 2, 3 },
-            .fn = [](tile_t* t) {},
+            .fn = [](tile_t* /* t */) {},
             .fn2 = [](auto t) { return t; }},
         orientation_t{ // rot90
             .sides = { 3, 0, 1, 2 },

@@ -60,11 +60,9 @@ target_compile_options(advent2020 PRIVATE
         # Disable specific warnings
         -Wno-c++20-compat
         -Wno-c++98-compat-pedantic
-        -Wno-unused-parameter
         -Wno-exit-time-destructors
         -Wno-global-constructors
         -Wno-sign-conversion
-        -Wno-implicit-int-float-conversion
         -Wno-sign-compare
         -Wno-padded
         # Code Generation Convention
