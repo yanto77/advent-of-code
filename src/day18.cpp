@@ -69,7 +69,7 @@ namespace
                 }
                 default: // numbers
                 {
-                    const auto& [num, end] = parse_num<size_t>(line, n);
+                    const auto& [num, end] = to_int<size_t>(line, n);
                     nums.push(num);
                     n = end - 1;
                 }

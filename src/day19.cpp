@@ -34,7 +34,7 @@ namespace
             size_t ch_idx = 0; // line character index
 
             /// Parse rule index
-            auto [num, end] = parse_num<uint8_t>(line, ch_idx);
+            auto [num, end] = to_int<uint8_t>(line, ch_idx);
             result.first = num;
             ch_idx += end + 2;
 
@@ -55,7 +55,7 @@ namespace
                     }
                     else
                     {
-                        const auto& [num, end] = parse_num<uint8_t>(line, ch_idx);
+                        const auto& [num, end] = to_int<uint8_t>(line, ch_idx);
                         result.second[arr_idx++] = num;
                         ch_idx = end + 1;
 
