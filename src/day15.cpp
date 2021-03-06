@@ -25,7 +25,7 @@ namespace
     }
 }
 
-output_t day15(const input_t& input)
+output_t day15(const input_t& /* input */)
 {
     size_t part1 = solve({1,0,16,5,17,4}, 2020);
     size_t part2 = solve({1,0,16,5,17,4}, 30000000);

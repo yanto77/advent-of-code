@@ -43,7 +43,7 @@ static std::vector<advent_t> g_advent2020 =
 
 int main()
 {
-    double total_time = 0;
+    int64_t total_time = 0;
 
     for (const auto& A : g_advent2020)
     {
@@ -55,23 +55,23 @@ int main()
         auto t0 = std::chrono::steady_clock::now();
         output_t out = (*A.fn_exec)(input);
         auto elapsed = (std::chrono::steady_clock::now() - t0);
-        double time = (elapsed.count() * 1e-3);
+        int64_t time = (elapsed.count() / 1000);
         free_input(input);
 
         // Output
         if (out.part1 == 0 || out.part2 == 0)
         {
-            printf(COLOR_YELLOW() "%s: TODO [%5ld μs]\n" COLOR_RESET(), A.day_id.c_str(), int64_t(time));
+            printf(COLOR_YELLOW() "%s: TODO [%5ld μs]\n" COLOR_RESET(), A.day_id.c_str(), time);
             printf("  - Expected: pt1 = %zu, pt2 = %zu\n", A.answers.part1, A.answers.part2);
             printf("  - Actual  : pt1 = %zu, pt2 = %zu\n", out.part1, out.part2);
         }
         else if (out.part1 == A.answers.part1 && out.part2 == A.answers.part2)
         {
-            printf(COLOR_GREEN() "%s: OK [%5ld μs]\n" COLOR_RESET(), A.day_id.c_str(), int64_t(time));
+            printf(COLOR_GREEN() "%s: OK [%5ld μs]\n" COLOR_RESET(), A.day_id.c_str(), time);
         }
         else
         {
-            printf(COLOR_RED() "%s: ERR [%5ld μs]\n" COLOR_RESET(), A.day_id.c_str(), int64_t(time));
+            printf(COLOR_RED() "%s: ERR [%5ld μs]\n" COLOR_RESET(), A.day_id.c_str(), time);
             printf("  - Expected: pt1 = %zu, pt2 = %zu\n", A.answers.part1, A.answers.part2);
             printf("  - Actual  : pt1 = %zu, pt2 = %zu\n", out.part1, out.part2);
         }
@@ -79,6 +79,6 @@ int main()
         total_time += time;
     }
 
-    printf("Total: %ld μs\n", int64_t(total_time));
+    printf("Total: %ld μs\n", total_time);
     return 0;
 }
