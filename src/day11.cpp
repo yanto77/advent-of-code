@@ -245,7 +245,7 @@ output_t day11(const input_t& input)
 
 void day11_test()
 {
-    char str1[111] = "L.LL.LL.LL\n"
+    char str1[] = "L.LL.LL.LL\n"
                     "LLLLLLL.LL\n"
                     "L.L.L..L..\n"
                     "LLLL.LL.LL\n"
@@ -255,13 +255,13 @@ void day11_test()
                     "LLLLLLLLLL\n"
                     "L.LLLLLL.L\n"
                     "L.LLLLL.LL\n";
-    input_t test_input { str1, 111 };
+    input_t test_input { str1, sizeof(str1) };
 
     {
         seat_map_t test_map = parse_input(test_input);
         const auto& [steps, after_map] = simulate_until_stable(test_map, true);
 
-        char str2[111] = "#.#L.L#.##\n"
+        char str2[] = "#.#L.L#.##\n"
                         "#LLL#LL.L#\n"
                         "L.#.L..#..\n"
                         "#L##.##.L#\n"
@@ -271,7 +271,7 @@ void day11_test()
                         "#L#L##L#L#\n"
                         "#.LLLLLL.L\n"
                         "#.#L#L#.##\n";
-        input_t expected_input { str2, 111 };
+        input_t expected_input { str2, sizeof(str2) };
         seat_map_t expected_map = parse_input(expected_input);
         assert(expected_map == after_map);
         assert(steps == 5);
@@ -281,7 +281,7 @@ void day11_test()
         seat_map_t test_map = parse_input(test_input);
         const auto& [steps, after_map] = simulate_until_stable(test_map, false);
 
-        char str2[111] = "#.L#.L#.L#\n"
+        char str2[] = "#.L#.L#.L#\n"
                         "#LLLLLL.LL\n"
                         "L.L.L..#..\n"
                         "##L#.#L.L#\n"
@@ -291,7 +291,7 @@ void day11_test()
                         "LLL###LLL#\n"
                         "#.LLLLL#.L\n"
                         "#.L#LL#.L#\n";
-        input_t expected_input { str2, 111 };
+        input_t expected_input { str2, sizeof(str2) };
         seat_map_t expected_map = parse_input(expected_input);
         assert(expected_map == after_map);
         assert(steps == 6);

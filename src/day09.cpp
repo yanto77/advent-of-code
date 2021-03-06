@@ -7,7 +7,7 @@ namespace
         std::vector<int64_t> out;
         parse_input(in, [&](const sv& line)
         {
-            out.push_back(to_int<int>(line));
+            out.push_back(to_int<int64_t>(line));
         });
         return out;
     }
@@ -104,7 +104,7 @@ void day09_test()
                   "277\n"
                   "309\n"
                   "576\n";
-    input_t input { text, 71 };
+    input_t input { text, sizeof(text) };
     std::vector<int64_t> data = parse_input(input);
     assert(data[0] == 35);
     assert(data[19] == 576);

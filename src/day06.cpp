@@ -13,7 +13,7 @@ output_t day06(const input_t& input)
 
     size_t index = 0;
 
-    parse_input(input, [&](const std::string_view& line)
+    parse_input(input, [&](const sv& line)
     {
         if (line.empty())
         {

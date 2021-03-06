@@ -168,8 +168,8 @@ output_t day12(const input_t& input)
 
 void day12_test()
 {
-    char text1[19] = "F10\nN3\nF7\nR90\nF11\n";
-    input_t input1 { text1, 19 };
+    char text1[] = "F10\nN3\nF7\nR90\nF11\n";
+    input_t input1 { text1, sizeof(text1) };
 
     std::vector<order_t> orders = parse_input(input1);
     assert(orders.size() != 0);

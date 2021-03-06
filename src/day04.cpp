@@ -30,7 +30,7 @@ namespace
                 return is_filled() && is_valid;
             }
 
-            void set_byr(const std::string_view& sv)
+            void set_byr(const sv& sv)
             {
                 set_bit(m_filled, Field::byr);
                 m_byr = to_int<int>(sv);
@@ -41,14 +41,14 @@ namespace
                 }
             }
 
-            void set_cid(const std::string_view& sv)
+            void set_cid(const sv& sv)
             {
                 // NB, this field is ignored, so we don't validate it
                 m_cid = sv;
                 set_bit(m_filled, Field::cid);
             }
 
-            void set_ecl(const std::string_view& sv)
+            void set_ecl(const sv& sv)
             {
                 set_bit(m_filled, Field::ecl);
 
@@ -66,7 +66,7 @@ namespace
                     set_bit(m_valid, Field::ecl);
             }
 
-            void set_eyr(const std::string_view& sv)
+            void set_eyr(const sv& sv)
             {
                 set_bit(m_filled, Field::eyr);
                 m_eyr = to_int<int>(sv);
@@ -77,7 +77,7 @@ namespace
                 }
             }
 
-            void set_hcl(const std::string_view& sv)
+            void set_hcl(const sv& sv)
             {
                 set_bit(m_filled, Field::hcl);
                 if (sv.size() == 7 && sv[0] == '#')
@@ -89,7 +89,7 @@ namespace
                 }
             }
 
-            void set_hgt(const std::string_view& sv)
+            void set_hgt(const sv& sv)
             {
                 set_bit(m_filled, Field::hgt);
 
@@ -110,7 +110,7 @@ namespace
                 }
             }
 
-            void set_iyr(const std::string_view& sv)
+            void set_iyr(const sv& sv)
             {
                 set_bit(m_filled, Field::iyr);
                 m_iyr = to_int<int>(sv);
@@ -121,7 +121,7 @@ namespace
                 }
             }
 
-            void set_pid(const std::string_view& sv)
+            void set_pid(const sv& sv)
             {
                 set_bit(m_filled, Field::pid);
                 m_pid = to_int<int>(sv);
@@ -150,7 +150,7 @@ namespace
 
             // Data
             int m_byr; // Birth Year, uint8_t
-            std::string_view m_cid; // Country ID, ignored
+            sv m_cid; // Country ID, ignored
             EyeColor m_ecl; // Eye Color
             int m_eyr; // Expiration Year, uint8_t
             int m_hcl; // Hair Color, int, could be replaced by 3 x uint8_t vec?
@@ -169,7 +169,7 @@ output_t day04(const input_t& input)
     passports.push_back(passport_t{});
     size_t pass_idx = 0;
 
-    parse_input(input, [&](const std::string_view& line)
+    parse_input(input, [&](const sv& line)
     {
         if (line == "")
         {
@@ -185,8 +185,8 @@ output_t day04(const input_t& input)
                 const auto& keyval = split_multi(field, ":");
 
                 assert(keyval.size() == 2);
-                const std::string_view& key = keyval[0];
-                const std::string_view& val = keyval[1];
+                const sv& key = keyval[0];
+                const sv& val = keyval[1];
 
                 if (key == "byr") {  pass.set_byr(val);}
                 else if (key == "iyr") { pass.set_iyr(val); }
@@ -218,9 +218,9 @@ output_t day04(const input_t& input)
 
 void day04_test()
 {
-    assert(hex_to_dec("#000000") == 0);
-    assert(hex_to_dec("#00000F") == 15);
-    assert(hex_to_dec("#000010") == 16);
-    assert(hex_to_dec("#09FBF1") == 654321);
-    assert(hex_to_dec("#C0FFEE") == 12648430);
+    static_assert(hex_to_dec("#000000") == 0);
+    static_assert(hex_to_dec("#00000F") == 15);
+    static_assert(hex_to_dec("#000010") == 16);
+    static_assert(hex_to_dec("#09FBF1") == 654321);
+    static_assert(hex_to_dec("#C0FFEE") == 12648430);
 }

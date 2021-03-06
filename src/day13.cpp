@@ -134,8 +134,8 @@ void day13_test()
 {
     // Part 1
     {
-        char text[25] = "939\n7,13,x,x,59,x,31,19\n";
-        input_t test1 { text, 25 };
+        char text[] = "939\n7,13,x,x,59,x,31,19\n";
+        input_t test1 { text, sizeof(text) };
 
         data_t data = parse_input(test1);
         assert(data.t0 == 939);
