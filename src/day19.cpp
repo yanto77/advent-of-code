@@ -201,7 +201,7 @@ void day19_test()
     static_assert(append_bits<int>(0b010, 0b001, 2) == 0b1001);
     static_assert(append_bits<int>(0b010, 0b001, 1) == 0b101);
 
-    char text1[855] =
+    char text1[] =
         "42: 9 14 | 10 1\n"
         "9: 14 27 | 1 26\n"
         "10: 23 14 | 28 1\n"
@@ -250,7 +250,7 @@ void day19_test()
         "babaaabbbaaabaababbaabababaaab\n"
         "aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba\n"
         "\n";
-    input_t test1 { text1, 855 };
+    input_t test1 { text1, sizeof(text1) };
 
     solver s;
     s.parse(test1);

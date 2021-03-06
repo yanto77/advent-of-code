@@ -249,7 +249,7 @@ void day16_test()
     //     assert(part1 == 71);
     // }
     {
-        char input2[118] =
+        char input2[] =
             "class: 0-1 or 4-19\n"
             "row: 0-5 or 8-19\n"
             "seat: 0-13 or 16-19\n"
@@ -261,7 +261,7 @@ void day16_test()
             "3,9,18\n"
             "15,1,5\n"
             "5,14,9\n";
-        input_t test2 { input2, 118 };
+        input_t test2 { input2, sizeof(input2) };
         const auto& [part1, part2] = evaluate(test2);
         assert(part2 == 1);
     }

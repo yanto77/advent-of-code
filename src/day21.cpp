@@ -151,7 +151,7 @@ output_t day21(const input_t& input)
 
 void day21_test()
 {
-    char text1[153] =
+    char text1[] =
         "mxmxvkd kfcds sqjhc nhms (contains dairy, fish)\n"
         "trh fvjkl sbzzf mxmxvkd (contains dairy)\n"
         "sqjhc fvjkl (contains soy)\n"

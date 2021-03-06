@@ -65,9 +65,9 @@ inline std::vector<T> to_multi_int(const sv& input, char delim)
  * @ref Source: https://stackoverflow.com/a/3382894
  * @returns int
  */
-inline int hex_to_dec(unsigned char hex_digit)
+constexpr inline int hex_to_dec(unsigned char hex_digit)
 {
-    static const signed char hex_values[256] = {
+    constexpr const signed char hex_values[256] = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -98,7 +98,7 @@ inline int hex_to_dec(unsigned char hex_digit)
  * @param input hex string, including # ("#123abc")
  * @returns int
  */
-inline int hex_to_dec(const sv& input)
+constexpr inline int hex_to_dec(const sv& input)
 {
     return hex_to_dec(input[1]) * 1048576 // 16^5
            + hex_to_dec(input[2]) * 65536 // 16^4

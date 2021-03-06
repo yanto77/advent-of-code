@@ -174,7 +174,7 @@ void day07_test()
     }
 
     {
-        char text[513] = "light red bags contain 1 bright white bag, 2 muted yellow bags.\n"
+        char text[] = "light red bags contain 1 bright white bag, 2 muted yellow bags.\n"
                          "dark orange bags contain 3 bright white bags, 4 muted yellow bags.\n"
                          "bright white bags contain 1 shiny gold bag.\n"
                          "muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.\n"
@@ -184,7 +184,7 @@ void day07_test()
                          "faded blue bags contain no other bags.\n"
                          "dotted black bags contain no other bags.\n";
 
-        auto res = parse_input(input_t { text, 513 });
+        auto res = parse_input(input_t { text, sizeof(text) });
         const size_t con_nb = get_links_to(res, "shiny gold");
         const size_t con_cost = get_contained_nodes(res, "shiny gold");
         assert(con_nb == 4);
@@ -192,14 +192,14 @@ void day07_test()
     }
 
     {
-        char text[298] = "shiny gold bags contain 2 dark red bags.\n"
+        char text[] = "shiny gold bags contain 2 dark red bags.\n"
                          "dark red bags contain 2 dark orange bags.\n"
                          "dark orange bags contain 2 dark yellow bags.\n"
                          "dark yellow bags contain 2 dark green bags.\n"
                          "dark green bags contain 2 dark blue bags.\n"
                          "dark blue bags contain 2 dark violet bags.\n"
                          "dark violet bags contain no other bags.\n";
-        auto res = parse_input(input_t { text, 298 });
+        auto res = parse_input(input_t { text, sizeof(text) });
         const size_t con_nb = get_links_to(res, "shiny gold");
         const size_t con_cost = get_contained_nodes(res, "shiny gold");
         assert(con_nb == 0);

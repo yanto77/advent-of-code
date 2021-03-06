@@ -7,7 +7,6 @@ namespace
     constexpr size_t OUTER_N = 10;
     constexpr size_t INNER_N = 8;
 
-
     struct tile_t
     {
         // matrix of 10 x 10 pixels
@@ -561,7 +560,7 @@ output_t day20(const input_t& input)
 
 void day20_test()
 {
-    char text1[1099] =
+    char text1[] =
         "Tile 2311:\n"
         "..##.#..#.\n##..#.....\n#...##..#.\n####.#...#\n##.##.###.\n"
         "##...#.###\n.#.#.#..##\n..#....#..\n###...#.#.\n..###..###\n"

@@ -25,7 +25,8 @@ typedef std::vector<op_t> program_t;
 
 namespace
 {
-    [[maybe_unused]] void print(const program_t& prg, const registers_t& regs)
+    [[maybe_unused]]
+    void print(const program_t& prg, const registers_t& regs)
     {
         printf(" - Program size: %zu. Registers: ip %zu, acc: %d\n", prg.size(), regs.ip, regs.acc);
     }
@@ -133,7 +134,7 @@ output_t day08(const input_t& input)
 
 void day08_test()
 {
-    char input1[65] = "nop +0\n"
+    char input1[] = "nop +0\n"
                       "acc +1\n"
                       "jmp +4\n"
                       "acc +3\n"
@@ -142,7 +143,7 @@ void day08_test()
                       "acc +1\n"
                       "jmp -4\n"
                       "acc +6\n";
-    input_t test1 { input1, 65 };
+    input_t test1 { input1, sizeof(input1) };
 
     program_t prg = parse_input(test1);
     const registers_t& reg = execute_until_loop(prg);

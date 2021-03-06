@@ -108,7 +108,7 @@ void day10_test()
 {
     {
         char text1[] = "16\n10\n15\n5\n1\n11\n7\n19\n6\n12\n4\n";
-        input_t input1 { text1, 29 };
+        input_t input1 { text1, sizeof(text1) };
         std::vector<uint8_t> data = parse_input(input1);
         assert(data[0] == 0 && data[1] == 1 && data[11] == 19 && data[12] == 22);
 
@@ -125,7 +125,7 @@ void day10_test()
         char text2[] = "28\n33\n18\n42\n31\n14\n46\n20\n48\n47\n24\n23\n49\n45\n"
                        "19\n38\n39\n11\n1\n32\n25\n35\n8\n17\n7\n9\n4\n2\n34\n"
                        "10\n3\n";
-        input_t input2 { text2, 87 };
+        input_t input2 { text2, sizeof(text2) };
         std::vector<uint8_t> data = parse_input(input2);
 
         const auto& deltas = get_element_wise_deltas(data);

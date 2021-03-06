@@ -16,7 +16,7 @@ namespace
         }
 
         size_t current_row = 0;
-        parse_input(input, [&](const std::string_view& line)
+        parse_input(input, [&](const sv& line)
         {
             for (size_t c = 0; c < line.size(); ++c)
                 if (line[c] == '#')
@@ -52,16 +52,16 @@ output_t day03(const input_t& input)
     const tree_map_t& map = get_tree_map(input);
 
     // Part 1
-    size_t product1 = get_encountered_trees(map, { 3, 1 });
+    size_t part1 = get_encountered_trees(map, { 3, 1 });
 
     // Part 2
-    size_t product2 = product1;
-    product2 *= get_encountered_trees(map, vec2i { 1, 1 });
-    product2 *= get_encountered_trees(map, vec2i { 5, 1 });
-    product2 *= get_encountered_trees(map, vec2i { 7, 1 });
-    product2 *= get_encountered_trees(map, vec2i { 1, 2 });
+    size_t part2 = part1;
+    part2 *= get_encountered_trees(map, vec2i { 1, 1 });
+    part2 *= get_encountered_trees(map, vec2i { 5, 1 });
+    part2 *= get_encountered_trees(map, vec2i { 7, 1 });
+    part2 *= get_encountered_trees(map, vec2i { 1, 2 });
 
-    return { product1, product2 };
+    return { part1, part2 };
 }
 
 void day03_test()

@@ -2,7 +2,7 @@
 
 namespace
 {
-    constexpr uint16_t convert_line(const std::string_view& sv)
+    constexpr uint16_t convert_line(const sv& sv)
     {
         // withing this method, we don't explicitly set 0 bits,
         // as those are already 0 when initialized
@@ -29,7 +29,7 @@ output_t day05(const input_t& input)
     std::array<bool, SEAT_NB> seats;
     seats.fill(false);
 
-    parse_input(input, [&](const std::string_view& line)
+    parse_input(input, [&](const sv& line)
     {
         uint16_t seat_id = convert_line(line);
 

@@ -1,12 +1,11 @@
 #include "advent2020.h"
 
-
 struct input_line_t
 {
     int min;
     int max;
     char ch;
-    std::string_view password;
+    sv password;
 };
 
 namespace
@@ -19,7 +18,7 @@ namespace
             a.password == b.password;
     }
 
-    input_line_t parse_line(const std::string_view& s) noexcept
+    input_line_t parse_line(const sv& s) noexcept
     {
         static constexpr auto pattern = ctll::fixed_string { "([0-9]+)-([0-9]+) ([a-z]): ([a-z]+)$" };
         auto m = ctre::match<pattern>(s);
@@ -31,7 +30,7 @@ namespace
                  m.get<4>().to_view() };
     }
 
-    size_t count_occurences(const std::string_view& input, const char counted_ch)
+    size_t count_occurences(const sv& input, const char counted_ch)
     {
         return std::count_if(input.begin(), input.end(), [&](const char ch) { return ch == counted_ch; });
     }
@@ -42,20 +41,20 @@ output_t day02(const input_t& input)
     std::vector<input_line_t> data;
     data.reserve(1000);
 
-    parse_input(input, [&](const std::string_view& line)
+    parse_input(input, [&](const sv& line)
     {
         data.emplace_back(parse_line(line));
     });
 
-    size_t i = 0; // Part 1
-    size_t j = 0; // Part 2
+    size_t part1 = 0; // Part 1
+    size_t part2 = 0; // Part 2
     for (auto d : data)
     {
         // Part 1
-        size_t asd = count_occurences(d.password, d.ch);
-        if (d.min <= asd && asd <= d.max)
+        size_t count = count_occurences(d.password, d.ch);
+        if (d.min <= count && count <= d.max)
         {
-            i++;
+            part1++;
         }
 
         // Part 2
@@ -63,11 +62,11 @@ output_t day02(const input_t& input)
         bool pos2 = d.password[d.max - 1] == d.ch;
         if (pos1 ^ pos2)
         {
-            j++;
+            part2++;
         }
     }
 
-    return { i, j };
+    return { part1, part2 };
 }
 
 void day02_test()
