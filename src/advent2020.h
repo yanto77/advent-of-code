@@ -2,16 +2,17 @@
 
 #include <algorithm>
 #include <array>
+#include <bitset>
 #include <cctype>
 #include <chrono>
 #include <climits>
 #include <cmath>
 #include <cstdint>
-#include <bitset>
 #include <cstring>
 #include <deque>
 #include <functional>
 #include <map>
+#include <queue>
 #include <set>
 #include <stack>
 #include <string_view>
@@ -19,7 +20,6 @@
 #include <thread>
 #include <unordered_map>
 #include <vector>
-#include <queue>
 #include <x86intrin.h>
 #include <3rd-party/ctre.hpp> // https://github.com/hanickadot/compile-time-regular-expressions
 
