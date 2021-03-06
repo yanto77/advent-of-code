@@ -1,6 +1,4 @@
 #include "advent2020.h"
-#include <map>
-#include <stack>
 
 namespace
 {

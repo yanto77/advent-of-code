@@ -1,6 +1,4 @@
 #include "advent2020.h"
-#include <iostream>
-#include <numeric>
 
 output_t day06(const input_t& input)
 {

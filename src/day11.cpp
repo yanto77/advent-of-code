@@ -1,5 +1,4 @@
 #include "advent2020.h"
-#include <iostream>
 
 enum class seat_state_t: uint8_t { FLOOR, TAKEN, EMPTY };
 typedef std::vector<std::vector<seat_state_t>> seat_map_t;
