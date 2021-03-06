@@ -160,20 +160,19 @@ output_t day22(const input_t& input)
 void day22_test()
 {
     {
-        char text1[] =
-            "Player 1:\n"
-            "9\n"
-            "2\n"
-            "6\n"
-            "3\n"
-            "1\n"
-            "\n"
-            "Player 2:\n"
-            "5\n"
-            "8\n"
-            "4\n"
-            "7\n"
-            "10\n";
+        char text1[] = "Player 1:\n"
+                       "9\n"
+                       "2\n"
+                       "6\n"
+                       "3\n"
+                       "1\n"
+                       "\n"
+                       "Player 2:\n"
+                       "5\n"
+                       "8\n"
+                       "4\n"
+                       "7\n"
+                       "10\n";
         input_t test1 { text1, sizeof(text1) };
 
         auto decks = parse_decks(test1);
@@ -188,15 +187,14 @@ void day22_test()
 
     {
         // Infinite game test!
-        char text1[] =
-            "Player 1:\n"
-            "43\n"
-            "19\n"
-            "\n"
-            "Player 2:\n"
-            "2\n"
-            "29\n"
-            "14\n";
+        char text1[] = "Player 1:\n"
+                       "43\n"
+                       "19\n"
+                       "\n"
+                       "Player 2:\n"
+                       "2\n"
+                       "29\n"
+                       "14\n";
         input_t test1 { text1, sizeof(text1) };
 
         auto decks = parse_decks(test1);

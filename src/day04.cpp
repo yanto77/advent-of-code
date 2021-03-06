@@ -166,21 +166,21 @@ output_t day04(const input_t& input)
     passports.reserve(1000);
 
     // push first
-    passports.push_back(passport_t{});
+    passports.push_back(passport_t {});
     size_t pass_idx = 0;
 
     parse_input(input, [&](const sv& line)
     {
         if (line == "")
         {
-            passports.push_back(passport_t{});
+            passports.push_back(passport_t {});
             ++pass_idx;
         }
         else
         {
             passport_t& pass = passports[pass_idx];
             const auto& fields = split_multi(line, " ");
-            for (const auto& field: fields)
+            for (const auto& field : fields)
             {
                 const auto& keyval = split_multi(field, ":");
 
@@ -204,7 +204,7 @@ output_t day04(const input_t& input)
     size_t filled_nb = 0;
     size_t valid_nb = 0;
 
-    for (const auto& pass: passports)
+    for (const auto& pass : passports)
     {
         if (pass.is_filled())
             ++filled_nb;

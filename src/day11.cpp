@@ -1,6 +1,11 @@
 #include "advent2020.h"
 
-enum class seat_state_t: uint8_t { FLOOR, TAKEN, EMPTY };
+enum class seat_state_t : uint8_t
+{
+    FLOOR,
+    TAKEN,
+    EMPTY
+};
 typedef std::vector<std::vector<seat_state_t>> seat_map_t;
 
 constexpr bool DEBUG_VISUALIZE = false;
@@ -29,9 +34,9 @@ namespace
         if constexpr (!DEBUG_VISUALIZE)
             return;
 
-        for (const auto& row: map)
+        for (const auto& row : map)
         {
-            for (const seat_state_t seat: row)
+            for (const seat_state_t seat : row)
                 print_seat(seat);
 
             printf("\n");
@@ -43,15 +48,14 @@ namespace
         seat_map_t seats;
         ssize_t len = -1;
 
-        parse_input(input, [&](const sv& line_in) 
-        {
+        parse_input(input, [&](const sv& line_in) {
             if (len == -1)
                 len = line_in.size();
 
             std::vector<seat_state_t> line_out;
             line_out.reserve(len);
-            
-            for (const char ch: line_in)
+
+            for (const char ch : line_in)
             {
                 if (ch == 'L')
                     line_out.push_back(seat_state_t::EMPTY);
@@ -97,7 +101,7 @@ namespace
         {
             for (size_t x = 0; x < cols; ++x)
             {
-                unpadded[y][x] = input[y+padding.y][x+padding.x];
+                unpadded[y][x] = input[y + padding.y][x + padding.x];
             }
         }
 
@@ -114,7 +118,7 @@ namespace
                 if (wy == 0 && wx == 0)
                     continue; // skip center
 
-                if (input[cell_y+wy][cell_x+wx] == seat_state_t::TAKEN)
+                if (input[cell_y + wy][cell_x + wx] == seat_state_t::TAKEN)
                     ++occupied_nb;
             }
         }
@@ -134,7 +138,7 @@ namespace
 
         const size_t height = input.size();
         const size_t width = input[0].size();
-        for (const auto& dir: directions)
+        for (const auto& dir : directions)
         {
             vec2i pos = { static_cast<int>(cell_x), static_cast<int>(cell_y) };
             pos += dir;
@@ -212,7 +216,8 @@ namespace
                 current = next;
                 ++steps;
             }
-            else break;
+            else
+                break;
         }
 
         return { steps, unpad(current, padding) };
@@ -222,11 +227,11 @@ namespace
     {
         size_t occupied = 0;
 
-        for (const auto& row: input)
-            for (const seat_state_t seat: row)
+        for (const auto& row : input)
+            for (const seat_state_t seat : row)
                 if (seat == seat_state_t::TAKEN)
                     ++occupied;
-        
+
         return occupied;
     }
 }
@@ -246,15 +251,15 @@ output_t day11(const input_t& input)
 void day11_test()
 {
     char str1[] = "L.LL.LL.LL\n"
-                    "LLLLLLL.LL\n"
-                    "L.L.L..L..\n"
-                    "LLLL.LL.LL\n"
-                    "L.LL.LL.LL\n"
-                    "L.LLLLL.LL\n"
-                    "..L.L.....\n"
-                    "LLLLLLLLLL\n"
-                    "L.LLLLLL.L\n"
-                    "L.LLLLL.LL\n";
+                  "LLLLLLL.LL\n"
+                  "L.L.L..L..\n"
+                  "LLLL.LL.LL\n"
+                  "L.LL.LL.LL\n"
+                  "L.LLLLL.LL\n"
+                  "..L.L.....\n"
+                  "LLLLLLLLLL\n"
+                  "L.LLLLLL.L\n"
+                  "L.LLLLL.LL\n";
     input_t test_input { str1, sizeof(str1) };
 
     {
@@ -262,15 +267,15 @@ void day11_test()
         const auto& [steps, after_map] = simulate_until_stable(test_map, true);
 
         char str2[] = "#.#L.L#.##\n"
-                        "#LLL#LL.L#\n"
-                        "L.#.L..#..\n"
-                        "#L##.##.L#\n"
-                        "#.#L.LL.LL\n"
-                        "#.#L#L#.##\n"
-                        "..L.L.....\n"
-                        "#L#L##L#L#\n"
-                        "#.LLLLLL.L\n"
-                        "#.#L#L#.##\n";
+                      "#LLL#LL.L#\n"
+                      "L.#.L..#..\n"
+                      "#L##.##.L#\n"
+                      "#.#L.LL.LL\n"
+                      "#.#L#L#.##\n"
+                      "..L.L.....\n"
+                      "#L#L##L#L#\n"
+                      "#.LLLLLL.L\n"
+                      "#.#L#L#.##\n";
         input_t expected_input { str2, sizeof(str2) };
         seat_map_t expected_map = parse_input(expected_input);
         assert(expected_map == after_map);
@@ -282,15 +287,15 @@ void day11_test()
         const auto& [steps, after_map] = simulate_until_stable(test_map, false);
 
         char str2[] = "#.L#.L#.L#\n"
-                        "#LLLLLL.LL\n"
-                        "L.L.L..#..\n"
-                        "##L#.#L.L#\n"
-                        "L.L#.LL.L#\n"
-                        "#.LLLL#.LL\n"
-                        "..#.L.....\n"
-                        "LLL###LLL#\n"
-                        "#.LLLLL#.L\n"
-                        "#.L#LL#.L#\n";
+                      "#LLLLLL.LL\n"
+                      "L.L.L..#..\n"
+                      "##L#.#L.L#\n"
+                      "L.L#.LL.L#\n"
+                      "#.LLLL#.LL\n"
+                      "..#.L.....\n"
+                      "LLL###LLL#\n"
+                      "#.LLLLL#.L\n"
+                      "#.L#LL#.L#\n";
         input_t expected_input { str2, sizeof(str2) };
         seat_map_t expected_map = parse_input(expected_input);
         assert(expected_map == after_map);

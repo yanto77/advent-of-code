@@ -12,10 +12,7 @@ namespace
 {
     bool operator==(const input_line_t& a, const input_line_t& b)
     {
-        return a.min == b.min &&
-            a.max == b.max &&
-            a.ch == b.ch &&
-            a.password == b.password;
+        return a.min == b.min && a.max == b.max && a.ch == b.ch && a.password == b.password;
     }
 
     input_line_t parse_line(const sv& s) noexcept

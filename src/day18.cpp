@@ -4,8 +4,8 @@ namespace
 {
     typedef std::map<char, int> prec_map_t;
 
-    const prec_map_t pt1 = {{ '+', 1 }, { '*', 1 }};
-    const prec_map_t pt2 = {{ '+', 2 }, { '*', 1 }};
+    const prec_map_t pt1 = { { '+', 1 }, { '*', 1 } };
+    const prec_map_t pt2 = { { '+', 2 }, { '*', 1 } };
 
     size_t solve_single(const prec_map_t& prec, const sv& line)
     {
@@ -62,7 +62,8 @@ namespace
                         {
                             apply(top_op);
                         }
-                        else break;
+                        else
+                            break;
                     }
                     ops.push(op);
                     break;

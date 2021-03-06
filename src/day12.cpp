@@ -2,9 +2,25 @@
 
 namespace
 {
-    enum action_t: uint8_t { MOV_N, MOV_S, MOV_E, MOV_W, ROT_L, ROT_R, MOV_F, ERR };
+    enum action_t : uint8_t
+    {
+        MOV_N,
+        MOV_S,
+        MOV_E,
+        MOV_W,
+        ROT_L,
+        ROT_R,
+        MOV_F,
+        ERR
+    };
 
-    enum dir_t: uint8_t { NORTH, EAST, SOUTH, WEST };
+    enum dir_t : uint8_t
+    {
+        NORTH,
+        EAST,
+        SOUTH,
+        WEST
+    };
 
     struct ship_pos_t
     {
@@ -94,7 +110,7 @@ namespace
             return static_cast<dir_t>((dir + sign * (value / 90)) % 4);
         };
 
-        for (const auto& [action, value]: orders)
+        for (const auto& [action, value] : orders)
         {
             switch (action)
             {

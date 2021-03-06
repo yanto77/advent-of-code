@@ -41,7 +41,7 @@ output_t day06(const input_t& input)
         acc2 += count_bits(v[i].p2);
     }
 
-    return {acc1, acc2};
+    return { acc1, acc2 };
 }
 
 void day06_test()

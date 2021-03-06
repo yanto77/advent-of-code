@@ -1,9 +1,8 @@
 #pragma once
 #include <charconv>
 #include <cstdint>
-#include <string_view>
-#include <charconv>
 #include <stdexcept>
+#include <string_view>
 
 #include "string.h"
 
@@ -51,7 +50,7 @@ template <typename T>
 inline std::vector<T> to_multi_int(const sv& input, char delim)
 {
     std::vector<T> out;
-    for (const auto& part: split_multi(input, delim))
+    for (const auto& part : split_multi(input, delim))
     {
         out.push_back(to_int<T>(part));
     }

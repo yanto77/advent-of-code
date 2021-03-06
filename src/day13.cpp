@@ -15,12 +15,13 @@ namespace
 
         double ab = a - b;
         double dc = d - c;
-        if (fabs(ab) < __DBL_EPSILON__) assert(false); // parallel lines
+        if (fabs(ab) < __DBL_EPSILON__)
+            assert(false); // parallel lines
 
         int x = static_cast<int>(ceil(dc / ab));
         int y = b * x + d;
 
-        return {x, y};
+        return { x, y };
     }
 
     std::vector<vec2i> parse_eq_line(const sv& line)
@@ -67,7 +68,7 @@ namespace
     {
         // Consider input vec2i's to contain {m, b} pairs for
         // a system of linear equations: y = (m)x + (b),
-        const vec2i base{0, data.t0};
+        const vec2i base { 0, data.t0 };
         const size_t n = data.buslines.size();
 
         // Intersect all buslines with expected base-line
@@ -84,7 +85,7 @@ namespace
             if (data.t0 < result[i] && result[i] < min.first)
                 min = { result[i], i };
 
-        return {(min.first - data.t0), data.buslines[min.second].y};
+        return { (min.first - data.t0), data.buslines[min.second].y };
     }
 
     /// Consider input vec2i's to contain {a, m} pairs for
@@ -97,16 +98,19 @@ namespace
         int64_t res = 0;
 
         int64_t N = 1;
-        for (const vec2i& eq: eqs) { N *= eq.y; }
+        for (const vec2i& eq : eqs)
+        {
+            N *= eq.y;
+        }
 
-        for (const vec2i& eq: eqs)
+        for (const vec2i& eq : eqs)
         {
             const auto& [a_i, n_i] = eq;
             int64_t nh_i = N / n_i;
 
             // Solve u_i (Modular_multiplicative_inverse) using Euler's theorem
             // Ref: https://en.wikipedia.org/wiki/Modular_multiplicative_inverse#Using_Euler's_theorem
-            int64_t u_i = binpow(nh_i, n_i-2, n_i) % (n_i);
+            int64_t u_i = binpow(nh_i, n_i - 2, n_i) % (n_i);
 
             // Apply
             res += (a_i * nh_i * u_i);
@@ -125,7 +129,7 @@ output_t day13(const input_t& input)
     data_t data = parse_input(input);
 
     const auto& [diff, bus] = evaluate_pt1(data);
-    const size_t part1 = diff*bus;
+    const size_t part1 = diff * bus;
     const size_t part2 = solve_congruence_sys(data.buslines);
     return { part1, part2 };
 }

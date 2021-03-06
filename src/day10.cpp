@@ -101,7 +101,7 @@ output_t day10(const input_t& input)
     const auto& [delta1, delta3] = count_specific_elements(element_deltas);
     size_t variations = count_variations(element_deltas);
 
-    return { (delta1*delta3), variations };
+    return { (delta1 * delta3), variations };
 }
 
 void day10_test()

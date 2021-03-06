@@ -16,7 +16,7 @@ namespace
     template <typename T, size_t N>
     bool contains(std::array<T, N> data, T value)
     {
-        for (T val: data)
+        for (T val : data)
             if (val == value)
                 return true;
 
@@ -52,7 +52,7 @@ namespace
             size_t first = links[get_current()];
             size_t second = links[first];
             size_t third = links[second];
-            return {first, second, third};
+            return { first, second, third };
         }
 
         size_t get_dest_cup(size_t current, const std::array<size_t, 3>& pickup) const
@@ -75,8 +75,7 @@ namespace
             {
                 printf("%zu, ", cup);
                 cup = links[cup];
-            }
-            while (cup != get_current());
+            } while (cup != get_current());
             printf("(%zu) \n", cup);
         }
 
@@ -121,7 +120,7 @@ namespace
             // fill in missing entries
             for (size_t idx = current_max + 1; idx <= max_index; ++idx)
             {
-                links.push_back(idx+1);
+                links.push_back(idx + 1);
             }
 
             // update last link to loop around
@@ -142,7 +141,7 @@ namespace
 
         for (size_t i = 0; i < (in.size() - 1); ++i)
         {
-            out.set_link(in[i], in[i+1]);
+            out.set_link(in[i], in[i + 1]);
         }
 
         out.set_link(in.back(), in.front());

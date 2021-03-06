@@ -51,7 +51,7 @@ output_t day05(const input_t& input)
         }
     }
 
-    return {max_seat_id, my_seat_id};
+    return { max_seat_id, my_seat_id };
 }
 
 void day05_test()
