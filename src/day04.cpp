@@ -179,10 +179,10 @@ output_t day04(const input_t& input)
         else
         {
             passport_t& pass = passports[pass_idx];
-            const auto& fields = split(line, " ");
+            const auto& fields = split_multi(line, " ");
             for (const auto& field: fields)
             {
-                const auto& keyval = split(field, ":");
+                const auto& keyval = split_multi(field, ":");
 
                 assert(keyval.size() == 2);
                 const std::string_view& key = keyval[0];

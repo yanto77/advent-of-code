@@ -36,7 +36,6 @@
 #endif
 
 
-
 template <typename T>
 void print_col(const std::vector<T>& input)
 {

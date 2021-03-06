@@ -170,13 +170,13 @@ namespace
                 case parser_t::MY_TICKET:
                 {
                     // Example: "7,1,14"
-                    data.my_ticket = parse_ints<uint16_t>(line, ',');
+                    data.my_ticket = to_multi_int<uint16_t>(line, ',');
                     break;
                 }
                 case parser_t::OTHER_TICKETS:
                 {
                     // Example: "7,3,47"
-                    const auto& other_ticket = parse_ints<uint16_t>(line, ',');
+                    const auto& other_ticket = to_multi_int<uint16_t>(line, ',');
 
                     const size_t ydim = data.my_ticket.size();
                     const size_t xdim = data.rules.size();
