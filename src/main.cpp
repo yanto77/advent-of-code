@@ -38,7 +38,7 @@ static std::vector<advent_t> g_advent2020 =
     // advent_t{ "Day 21", "input/day21.txt", day21, day21_test, output_t{ 2307, 1 }},
     // advent_t{ "Day 22", "input/day22.txt", day22, day22_test, output_t{ 33434, 31657 }},
     // advent_t{ "Day 23", "input/day23.txt", day23, day23_test, output_t{ 53248976, 418819514477 }},
-    advent_t{ "Day 24", "input/day24.txt", day24, day24_test, output_t{ 438, 0 }},
+    advent_t{ "Day 24", "input/day24.txt", day24, day24_test, output_t{ 438, 4038 }},
     // advent_t{ "Day 25", "input/day25.txt", day25, day25_test, output_t{ 0, 0 }},
 };
 
