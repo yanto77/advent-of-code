@@ -1,5 +1,4 @@
 #include "advent2020.h"
-#include <bitset>
 
 namespace
 {

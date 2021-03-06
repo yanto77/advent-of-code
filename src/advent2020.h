@@ -3,17 +3,27 @@
 #include <algorithm>
 #include <array>
 #include <cctype>
+#include <chrono>
 #include <climits>
 #include <cmath>
 #include <cstdint>
+#include <bitset>
 #include <cstring>
+#include <deque>
 #include <functional>
+#include <map>
 #include <set>
-#include <string>
+#include <stack>
 #include <string_view>
+#include <string>
+#include <thread>
 #include <unordered_map>
 #include <vector>
+#include <queue>
 #include <x86intrin.h>
+#include <3rd-party/ctre.hpp> // https://github.com/hanickadot/compile-time-regular-expressions
+
+using namespace std::chrono_literals;
 
 #ifdef NDEBUG
     #undef NDEBUG
@@ -23,16 +33,16 @@
     #include <cassert>
 #endif
 
-#include "helpers/bit_helpers.h"
-#include "helpers/conv_helpers.h"
-#include "helpers/hash_helpers.h"
-#include "helpers/input_helpers.h"
-#include "helpers/print_helpers.h"
-#include "helpers/string_helpers.h"
+#include "helpers/bit.h"
+#include "helpers/conv.h"
+#include "helpers/hash.h"
+#include "helpers/input.h"
+#include "helpers/print.h"
+#include "helpers/string.h"
 #include "helpers/vec2.h"
 #include "helpers/vec3.h"
-#include "helpers/pow_helpers.h"
-#include "helpers/parse_helpers.h"
-#include "helpers/array_helpers.h"
+#include "helpers/pow.h"
+#include "helpers/parse.h"
+#include "helpers/array.h"
 
 #include "setup/days.h"

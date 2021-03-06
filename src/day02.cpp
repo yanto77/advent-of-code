@@ -1,5 +1,5 @@
 #include "advent2020.h"
-#include <3rd-party/ctre.hpp> // https://github.com/hanickadot/compile-time-regular-expressions
+
 
 struct input_line_t
 {

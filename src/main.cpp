@@ -1,6 +1,5 @@
 #include "advent2020.h"
 #include "setup/days.h"
-#include <chrono>
 
 struct advent_t
 {

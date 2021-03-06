@@ -1,5 +1,4 @@
 #include "advent2020.h"
-#include <iostream>
 
 enum op_type_t : uint8_t
 {

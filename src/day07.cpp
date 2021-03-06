@@ -1,17 +1,5 @@
 #include "advent2020.h"
 
-#include <execution>
-#include <iostream>
-#include <map>
-#include <numeric>
-#include <queue>
-#include <set>
-#include <string>
-#include <string_view>
-#include <unordered_map>
-
-#include <3rd-party/ctre.hpp>
-
 typedef std::unordered_map<sv, size_t> key_dict_t;
 struct link_t
 {

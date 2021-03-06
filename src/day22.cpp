@@ -1,9 +1,4 @@
 #include "advent2020.h"
-#include <deque>
-#include <chrono>
-#include <thread>
-
-using namespace std::chrono_literals;
 
 struct decks_t
 {
