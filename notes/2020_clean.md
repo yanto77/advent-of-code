@@ -15,12 +15,43 @@ overview: there are many days i've liked creating a solution for, and there were
 i would like to highlight multiple days that surprised me the most. or some explicit learnings.
 
 
-### Day 5 [TODO]
+### Day 5
 
-- [TODO] a binary tree extended by a second binary tree, are not two trees, but the one and the same tree.
+The interesting part of completing a day is to compare own solutions against others, reading how other people approached the problem and how they wrote the code. The solutions are often composed from inter-changeable parts, allowing experimentation.
 
-- [TODO] comparing against other solutions, there were some interesting differences. but one of the major things found was difference between having two if-clauses or combining them into one. that by itself takes solution bewteen 90 μs and 20-25 μs (~75%). 
+One of such experiments is presented below. From the solutions I've found, some combined the if-clauses into one part (`convert_line1`) and others split them into own parts (`convert_line2`). The effect of this was quite surprising to me -- using `convert_line2` the solution takes 14-16 μs, which is approx. 80% less than if `convert_line1` is used (77-78 μs).
 
+```cpp
+uint16_t convert_line1(const sv& line) // e.g. "BFFFBBFRRR"
+{
+    uint16_t result = 0;
+
+    for (uint8_t i = 0; i < 10; ++i)
+        if (line[i] == 'B' || line[i] == 'R')
+            set_bit(result, (9 - i));
+
+    return result;
+}
+
+uint16_t convert_line2(const sv& line)
+{
+    uint16_t result = 0;
+
+    for (uint8_t i = 0; i < 7; ++i)
+        if (line[i] == 'B')
+            set_bit(result, (9 - i));
+
+    for (uint8_t i = 0; i < 3; ++i)
+        if (line[7 + i] == 'R')
+            set_bit(result, (2 - i));
+
+    return result;
+}
+```
+
+In a sense, the difference is understable, because in `convert_line1` some conditions are evaluated which are definitely false -- `line[i] == 'R'` for the first 7 chars and `line[i] == 'B'` for the last 3 chars. Assuming uniform distribution of input values, there will be 3.5 + 3 unnecessary comparisons done for every input. Thus, switching to `convert_line2` reduces the number of comparisons by 40% (from 16.5 to 10).
+
+However, the number of executed instruction doesn't in itself explain the runtime difference. Statistics recorded with `perf stat -r 1000` show interestingly consistent number of branches and the difference in these values between `convert_line1` and `convert_line2` is approx. 9000. Dividing by 6.5 gives 1384, which is quite close to the 1024 seats the program is processing. Thus, it can probably be concluded than `convert_line2` is better from branch prediction point of view as well.
 
 ### Day 11 [TODO]
 
