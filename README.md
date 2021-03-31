@@ -1,7 +1,7 @@
 # advent2020
 
-[Advent of Code 2020](http://adventofcode.com/2020/) C++ solutions.
+Personal [Advent of Code 2020](http://adventofcode.com/2020/) C++ solutions.
 
-[[notes/img/aoc2020_logo.jpg]]
+Project is based on https://github.com/Voltara/advent2018-fast
 
-Basen on https://github.com/Voltara/advent2018-fast. Note to self: check out the actual code for ideas.
+Cleaned up notes available: [https://yanto.fi/2021/03/advent-of-code-2020/](https://yanto.fi/2021/03/advent-of-code-2020/)
