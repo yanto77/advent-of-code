@@ -42,5 +42,6 @@ using namespace std::chrono_literals;
 #include "helpers/string.h"
 #include "helpers/vec2.h"
 #include "helpers/vec3.h"
+#include "helpers/timer.h"
 
 #include "setup/days.h"
