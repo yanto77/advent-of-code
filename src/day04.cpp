@@ -130,19 +130,6 @@ namespace
                     set_bit(m_valid, Field::pid);
             }
 
-            // void print() const
-            // {
-            //     std::cout << "pass: " << std::endl;
-            //     std::cout << "    byr: " << m_byr << " (birth year), valid: " << is_bit_set(m_valid, Field::byr) << std::endl;
-            //     std::cout << "    cid: " << m_cid << " (country id), valid: " << is_bit_set(m_valid, Field::cid) << std::endl;
-            //     std::cout << "    ecl: " << m_ecl << " (eye color), valid: " << is_bit_set(m_valid, Field::ecl) << std::endl;
-            //     std::cout << "    eyr: " << m_eyr << " (exp. year), valid: " << is_bit_set(m_valid, Field::eyr) << std::endl;
-            //     std::cout << "    hcl: " << m_hcl << " (hair color), valid: " << is_bit_set(m_valid, Field::hcl) << std::endl;
-            //     std::cout << "    hgt: " << m_hgt.first << " " << (m_hgt.second ? "cm" : "in") << " (height), valid: " << is_bit_set(m_valid, Field::hgt) << std::endl;
-            //     std::cout << "    iyr: " << m_iyr << " (issue year), valid: " << is_bit_set(m_valid, Field::iyr) << std::endl;
-            //     std::cout << "    pid: " << m_pid << " (passport id), valid: " << is_bit_set(m_valid, Field::pid) << std::endl;
-            // }
-
         private:
             // State
             uint8_t m_filled = 0;
