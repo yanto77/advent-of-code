@@ -45,19 +45,20 @@ namespace
 
             std::pair<size_t, size_t> find_continuous_set(int64_t target_sum)
             {
-                for (size_t i = 0; i < data.size(); ++i)
-                {
-                    int64_t sum = 0;
-                    for (size_t j = i; j < data.size(); ++j)
-                    {
-                        sum += data[j];
+                size_t tail = 0;
+                size_t head = 1;
+                int64_t sum = data[tail] + data[head];
 
-                        if (sum == target_sum)
-                            return { i, j };
-                    }
+                while (true) // nb. assumes the result is _always_ found within bounds
+                {
+                    if (sum < target_sum)
+                        sum += data[++head];
+                    else if (sum > target_sum)
+                        sum -= data[tail++];
+                    else break; // equality
                 }
 
-                return { 0, 0 };
+                return { tail, head };
             }
 
             std::pair<int64_t, int64_t> get_min_max(size_t start, size_t end)
