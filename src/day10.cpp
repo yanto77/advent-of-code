@@ -2,6 +2,7 @@
 
 namespace
 {
+    // Returns a vector of element-wise differences (between sorted adapters)
     std::vector<uint8_t> parse_input(const input_t& in)
     {
         std::vector<uint8_t> out;
@@ -10,31 +11,19 @@ namespace
             out.push_back(to_int<uint8_t>(line));
         });
 
-        out.push_back(0); // insert jolts for charging outlet
+        // Insert constant outlets (0 - charging, max+3 - build-in adapter)
+        out.push_back(0);
         std::sort(out.begin(), out.end());
-        out.push_back(out.back() + 3); // insert jolts for built-in adapter
-        return out;
-    }
+        out.push_back(out.back() + 3);
 
-    struct diff_t
-    {
-        uint32_t diff1 = 0;
-        uint32_t diff2 = 0;
-        uint32_t diff3 = 0;
-    };
-
-    // returns element-wise differences between `data` entities
-    std::vector<uint8_t> get_element_wise_deltas(const std::vector<uint8_t>& data)
-    {
-        std::vector<uint8_t> result;
-        result.reserve(data.size() - 1);
-
-        for (size_t i = 1; i < data.size(); ++i)
+        // Compute element-wise difference
+        for (size_t i = 0; i < out.size() - 1; ++i)
         {
-            result.push_back(data[i] - data[i - 1]);
+            out[i] = out[i + 1] - out[i];
         }
+        out.pop_back();
 
-        return result;
+        return out;
     }
 
     std::pair<size_t, size_t> count_specific_elements(const std::vector<uint8_t>& deltas)
@@ -95,8 +84,7 @@ namespace
 
 output_t day10(const input_t& input)
 {
-    std::vector<uint8_t> data = parse_input(input);
-    std::vector<uint8_t> element_deltas = get_element_wise_deltas(data);
+    std::vector<uint8_t> element_deltas = parse_input(input);
 
     const auto& [delta1, delta3] = count_specific_elements(element_deltas);
     size_t variations = count_variations(element_deltas);
@@ -109,10 +97,7 @@ void day10_test()
     {
         char text1[] = "16\n10\n15\n5\n1\n11\n7\n19\n6\n12\n4\n";
         input_t input1 { text1, sizeof(text1) };
-        std::vector<uint8_t> data = parse_input(input1);
-        assert(data[0] == 0 && data[1] == 1 && data[11] == 19 && data[12] == 22);
-
-        const auto& deltas = get_element_wise_deltas(data);
+        std::vector<uint8_t> deltas = parse_input(input1);
         const auto& [delta1, delta3] = count_specific_elements(deltas);
         assert(delta1 == 7 && delta3 == 5);
 
@@ -126,9 +111,7 @@ void day10_test()
                        "19\n38\n39\n11\n1\n32\n25\n35\n8\n17\n7\n9\n4\n2\n34\n"
                        "10\n3\n";
         input_t input2 { text2, sizeof(text2) };
-        std::vector<uint8_t> data = parse_input(input2);
-
-        const auto& deltas = get_element_wise_deltas(data);
+        std::vector<uint8_t> deltas = parse_input(input2);
         const auto& [delta1, delta3] = count_specific_elements(deltas);
         assert(delta1 == 22 && delta3 == 10);
 
