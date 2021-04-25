@@ -1,5 +1,29 @@
 #include "advent2020.h"
 
+namespace
+{
+    size_t part1_sum(const std::vector<int>& v)
+    {
+        for (int i : v)
+            for (int j : v)
+                if (i + j == 2020)
+                    return i * j;
+
+        return 0;
+    }
+
+    size_t part2_sum(const std::vector<int>& v)
+    {
+        for (int i : v)
+            for (int j : v)
+                for (int k : v)
+                    if (i + j + k == 2020)
+                        return i * j * k;
+
+        return 0;
+    }
+}
+
 output_t day01(const input_t& input)
 {
     std::vector<int> v;
@@ -11,47 +35,7 @@ output_t day01(const input_t& input)
 
     std::sort(v.begin(), v.end());
 
-    // Part 1
-    size_t part1 = 0;
-    for (int i : v)
-    {
-        for (int j : v)
-        {
-            if (i + j == 2020)
-            {
-                part1 = i * j;
-                break;
-            }
-        }
-
-        if (part1 != 0)
-            break;
-    }
-
-    // Part 2
-    size_t part2 = 0;
-    for (int i : v)
-    {
-        for (int j : v)
-        {
-            for (int k : v)
-            {
-                if (i + j + k == 2020)
-                {
-                    part2 = i * j * k;
-                    break;
-                }
-            }
-
-            if (part2 != 0)
-                break;
-        }
-
-        if (part2 != 0)
-            break;
-    }
-
-    return { part1, part2 };
+    return { part1_sum(v), part2_sum(v) };
 }
 
 void day01_test()
