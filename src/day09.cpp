@@ -2,82 +2,89 @@
 
 namespace
 {
-    std::vector<int64_t> parse_input(const input_t& in)
+    class solver_t
     {
-        std::vector<int64_t> out;
-        parse_input(in, [&](const sv& line)
-        {
-            out.push_back(to_int<int64_t>(line));
-        });
-        return out;
-    }
+        public:
+            std::vector<int64_t> data;
 
-    // Returns number in `input` that is not sum of any two numbers within previous `sliding_n` numbers
-    // If not found, returns -1;
-    int64_t validate_input(const std::vector<int64_t>& input, size_t sliding_n)
-    {
-        for (size_t i = sliding_n; i < input.size(); ++i)
-        {
-            bool found = false;
-            for (size_t wx = i - sliding_n; !found && wx < i; ++wx)
+        public:
+            void parse(const input_t& in)
             {
-                for (size_t wy = i - sliding_n; !found && wy < i && wx != wy; ++wy)
+                parse_input(in, [&](const sv& line)
                 {
-                    if (input[wx] + input[wy] == input[i])
+                    data.push_back(to_int<int64_t>(line));
+                });
+            }
+
+            // Returns number in `input` that is not sum of any two numbers within
+            // previous `sliding_n` numbers. If not found, returns -1;
+            int64_t validate_input(size_t sliding_n)
+            {
+                for (size_t i = sliding_n; i < data.size(); ++i)
+                {
+                    bool found = false;
+                    for (size_t wx = i - sliding_n; !found && wx < i; ++wx)
                     {
-                        found = true;
+                        for (size_t wy = i - sliding_n; !found && wy < i && wx != wy; ++wy)
+                        {
+                            if (data[wx] + data[wy] == data[i])
+                            {
+                                found = true;
+                            }
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        return data[i];
                     }
                 }
+
+                return -1;
             }
 
-            if (!found)
+            std::pair<size_t, size_t> find_continuous_set(int64_t target_sum)
             {
-                return input[i];
+                for (size_t i = 0; i < data.size(); ++i)
+                {
+                    int64_t sum = 0;
+                    for (size_t j = i; j < data.size(); ++j)
+                    {
+                        sum += data[j];
+
+                        if (sum == target_sum)
+                            return { i, j };
+                    }
+                }
+
+                return { 0, 0 };
             }
-        }
 
-        return -1;
-    }
-
-    std::pair<size_t, size_t> find_continuous_set(const std::vector<int64_t>& input, int64_t target_sum)
-    {
-        for (size_t i = 0; i < input.size(); ++i)
-        {
-            int64_t sum = 0;
-            for (size_t j = i; j < input.size(); ++j)
+            std::pair<int64_t, int64_t> get_min_max(size_t start, size_t end)
             {
-                sum += input[j];
+                int64_t min = INT64_MAX;
+                int64_t max = INT64_MIN;
 
-                if (sum == target_sum)
-                    return { i, j };
+                for (size_t i = start; i < end; ++i)
+                {
+                    if (data[i] > max) max = data[i];
+                    if (data[i] < min) min = data[i];
+                }
+
+                return { min, max };
             }
-        }
-
-        return { 0, 0 };
-    }
-
-    std::pair<int64_t, int64_t> get_min_max(const std::vector<int64_t>& input, size_t start, size_t end)
-    {
-        int64_t min = INT64_MAX;
-        int64_t max = INT64_MIN;
-
-        for (size_t i = start; i < end; ++i)
-        {
-            if (input[i] > max) max = input[i];
-            if (input[i] < min) min = input[i];
-        }
-
-        return { min, max };
-    }
+    };
 }
 
 output_t day09(const input_t& input)
 {
-    std::vector<int64_t> data = parse_input(input);
-    size_t invalid_num = validate_input(data, 25);
+    solver_t solver;
+    solver.parse(input);
 
-    const auto& [start, end] = find_continuous_set(data, invalid_num);
-    const auto& [min, max] = get_min_max(data, start, end);
+    size_t invalid_num = solver.validate_input(25);
+
+    const auto& [start, end] = solver.find_continuous_set(invalid_num);
+    const auto& [min, max] = solver.get_min_max(start, end);
 
     return { invalid_num, static_cast<size_t>(min + max) };
 }
@@ -105,13 +112,16 @@ void day09_test()
                   "309\n"
                   "576\n";
     input_t input { text, sizeof(text) };
-    std::vector<int64_t> data = parse_input(input);
-    assert(data[0] == 35);
-    assert(data[19] == 576);
-    assert(validate_input(data, 5) == 127);
 
-    const auto& [start, end] = find_continuous_set(data, 127);
-    const auto& [min, max] = get_min_max(data, start, end);
+    solver_t solver;
+    solver.parse(input);
+
+    assert(solver.data[0] == 35);
+    assert(solver.data[19] == 576);
+    assert(solver.validate_input(5) == 127);
+
+    const auto& [start, end] = solver.find_continuous_set(127);
+    const auto& [min, max] = solver.get_min_max(start, end);
     assert(start == 2 && end == 5);
     assert(min == 15 && max == 47);
 }
