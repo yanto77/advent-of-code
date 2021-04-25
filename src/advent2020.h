@@ -1,6 +1,5 @@
 #pragma once
 
-#include <3rd-party/ctre.hpp> // https://github.com/hanickadot/compile-time-regular-expressions
 #include <algorithm>
 #include <array>
 #include <bitset>

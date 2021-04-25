@@ -1,4 +1,5 @@
 #include "advent2020.h"
+#include <3rd-party/ctre.hpp> // https://github.com/hanickadot/compile-time-regular-expressions
 
 typedef std::unordered_map<sv, size_t> key_dict_t;
 struct link_t
