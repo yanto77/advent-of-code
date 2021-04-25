@@ -1,77 +1,41 @@
 #include "advent2020.h"
 
-struct input_line_t
-{
-    int min;
-    int max;
-    char ch;
-    sv password;
-};
-
 namespace
 {
-    bool operator==(const input_line_t& a, const input_line_t& b)
+    size_t count_occurences(const sv& in, const char counted_ch)
     {
-        return a.min == b.min && a.max == b.max && a.ch == b.ch && a.password == b.password;
-    }
-
-    input_line_t parse_line(const sv& s) noexcept
-    {
-        static constexpr auto pattern = ctll::fixed_string { "([0-9]+)-([0-9]+) ([a-z]): ([a-z]+)$" };
-        auto m = ctre::match<pattern>(s);
-
-        // NB, No error checking done.
-        return { to_int<int>(m.get<1>().to_view()),
-                 to_int<int>(m.get<2>().to_view()),
-                 *(m.get<3>().to_view().data()),
-                 m.get<4>().to_view() };
-    }
-
-    size_t count_occurences(const sv& input, const char counted_ch)
-    {
-        return std::count_if(input.begin(), input.end(), [&](const char ch) { return ch == counted_ch; });
+        return std::count_if(in.begin(), in.end(), [&](const char ch) { return ch == counted_ch; });
     }
 }
 
 output_t day02(const input_t& input)
 {
-    std::vector<input_line_t> data;
-    data.reserve(1000);
+    size_t part1 = 0;
+    size_t part2 = 0;
 
     parse_input(input, [&](const sv& line)
     {
-        data.emplace_back(parse_line(line));
-    });
+        // Parsing line
+        const auto& [min, idx1] = to_int<int>(line, 0);
+        const auto& [max, idx2] = to_int<int>(line, idx1+1);
+        const char ch = line[idx2+1];
+        const sv pwd { &line[idx2+4], line.size() - idx2 - 4};
 
-    size_t part1 = 0; // Part 1
-    size_t part2 = 0; // Part 2
-    for (auto d : data)
-    {
         // Part 1
-        size_t count = count_occurences(d.password, d.ch);
-        if (d.min <= count && count <= d.max)
-        {
-            part1++;
-        }
+        size_t count = count_occurences(pwd, ch);
+        part1 += (min <= count && count <= max);
 
         // Part 2
-        bool pos1 = d.password[d.min - 1] == d.ch;
-        bool pos2 = d.password[d.max - 1] == d.ch;
-        if (pos1 ^ pos2)
-        {
-            part2++;
-        }
-    }
+        bool pos1 = (pwd[min - 1] == ch);
+        bool pos2 = (pwd[max - 1] == ch);
+        part2 += (pos1 ^ pos2);
+    });
 
     return { part1, part2 };
 }
 
 void day02_test()
 {
-    assert(parse_line("2-3 f: pfff") == input_line_t({ 2, 3, 'f', "pfff" }));
-    assert(parse_line("7-11 z: zzzzzzzzzzzz") == input_line_t({ 7, 11, 'z', "zzzzzzzzzzzz" }));
-    assert(parse_line("6-19 g: gggggggggggggggggggg") == input_line_t({ 6, 19, 'g', "gggggggggggggggggggg" }));
-
     assert(count_occurences("abcdefg", 'c') == 1);
     assert(count_occurences("abababa", 'a') == 4);
     assert(count_occurences("abababa", 'b') == 3);
