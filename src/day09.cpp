@@ -16,29 +16,27 @@ namespace
                 });
             }
 
-            // Returns number in `input` that is not sum of any two numbers within
-            // previous `sliding_n` numbers. If not found, returns -1;
-            int64_t validate_input(size_t sliding_n)
+            // Return if a number at index `tail` is valid.
+            // Validity means that the number can be constructed by summing any
+            // two numbers from N values before index `tail` (where N is `sliding_n`)
+            bool is_valid_num(size_t tail, size_t sliding_n)
+            {
+                size_t head = tail - sliding_n;
+                for (size_t wx = head; wx < tail; ++wx)
+                    for (size_t wy = head; wy < wx; ++wy)
+                        if (data[wx] + data[wy] == data[tail])
+                            return true;
+
+                return false;
+            }
+
+            // Returns number in `input` that is not valid
+            // If not found, returns -1;
+            int64_t get_invalid_num(size_t sliding_n)
             {
                 for (size_t i = sliding_n; i < data.size(); ++i)
-                {
-                    bool found = false;
-                    for (size_t wx = i - sliding_n; !found && wx < i; ++wx)
-                    {
-                        for (size_t wy = i - sliding_n; !found && wy < i && wx != wy; ++wy)
-                        {
-                            if (data[wx] + data[wy] == data[i])
-                            {
-                                found = true;
-                            }
-                        }
-                    }
-
-                    if (!found)
-                    {
+                    if (!is_valid_num(i, sliding_n))
                         return data[i];
-                    }
-                }
 
                 return -1;
             }
@@ -82,7 +80,7 @@ output_t day09(const input_t& input)
     solver_t solver;
     solver.parse(input);
 
-    size_t invalid_num = solver.validate_input(25);
+    size_t invalid_num = solver.get_invalid_num(25);
 
     const auto& [start, end] = solver.find_continuous_set(invalid_num);
     const auto& [min, max] = solver.get_min_max(start, end);
@@ -92,26 +90,8 @@ output_t day09(const input_t& input)
 
 void day09_test()
 {
-    char text[] = "35\n"
-                  "20\n"
-                  "15\n"
-                  "25\n"
-                  "47\n"
-                  "40\n"
-                  "62\n"
-                  "55\n"
-                  "65\n"
-                  "95\n"
-                  "102\n"
-                  "117\n"
-                  "150\n"
-                  "182\n"
-                  "127\n"
-                  "219\n"
-                  "299\n"
-                  "277\n"
-                  "309\n"
-                  "576\n";
+    char text[] = "35\n20\n15\n25\n47\n40\n62\n55\n65\n95\n102\n"
+                  "117\n150\n182\n127\n219\n299\n277\n309\n576\n";
     input_t input { text, sizeof(text) };
 
     solver_t solver;
@@ -119,7 +99,7 @@ void day09_test()
 
     assert(solver.data[0] == 35);
     assert(solver.data[19] == 576);
-    assert(solver.validate_input(5) == 127);
+    assert(solver.get_invalid_num(5) == 127);
 
     const auto& [start, end] = solver.find_continuous_set(127);
     const auto& [min, max] = solver.get_min_max(start, end);
