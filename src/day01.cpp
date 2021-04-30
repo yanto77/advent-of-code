@@ -14,11 +14,21 @@ namespace
 
     size_t part2_sum(const std::vector<int>& v)
     {
+        const int min = v[0];
         for (int i : v)
+        {
             for (int j : v)
+            {
+                if (i + j + min >= 2020)
+                    break;
+
                 for (int k : v)
+                {
                     if (i + j + k == 2020)
                         return i * j * k;
+                }
+            }
+        }
 
         return 0;
     }
