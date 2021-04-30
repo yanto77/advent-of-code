@@ -3,6 +3,9 @@ day 1.
     - previously control flow was handled with breaks and ifs. separating the part in its own function allows using single `return` instead, thus reducing the need to check for stop-conditions in each loop.
         -> the numbers are now closer to 100 than 200.
 
+    - in addition, within part2 it's possible to break early in conditions when (i + j) exceeds the target sum. optionally, smallest value can be added to that condition, with minor effect.
+        -> this drops exec time to 75-80 range.
+
 day 2.
 
     - as found out later, regular expressions are little too hardcore for this input. removing ctre dependency (in favor of own simpler parsing methods) drops the runtime from 530 to 75.
