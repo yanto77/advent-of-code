@@ -59,6 +59,16 @@ day 9.
 
         -> all of these changes bring us average 90 us!
 
+
+day22:
+
+    - https://www.reddit.com/r/adventofcode/comments/khyjgv/2020_day_22_solutions/ggrht8v
+        -> "Oh, you literally just win with the high card."
+
+    -> https://www.reddit.com/r/adventofcode/comments/khyjgv/2020_day_22_solutions/ggpcsnd
+        -> implementation gives 26x gains right away (1100 ms -> 40 ms).
+
+
 TODO:
     day9: find_continuous_set()
     day13: extract common stuff, like the equation solvers
