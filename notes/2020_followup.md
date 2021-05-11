@@ -69,6 +69,10 @@ day22:
         -> implementation gives 26x gains right away (1100 ms -> 40 ms).
 
 
+    * couple of things to try:
+        - static arrays, instead of std::deque
+        - simpler hash function
+
 TODO:
     day9: find_continuous_set()
     day13: extract common stuff, like the equation solvers

@@ -157,7 +157,7 @@ namespace
                 for (size_t i = 0; i < c2; ++i)
                     sub_decks.p2.push_back(decks.p2[i]);
 
-                auto [subscore, p1_subwin] = play_game_recursive(sub_decks, true);
+                auto [_, p1_subwin] = play_game_recursive(sub_decks, true);
                 decks.push(c1, c2, p1_subwin);
             }
         }
