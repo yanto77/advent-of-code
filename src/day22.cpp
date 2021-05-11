@@ -43,6 +43,19 @@ struct decks_t
         return { score, p1_win };
     }
 
+    bool check_p1_autowin() const
+    {
+        // Ref: https://www.reddit.com/r/adventofcode/comments/khyjgv/2020_day_22_solutions/ggpcsnd
+        // "During a sub game, if we see that the player 1 has the card with the
+        // highest number and the value of that card is more than the length of
+        // both decks combined, then we can declare Player 1 as winner! This will
+        // significantly reduce the recursion space."
+
+        int max_p1 = *std::max_element(p1.begin(), p1.end());
+        int max_p2 = *std::max_element(p2.begin(), p2.end());
+        return max_p1 > max_p2 && (max_p1 > (p1.size() + p2.size() - 2));
+    }
+
     bool operator==(const decks_t& other) const
     {
         return (p1 == other.p1 && p2 == other.p2);
@@ -111,10 +124,14 @@ namespace
         return decks.get_score();
     }
 
-    std::tuple<size_t, bool> play_game_recursive(decks_t decks)
+    std::tuple<size_t, bool> play_game_recursive(decks_t decks, bool is_sub)
     {
-        std::unordered_map<decks_t, bool> known_states;
+        if (is_sub && decks.check_p1_autowin())
+        {
+            return { 0, true };
+        }
 
+        std::unordered_map<decks_t, bool> known_states;
         while (!decks.p1.empty() && !decks.p2.empty())
         {
             auto [it, inserted] = known_states.insert({ decks, true });
@@ -140,7 +157,7 @@ namespace
                 for (size_t i = 0; i < c2; ++i)
                     sub_decks.p2.push_back(decks.p2[i]);
 
-                auto [subscore, p1_subwin] = play_game_recursive(sub_decks);
+                auto [subscore, p1_subwin] = play_game_recursive(sub_decks, true);
                 decks.push(c1, c2, p1_subwin);
             }
         }
@@ -153,7 +170,7 @@ output_t day22(const input_t& input)
 {
     auto decks = parse_decks(input);
     auto [part1, p1_won_part1] = play_game(decks);
-    auto [part2, p1_won_part2] = play_game_recursive(decks);
+    auto [part2, p1_won_part2] = play_game_recursive(decks, false);
     return { part1, part2 };
 }
 
@@ -177,7 +194,7 @@ void day22_test()
 
         auto decks = parse_decks(test1);
         auto [part1, p1_won_part1] = play_game(decks);
-        auto [part2, p1_won_part2] = play_game_recursive(decks);
+        auto [part2, p1_won_part2] = play_game_recursive(decks, false);
 
         assert(part1 == 306);
         assert(!p1_won_part1);
@@ -198,7 +215,7 @@ void day22_test()
         input_t test1 { text1, sizeof(text1) };
 
         auto decks = parse_decks(test1);
-        auto [part2, p1_won_part2] = play_game_recursive(decks);
+        auto [part2, p1_won_part2] = play_game_recursive(decks, false);
         assert(part2 == 0);
         assert(p1_won_part2);
     }
