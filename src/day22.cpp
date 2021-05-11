@@ -124,7 +124,12 @@ namespace
             }
 
             auto [c1, c2] = decks.pop();
-            if (c1 <= decks.p1.size() && c2 <= decks.p2.size())
+            if (c1 > decks.p1.size() || c2 > decks.p2.size())
+            {
+                /// Play normal game
+                decks.push(c1, c2, c1 > c2);
+            }
+            else
             {
                 /// Play sub-game
                 decks_t sub_decks;
@@ -137,11 +142,6 @@ namespace
 
                 auto [subscore, p1_subwin] = play_game_recursive(sub_decks);
                 decks.push(c1, c2, p1_subwin);
-            }
-            else
-            {
-                /// Play normal game
-                decks.push(c1, c2, c1 > c2);
             }
         }
 
