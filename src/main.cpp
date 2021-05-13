@@ -60,17 +60,17 @@ int main()
         // Output
         if (out.part1 == 0 || out.part2 == 0)
         {
-            printf(COLOR_YELLOW() "%s: TODO [%5ld μs]\n" COLOR_RESET(), A.day_id.c_str(), time);
+            printf(COLOR_YELLOW() "%s: TODO [%6ld μs]\n" COLOR_RESET(), A.day_id.c_str(), time);
             printf("  - Expected: pt1 = %zu, pt2 = %zu\n", A.answers.part1, A.answers.part2);
             printf("  - Actual  : pt1 = %zu, pt2 = %zu\n", out.part1, out.part2);
         }
         else if (out.part1 == A.answers.part1 && out.part2 == A.answers.part2)
         {
-            printf(COLOR_GREEN() "%s: OK [%5ld μs]\n" COLOR_RESET(), A.day_id.c_str(), time);
+            printf(COLOR_GREEN() "%s: OK [%6ld μs]\n" COLOR_RESET(), A.day_id.c_str(), time);
         }
         else
         {
-            printf(COLOR_RED() "%s: ERR [%5ld μs]\n" COLOR_RESET(), A.day_id.c_str(), time);
+            printf(COLOR_RED() "%s: ERR [%6ld μs]\n" COLOR_RESET(), A.day_id.c_str(), time);
             printf("  - Expected: pt1 = %zu, pt2 = %zu\n", A.answers.part1, A.answers.part2);
             printf("  - Actual  : pt1 = %zu, pt2 = %zu\n", out.part1, out.part2);
         }
