@@ -90,10 +90,26 @@ day22:
         - static arrays, instead of std::deque
         - simpler hash function
 
-TODO:
-    day9: find_continuous_set()
-    day13: extract common stuff, like the equation solvers
 
+game of lifes:
+    - from http://www.jagregory.com/abrash-black-book/#chapter-17-the-game-of-life
+        - padding, already OK
+        - updating neighbors instead of recalculating them
+            - reasoning: the changes happen rarely, so writing new values may be faster than reading the values each round
+            - using uint8_t, where 4 bits are for neighbors and 1 bit is for the state
+                -> dead cell with no neighbors has value 0 and can be easily skipped
+
+
+    "Know your data".
+        "We’ve gotten more than a 30-times speedup simply by removing a little of the abstraction that C++ encourages, and by storing and processing the data in a manner appropriate for the typical nature of the data itself. "
+
+
+    "potentially visible set" is a nice name, combined with "exactly visible set"
+
+
+
+TODO:
+    day13: extract common stuff, like the equation solvers
 
     memory constrained: day15, day23
         > sudo sysctl -w vm.nr_hugepages=64
