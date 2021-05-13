@@ -59,6 +59,23 @@ day 9.
 
         -> all of these changes bring us average 90 us!
 
+day15:
+    - the problem does not expect too large numbers and is memory constrained. reducing size_t to uint32_t does actually have a meaningful effect here!
+        -> 600 ms -> 450 ms
+
+    - bake in the +1 operation into for-loop arguments instead. very minor effect.
+
+    -> memory alloc for the history takes 40 ms. fill operation takes 0 us.
+        -> extending with dynamic bitset doesn't have any major effect on this.
+
+
+
+    -> voltara uses two data structures. first one is bitset, which allows reading relevant information faster from memory, due to smaller size (the information being if a number has been spoken or not). only after that, the actual historical values are accessed from the int-array.
+
+        -> bitset is a static array, but our solution would require a dynamic one. it is said that std::vector<bool> has some issues, thus std::deque<bool> is preferred [ref: https://www.fluentcpp.com/2019/12/17/how-to-increment-a-dynamic-bitset-with-the-stl/].
+            -> TODO: what are those issues?)
+
+        -> 450 ms -> 310 ms
 
 day22:
 
