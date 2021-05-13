@@ -106,7 +106,7 @@ game of lifes:
 
     "potentially visible set" is a nice name, combined with "exactly visible set"
 
-
+    -> candidates: day11, day17, day24
 
 TODO:
     day13: extract common stuff, like the equation solvers
