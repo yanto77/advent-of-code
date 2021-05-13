@@ -91,6 +91,11 @@ day22:
         - simpler hash function
 
 
+day23:
+
+    - applying the same knowledge as from day15. the problem is memory constrained. thus, we shouldn't use size_t, as we don't really need those extra bits. replacing with uint32_t improves runtime 340ms -> 170ms. note: the runtime is twice faster, as we are processing only half of the initial bits.
+
+
 game of lifes:
     - from http://www.jagregory.com/abrash-black-book/#chapter-17-the-game-of-life
         - padding, already OK
