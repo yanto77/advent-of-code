@@ -74,7 +74,7 @@ void print_row(const std::vector<vec2<T>>& input)
     std::cout << '\n';
 }
 
-template <typename T, size_t N = sizeof(T)>
+template <typename T, size_t N = sizeof(T) * 8>
 void print_bits(T data, bool color = false)
 {
     for (int i = N - 1; i >= 0; --i)
@@ -88,7 +88,7 @@ void print_bits(T data, bool color = false)
 }
 
 template <size_t N>
-void print_bits(std::bitset<N> data, bool color = false)
+void print_bits(const std::bitset<N>& data, bool color = false)
 {
     for (int i = N - 1; i >= 0; --i)
     {
@@ -97,5 +97,18 @@ void print_bits(std::bitset<N> data, bool color = false)
         else
             printf(data.test(i) ? "1" : "0");
         printf(COLOR_RESET());
+    }
+}
+
+inline void print_bits(const __m256i& data, bool color = false)
+{
+    const size_t n = sizeof(__m256i) / sizeof(uint8_t);
+    uint8_t buffer[n];
+
+    _mm256_storeu_si256((__m256i*)buffer, data);
+
+    for (int i = 0; i < n; i++)
+    {
+        print_bits(buffer[i], color); printf(" ");
     }
 }
