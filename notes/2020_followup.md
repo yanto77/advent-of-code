@@ -1,19 +1,19 @@
 
-day 1.
+# day 1.
     - previously control flow was handled with breaks and ifs. separating the part in its own function allows using single `return` instead, thus reducing the need to check for stop-conditions in each loop.
         -> the numbers are now closer to 100 than 200.
 
     - in addition, within part2 it's possible to break early in conditions when (i + j) exceeds the target sum. optionally, smallest value can be added to that condition, with minor effect.
         -> this drops exec time to 75-80 range.
 
-day 2.
+# day 2.
 
     - as found out later, regular expressions are little too hardcore for this input. removing ctre dependency (in favor of own simpler parsing methods) drops the runtime from 530 to 75.
 
     - replacing std::count_if with simple for-loop counter didn't yield any benefit, nor any drawbacks.
 
 
-day 3.
+# day 3.
     - replace `std::array<bool, COL_N>` with single `uint32_t` ? COL_N is 31, so i guess it was intended.
 
         - original:        60 +- 4
@@ -26,7 +26,7 @@ day 3.
 
     - TODO: the next would be to understand the AVX2 parts from `to_bits` in voltaras solution. changing that part adds bunch of (irrelevant?) warnings and also reduces the runtime 60 -> 12.
 
-day 9.
+# day 9.
 
     - finding continuous set is the most costly operation atm, taking approx 240 μs or 80% of the whole duration. the approach it is using is for-loop in a for-loop.
         -> updating to the sliding window approach (see https://timvisee.com/blog/solving-aoc-2020-in-under-a-second/ ) removes the main part of the cost - it now takes 0-1 μs. the whole solution now takes only 120 μs on average (best case being around 55 μs).
@@ -59,7 +59,7 @@ day 9.
 
         -> all of these changes bring us average 90 us!
 
-day15:
+# day15:
     - the problem does not expect too large numbers and is memory constrained. reducing size_t to uint32_t does actually have a meaningful effect here!
         -> 600 ms -> 450 ms
 
@@ -77,7 +77,7 @@ day15:
 
         -> 450 ms -> 310 ms
 
-day22:
+# day22:
 
     - https://www.reddit.com/r/adventofcode/comments/khyjgv/2020_day_22_solutions/ggrht8v
         -> "Oh, you literally just win with the high card."
@@ -91,12 +91,12 @@ day22:
         - simpler hash function
 
 
-day23:
+# day23:
 
     - applying the same knowledge as from day15. the problem is memory constrained. thus, we shouldn't use size_t, as we don't really need those extra bits. replacing with uint32_t improves runtime 340ms -> 170ms. note: the runtime is twice faster, as we are processing only half of the initial bits.
 
 
-game of lifes:
+# game of lifes:
     - from http://www.jagregory.com/abrash-black-book/#chapter-17-the-game-of-life
         - padding, already OK
         - updating neighbors instead of recalculating them
@@ -113,7 +113,7 @@ game of lifes:
 
     -> candidates: day11, day17, day24
 
-TODO:
+# TODO:
     day13: extract common stuff, like the equation solvers
 
     memory constrained: day15, day23
@@ -122,3 +122,36 @@ TODO:
 
 
 -> all solutions now run in 645-655 ms
+
+
+# day3 avx stuff:
+
+https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=loadu_si&expand=3418,3296,3418
+
+__m256i
+
+__m256i _mm256_loadu_si256 (__m256i const * mem_addr)
+    "load unaligned signed integer"
+
+__m256i _mm256_set1_epi8 (char a)
+    "Broadcast 8-bit integer a to all elements of dst.
+
+__m256i _mm256_cmpeq_epi8 (__m256i a, __m256i b)
+    "Compare packed 8-bit integers in a and b for equality, and store the results in dst."
+
+int _mm256_movemask_epi8 (__m256i a)
+    "Create mask from the most significant bit of each 8-bit element in a, and store the result in dst."
+
+
+
+input: #.#..#.\n
+input: 00100011 00101110 00100011 00101110 00101110 00100011 00101110 00001010
+mask : 00100011 00100011 00100011 00100011 00100011 00100011 00100011 00100011
+cmpeq: 11111111 00000000 11111111 00000000 00000000 11111111 00000000 00000000
+out  : 10100100
+
+input: #.#\n
+input: 00100011 00101110 00100011 00001010
+mask : 00100011 00100011 00100011 00100011
+cmpeq: 11111111 00000000 11111111 00000000
+out  : 1010
