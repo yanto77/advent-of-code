@@ -118,3 +118,7 @@ TODO:
 
     memory constrained: day15, day23
         > sudo sysctl -w vm.nr_hugepages=64
+
+
+
+-> all solutions now run in 645-655 ms
