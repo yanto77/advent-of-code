@@ -25,43 +25,43 @@ namespace
 
     struct cups_t
     {
-        std::vector<size_t> links; // { idx: cup idx, val: next cup idx }
+        std::vector<uint32_t> links; // { idx: cup idx, val: next cup idx }
 
-        void set_link(size_t from, size_t to)
+        void set_link(uint32_t from, uint32_t to)
         {
             links[from] = to;
         }
 
-        void set_current(size_t cup)
+        void set_current(uint32_t cup)
         {
             links[0] = cup;
         }
 
-        size_t get_current() const
+        uint32_t get_current() const
         {
             return links[0];
         }
 
-        size_t get_cup_count() const
+        uint32_t get_cup_count() const
         {
-            return links.size() - 1;
+            return static_cast<uint32_t>(links.size() - 1);
         }
 
-        std::array<size_t, 3> get_pickup() const
+        std::array<uint32_t, 3> get_pickup() const
         {
-            size_t first = links[get_current()];
-            size_t second = links[first];
-            size_t third = links[second];
+            uint32_t first = links[get_current()];
+            uint32_t second = links[first];
+            uint32_t third = links[second];
             return { first, second, third };
         }
 
-        size_t get_dest_cup(size_t current, const std::array<size_t, 3>& pickup) const
+        uint32_t get_dest_cup(uint32_t current, const std::array<uint32_t, 3>& pickup) const
         {
-            const size_t CUP_N = get_cup_count();
-            size_t dest_cup = loop_around(current - 1, 1LU, CUP_N);
+            const uint32_t CUP_N = get_cup_count();
+            uint32_t dest_cup = loop_around(current - 1, 1u, CUP_N);
             while (contains(pickup, dest_cup))
             {
-                dest_cup = loop_around(dest_cup - 1, 1LU, CUP_N);
+                dest_cup = loop_around(dest_cup - 1, 1u, CUP_N);
             }
             return dest_cup;
         }
@@ -70,13 +70,13 @@ namespace
         void print() const
         {
             auto cup = get_current();
-            printf("current: %zu (-> %zu)\n", cup, links[cup]);
+            printf("current: %u (-> %u)\n", cup, links[cup]);
             do
             {
-                printf("%zu, ", cup);
+                printf("%u, ", cup);
                 cup = links[cup];
             } while (cup != get_current());
-            printf("(%zu) \n", cup);
+            printf("(%u) \n", cup);
         }
 
         size_t get_score_part1()
@@ -101,14 +101,14 @@ namespace
             return cup1 * cup2;
         }
 
-        void grow_to(size_t max_index)
+        void grow_to(uint32_t max_index)
         {
             links.reserve(max_index + 1);
 
-            const size_t current_max = get_cup_count();
+            const uint32_t current_max = get_cup_count();
 
             // update current loop-around link to continue instead
-            for (size_t idx = 1; idx < links.size(); ++idx)
+            for (uint32_t idx = 1; idx < links.size(); ++idx)
             {
                 if (links[idx] == get_current())
                 {
@@ -118,7 +118,7 @@ namespace
             }
 
             // fill in missing entries
-            for (size_t idx = current_max + 1; idx <= max_index; ++idx)
+            for (uint32_t idx = current_max + 1; idx <= max_index; ++idx)
             {
                 links.push_back(idx + 1);
             }
@@ -130,14 +130,14 @@ namespace
 
     cups_t parse(input_t input)
     {
-        std::vector<size_t> in;
+        std::vector<uint32_t> in;
         in.reserve(10);
 
         for (size_t i = 0; input.s[i] != '\n'; ++i)
             in.push_back((input.s[i] - '0'));
 
         cups_t out;
-        out.links = std::vector<size_t>(10, 0);
+        out.links = std::vector<uint32_t>(10, 0);
 
         for (size_t i = 0; i < (in.size() - 1); ++i)
         {
@@ -154,11 +154,11 @@ namespace
     {
         for (size_t move = 0; move < moves; ++move)
         {
-            auto current_cup = cups.get_current();
-            auto pickup_cups = cups.get_pickup();
-            auto dest_value = cups.get_dest_cup(current_cup, pickup_cups);
+            uint32_t current_cup = cups.get_current();
+            std::array<uint32_t, 3> pickup_cups = cups.get_pickup();
+            uint32_t dest_value = cups.get_dest_cup(current_cup, pickup_cups);
 
-            std::array<size_t, 3> prev = {
+            std::array<uint32_t, 3> prev = {
                 cups.links[current_cup],
                 cups.links[dest_value],
                 cups.links[pickup_cups[2]]
