@@ -2,26 +2,24 @@
 
 namespace
 {
-    size_t solve(const std::vector<size_t>& input, size_t limit)
+    uint32_t solve(const std::vector<uint32_t>& input, uint32_t limit)
     {
-        std::vector<size_t> history(limit, 0);
-        for (size_t n = 0; n < input.size(); ++n)
+        std::vector<uint32_t> history(limit, 0);
+
+        const uint32_t N = static_cast<uint32_t>(input.size());
+        for (uint32_t n = 0; n < N; ++n)
         {
             history[input[n]] = n + 1;
         }
 
-        size_t value = 0;
-        size_t last_diff = 0;
-        for (size_t n = input.size(); n < limit; ++n)
+        uint32_t spoken = 0;
+        for (uint32_t turn = N + 1; turn < limit; ++turn)
         {
-            size_t turn = n + 1;
-
-            value = last_diff;
-            last_diff = (history[value] != 0) ? (turn - history[value]) : 0;
-            history[value] = turn;
+            uint32_t hist_val = std::exchange(history[spoken], turn);
+            spoken = (hist_val != 0) ? (turn - hist_val) : 0;
         }
 
-        return value;
+        return spoken;
     }
 }
 
