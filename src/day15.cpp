@@ -5,18 +5,28 @@ namespace
     uint32_t solve(const std::vector<uint32_t>& input, uint32_t limit)
     {
         std::vector<uint32_t> history(limit, 0);
+        std::vector<bool> filter(limit, false);
 
         const uint32_t N = static_cast<uint32_t>(input.size());
         for (uint32_t n = 0; n < N; ++n)
         {
+            filter[input[n]] = true;
             history[input[n]] = n + 1;
         }
 
         uint32_t spoken = 0;
         for (uint32_t turn = N + 1; turn < limit; ++turn)
         {
-            uint32_t hist_val = std::exchange(history[spoken], turn);
-            spoken = (hist_val != 0) ? (turn - hist_val) : 0;
+            if (filter[spoken])
+            {
+                spoken = turn - std::exchange(history[spoken], turn);
+            }
+            else
+            {
+                filter[spoken] = true;
+                history[spoken] = turn;
+                spoken = 0;
+            }
         }
 
         return spoken;
@@ -52,7 +62,7 @@ void day15_test()
     assert(solve({ 3, 2, 1 }, 2020) == 438);
     assert(solve({ 3, 1, 2 }, 2020) == 1836);
 
-    // NB: Takes approx 0.6 second per each call.
+    // NB: Takes approx 0.3 second per each call.
     // assert(solve({0,3,6}, 30000000) == 175594);
     // assert(solve({1,3,2}, 30000000) == 2578);
     // assert(solve({2,1,3}, 30000000) == 3544142);
