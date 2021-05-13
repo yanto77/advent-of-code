@@ -16,19 +16,14 @@ namespace
     {
         size_t loop_idx = 1;
         size_t value = 1;
-        while (true)
+
+        while (value != input)
         {
             value = (value * 7) % 20201227;
-
-            if (value == input)
-                return loop_idx;
-
             ++loop_idx;
-            if (loop_idx > 100000000)
-                break;
         }
 
-        return 0;
+        return loop_idx - 1;
     }
 }
 
