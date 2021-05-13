@@ -7,6 +7,48 @@ typedef std::array<uint32_t, ROW_N> tree_map_t;
 
 namespace
 {
+    [[maybe_unused]]
+    uint32_t convert_basic(const char* input)
+    {
+        uint32_t output = 0;
+        for (size_t c = 0; c < 32; ++c)
+            if (input[c] == '#')
+                set_bit(output, c);
+
+        return output;
+    }
+
+    [[maybe_unused]]
+    uint32_t convert_avx2(const char* input)
+    {
+        const auto* ptr = reinterpret_cast<const __m256i *>(input);
+
+        // Load unaligned signed integer from memory address
+        //
+        // Input:  "#.#\n"
+        // Output: 00100011 00101110 00100011 00001010
+        __m256i v = _mm256_loadu_si256(ptr);
+
+        // Broadcast 8-bit integer (char) to all elements of dst
+        //
+        // Output: 00100011 00100011 00100011 00100011
+        __m256i mask = _mm256_set1_epi8('#');
+
+        // Compare packed 8-bit integers for equality (not bits directly!)
+        //
+        // a:   00100011 00101110 00100011 00001010
+        // b :  00100011 00100011 00100011 00100011
+        // out: 11111111 00000000 11111111 00000000
+        v = _mm256_cmpeq_epi8(v, mask);
+
+        // Reduce 256-bit element to 32-bit element, by taking the most
+        // significant bit of each 8-bit element
+        //
+        // In : 11111111 00000000 11111111 00000000
+        // Out: 1010
+        return _mm256_movemask_epi8(v);
+    }
+
     tree_map_t get_tree_map(const input_t& input)
     {
         tree_map_t map {};
@@ -14,33 +56,7 @@ namespace
         size_t row = 0;
         parse_input(input, [&](const sv& line)
         {
-            const auto* ptr = reinterpret_cast<const __m256i *>(line.data());
-
-            // Load unaligned signed integer from memory address
-            //
-            // Input:  "#.#\n"
-            // Output: 00100011 00101110 00100011 00001010
-            __m256i v = _mm256_loadu_si256(ptr);
-
-            // Broadcast 8-bit integer (char) to all elements of dst
-            //
-            // Output: 00100011 00100011 00100011 00100011
-            __m256i mask = _mm256_set1_epi8('#');
-
-            // Compare packed 8-bit integers for equality (not bits directly!)
-            //
-            // a:   00100011 00101110 00100011 00001010
-            // b :  00100011 00100011 00100011 00100011
-            // out: 11111111 00000000 11111111 00000000
-            v = _mm256_cmpeq_epi8(v, mask);
-
-            // Reduce 256-bit element to 32-bit element, by taking the most
-            // significant bit of each 8-bit element
-            //
-            // In : 11111111 00000000 11111111 00000000
-            // Out: 1010
-            map[row] = _mm256_movemask_epi8(v);
-
+            map[row] = convert_avx2(line.data());
             ++row;
         });
 

@@ -20,7 +20,7 @@
 #include <thread>
 #include <unordered_map>
 #include <vector>
-#include <x86intrin.h>
+#include <immintrin.h>
 
 using namespace std::chrono_literals;
 
