@@ -2,7 +2,6 @@
 #include "input_t.h"
 #include <string>
 
-output_t day01(const input_t&); void day01_test();
 output_t day02(const input_t&); void day02_test();
 output_t day03(const input_t&); void day03_test();
 output_t day04(const input_t&); void day04_test();

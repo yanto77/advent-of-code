@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 1, 1010884, 253928438);
+
 namespace
 {
     size_t part1_sum(const std::vector<int>& v)
@@ -34,20 +36,20 @@ namespace
     }
 }
 
-output_t day01(const input_t& input)
+void Day_2020_1::run_tests() const
+{
+}
+
+output_t Day_2020_1::run_solution(const input_t& input) const
 {
     std::vector<int> v;
     v.reserve(1000);
-    parse_input(input, [&](const sv& line)
-    {
-        v.emplace_back(to_int<int>(line));
+    parse_input(input, [&](const sv& line) 
+    { 
+        v.emplace_back(to_int<int>(line)); 
     });
 
     std::sort(v.begin(), v.end());
 
     return { part1_sum(v), part2_sum(v) };
-}
-
-void day01_test()
-{
 }
