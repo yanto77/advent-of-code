@@ -12,31 +12,32 @@ set(exec_NAME advent2020)
 add_executable(${exec_NAME}
     src/setup/factory.cpp
     src/main.cpp
-    src/day01.cpp
-    src/day02.cpp
-    src/day03.cpp
-    src/day04.cpp
-    src/day05.cpp
-    src/day06.cpp
-    src/day07.cpp
-    src/day08.cpp
-    src/day09.cpp
-    src/day10.cpp
-    src/day11.cpp
-    src/day12.cpp
-    src/day13.cpp
-    src/day14.cpp
-    src/day15.cpp
-    src/day16.cpp
-    src/day17.cpp
-    src/day18.cpp
-    src/day19.cpp
-    src/day20.cpp
-    src/day21.cpp
-    src/day22.cpp
-    src/day23.cpp
-    src/day24.cpp
-    src/day25.cpp
+
+    src/2020/day01.cpp
+    src/2020/day02.cpp
+    src/2020/day03.cpp
+    src/2020/day04.cpp
+    src/2020/day05.cpp
+    src/2020/day06.cpp
+    src/2020/day07.cpp
+    src/2020/day08.cpp
+    src/2020/day09.cpp
+    src/2020/day10.cpp
+    src/2020/day11.cpp
+    src/2020/day12.cpp
+    src/2020/day13.cpp
+    src/2020/day14.cpp
+    src/2020/day15.cpp
+    src/2020/day16.cpp
+    src/2020/day17.cpp
+    src/2020/day18.cpp
+    src/2020/day19.cpp
+    src/2020/day20.cpp
+    src/2020/day21.cpp
+    src/2020/day22.cpp
+    src/2020/day23.cpp
+    src/2020/day24.cpp
+    src/2020/day25.cpp
 )
 
 target_link_libraries(${exec_NAME} fmt::fmt)
@@ -45,6 +46,7 @@ target_include_directories(${exec_NAME} SYSTEM PRIVATE include/3rd-party/fmt/inc
 target_precompile_headers(${exec_NAME} PRIVATE src/advent2020.h)
 
 target_include_directories(${exec_NAME} SYSTEM PRIVATE include/)
+target_include_directories(${exec_NAME} SYSTEM PRIVATE src/)
 if (UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
 endif (UNIX)
