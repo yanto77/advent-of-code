@@ -1,6 +1,9 @@
 cmake_minimum_required (VERSION 3.16)
 project (advent2020)
 
+
+add_subdirectory(include/3rd-party/fmt EXCLUDE_FROM_ALL)
+
 #
 # Compilation configuration (includes, links, properties)
 #
@@ -34,6 +37,9 @@ add_executable(${exec_NAME}
     src/day24.cpp
     src/day25.cpp
 )
+
+target_link_libraries(${exec_NAME} fmt::fmt)
+target_include_directories(${exec_NAME} SYSTEM PRIVATE include/3rd-party/fmt/include)
 
 target_precompile_headers(${exec_NAME} PRIVATE src/advent2020.h)
 
