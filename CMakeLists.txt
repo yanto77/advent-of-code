@@ -10,6 +10,7 @@ add_subdirectory(include/3rd-party/fmt EXCLUDE_FROM_ALL)
 
 set(exec_NAME advent2020)
 add_executable(${exec_NAME}
+    src/setup/factory.cpp
     src/main.cpp
     src/day01.cpp
     src/day02.cpp
@@ -71,6 +72,7 @@ target_compile_options(advent2020 PRIVATE
         -Wno-sign-conversion
         -Wno-sign-compare
         -Wno-padded
+        -Wno-weak-vtables # allow abstract classes
         # Code Generation Convention
         -fwrapv
         -pedantic
