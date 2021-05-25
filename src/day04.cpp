@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 4, 237, 172);
+
 namespace
 {
     class passport_t
@@ -147,7 +149,7 @@ namespace
     };
 }
 
-output_t day04(const input_t& input)
+output_t Day_2020_4::run_solution(const input_t& input) const
 {
     std::vector<passport_t> passports;
     passports.reserve(1000);
@@ -203,7 +205,7 @@ output_t day04(const input_t& input)
     return { filled_nb, valid_nb };
 }
 
-void day04_test()
+void Day_2020_4::run_tests() const
 {
     static_assert(hex_to_dec("#000000") == 0);
     static_assert(hex_to_dec("#00000F") == 15);

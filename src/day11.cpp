@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 11, 2108, 1897);
+
 enum class seat_state_t : uint8_t
 {
     FLOOR,
@@ -236,7 +238,7 @@ namespace
     }
 }
 
-output_t day11(const input_t& input)
+output_t Day_2020_11::run_solution(const input_t& input) const
 {
     seat_map_t test_map = parse_input(input);
     const auto& [steps, after_map] = simulate_until_stable(test_map, true);
@@ -248,7 +250,7 @@ output_t day11(const input_t& input)
     return { occupied1, occupied2 };
 }
 
-void day11_test()
+void Day_2020_11::run_tests() const
 {
     char str1[] = "L.LL.LL.LL\n"
                   "LLLLLLL.LL\n"

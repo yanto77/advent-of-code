@@ -1,13 +1,17 @@
 #include "advent2020.h"
 #include <3rd-party/ctre.hpp> // https://github.com/hanickadot/compile-time-regular-expressions
 
+ADVENT_DAY(2020, 7, 172, 39645);
+
 typedef std::unordered_map<sv, size_t> key_dict_t;
+
 struct link_t
 {
     size_t from;
     size_t to;
     int cost;
 };
+
 struct result_t
 {
     key_dict_t key_dict;
@@ -141,7 +145,7 @@ namespace
     }
 }
 
-output_t day07(const input_t& input)
+output_t Day_2020_7::run_solution(const input_t& input) const
 {
     result_t res = parse_input(input);
 
@@ -150,7 +154,7 @@ output_t day07(const input_t& input)
     return { con_nb, con_cost };
 }
 
-void day07_test()
+void Day_2020_7::run_tests() const
 {
     {
         auto asd1 = parse_single_bag("4 striped lavender bags");

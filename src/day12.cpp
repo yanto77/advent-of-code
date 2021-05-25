@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 12, 364, 39518);
+
 namespace
 {
     enum action_t : uint8_t
@@ -169,7 +171,7 @@ namespace
     }
 }
 
-output_t day12(const input_t& input)
+output_t Day_2020_12::run_solution(const input_t& input) const
 {
     std::vector<order_t> orders = parse_input(input);
 
@@ -182,7 +184,7 @@ output_t day12(const input_t& input)
     };
 }
 
-void day12_test()
+void Day_2020_12::run_tests() const
 {
     char text1[] = "F10\nN3\nF7\nR90\nF11\n";
     input_t input1 { text1, sizeof(text1) };

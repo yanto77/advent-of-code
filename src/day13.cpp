@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 13, 2947, 526090562196173);
+
 struct data_t
 {
     int t0 = 0;
@@ -124,7 +126,7 @@ namespace
     }
 }
 
-output_t day13(const input_t& input)
+output_t Day_2020_13::run_solution(const input_t& input) const
 {
     data_t data = parse_input(input);
 
@@ -134,7 +136,7 @@ output_t day13(const input_t& input)
     return { part1, part2 };
 }
 
-void day13_test()
+void Day_2020_13::run_tests() const
 {
     // Part 1
     {

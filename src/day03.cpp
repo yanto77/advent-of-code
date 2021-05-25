@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 3, 268, 3093068400);
+
 static constexpr size_t COL_N = 31;
 static constexpr size_t ROW_N = 323;
 
@@ -81,7 +83,7 @@ namespace
     }
 }
 
-output_t day03(const input_t& input)
+output_t Day_2020_3::run_solution(const input_t& input) const
 {
     const tree_map_t& map = get_tree_map(input);
 
@@ -95,7 +97,7 @@ output_t day03(const input_t& input)
     return { part1, part2 };
 }
 
-void day03_test()
+void Day_2020_3::run_tests() const
 {
     constexpr bool PRINT_DEBUG = false;
     if constexpr (PRINT_DEBUG) // AVX2 print debug test

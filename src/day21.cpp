@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 21, 2307, 1);
+
 namespace
 {
     struct ingredient_t
@@ -138,7 +140,7 @@ namespace
     }
 }
 
-output_t day21(const input_t& input)
+output_t Day_2020_21::run_solution(const input_t& input) const
 {
     const auto& [part1, part2] = evaluate(input);
 
@@ -149,7 +151,7 @@ output_t day21(const input_t& input)
     return { part1, 1 };
 }
 
-void day21_test()
+void Day_2020_21::run_tests() const
 {
     char text1[] = "mxmxvkd kfcds sqjhc nhms (contains dairy, fish)\n"
                    "trh fvjkl sbzzf mxmxvkd (contains dairy)\n"

@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 25, 6408263, 1);
+
 namespace
 {
     constexpr size_t transform(size_t subject, size_t n_loops)
@@ -27,7 +29,7 @@ namespace
     }
 }
 
-output_t day25(const input_t& /* input */)
+output_t Day_2020_25::run_solution(const input_t& /* input */) const
 {
     size_t key1 = transform(8335663, get_loop_size(8614349));
     size_t key2 = transform(8614349, get_loop_size(8335663));
@@ -35,7 +37,7 @@ output_t day25(const input_t& /* input */)
     return { key1, 1 };
 }
 
-void day25_test()
+void Day_2020_25::run_tests() const
 {
     static_assert(8 == get_loop_size(5764801));
     static_assert(11 == get_loop_size(17807724));

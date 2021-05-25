@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 23, 53248976, 418819514477);
+
 namespace
 {
     template <typename T>
@@ -175,7 +177,7 @@ namespace
     }
 }
 
-output_t day23(const input_t& input)
+output_t Day_2020_23::run_solution(const input_t& input) const
 {
     auto out = parse(input);
     size_t part1 = evaluate(out, 100).get_score_part1();
@@ -186,7 +188,7 @@ output_t day23(const input_t& input)
     return { part1, part2 };
 }
 
-void day23_test()
+void Day_2020_23::run_tests() const
 {
     char text1[] = "389125467\n";
     input_t test1 { text1, sizeof(text1) };

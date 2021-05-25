@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 14, 14954914379452, 3415488160714);
+
 namespace
 {
     constexpr uint8_t MASK_BIT_COUNT = 36;
@@ -96,14 +98,14 @@ namespace
     }
 }
 
-output_t day14(const input_t& input)
+output_t Day_2020_14::run_solution(const input_t& input) const
 {
     size_t part1 = evaluate(input, true);
     size_t part2 = evaluate(input, false);
     return { part1, part2 };
 }
 
-void day14_test()
+void Day_2020_14::run_tests() const
 {
     char input1[] = "mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X\n"
                     "mem[8] = 11\n"

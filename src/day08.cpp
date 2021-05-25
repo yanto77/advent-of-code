@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 8, 1949, 2092);
+
 enum op_type_t : uint8_t
 {
     ERR, // error, default value
@@ -122,7 +124,7 @@ namespace
     }
 }
 
-output_t day08(const input_t& input)
+output_t Day_2020_8::run_solution(const input_t& input) const
 {
     const program_t& prg = parse_input(input);
 
@@ -132,7 +134,7 @@ output_t day08(const input_t& input)
     return { static_cast<size_t>(acc1), static_cast<size_t>(acc2) };
 }
 
-void day08_test()
+void Day_2020_8::run_tests() const
 {
     char input1[] = "nop +0\n"
                     "acc +1\n"

@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 18, 4696493914530, 362880372308125);
+
 namespace
 {
     typedef std::map<char, int> prec_map_t;
@@ -84,7 +86,7 @@ namespace
     }
 }
 
-output_t day18(const input_t& input)
+output_t Day_2020_18::run_solution(const input_t& input) const
 {
     size_t part1 = 0;
     size_t part2 = 0;
@@ -96,7 +98,7 @@ output_t day18(const input_t& input)
     return { part1, part2 };
 }
 
-void day18_test()
+void Day_2020_18::run_tests() const
 {
     assert(solve_single(pt1, "1 + 2 * 3 + 4 * 5 + 6\n") == 71);
     assert(solve_single(pt1, "1 + (2 * 3) + (4 * (5 + 6))\n") == 51);

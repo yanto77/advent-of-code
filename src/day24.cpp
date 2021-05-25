@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 24, 438, 4038);
+
 namespace
 {
     constexpr size_t MAP_DIM = 150;
@@ -84,7 +86,7 @@ namespace
     }
 }
 
-output_t day24(const input_t& input)
+output_t Day_2020_24::run_solution(const input_t& input) const
 {
     const auto& map = parse_and_fill(input);
     size_t part1 = count_flipped(map);
@@ -92,7 +94,7 @@ output_t day24(const input_t& input)
     return { part1, part2 };
 }
 
-void day24_test()
+void Day_2020_24::run_tests() const
 {
     char text1[641] = "sesenwnenenewseeswwswswwnenewsewsw\n"
                       "neeenesenwnwwswnenewnwwsewnenwseswesw\n"

@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 22, 33434, 31657);
+
 struct decks_t
 {
     std::deque<int> p1;
@@ -166,7 +168,7 @@ namespace
     }
 }
 
-output_t day22(const input_t& input)
+output_t Day_2020_22::run_solution(const input_t& input) const
 {
     auto decks = parse_decks(input);
     auto [part1, p1_won_part1] = play_game(decks);
@@ -174,7 +176,7 @@ output_t day22(const input_t& input)
     return { part1, part2 };
 }
 
-void day22_test()
+void Day_2020_22::run_tests() const
 {
     {
         char text1[] = "Player 1:\n"

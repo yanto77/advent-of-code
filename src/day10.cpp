@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 10, 2664, 148098383347712);
+
 namespace
 {
     // Returns a vector of element-wise differences (between sorted adapters)
@@ -82,7 +84,7 @@ namespace
     }
 }
 
-output_t day10(const input_t& input)
+output_t Day_2020_10::run_solution(const input_t& input) const
 {
     std::vector<uint8_t> element_deltas = parse_input(input);
 
@@ -92,7 +94,7 @@ output_t day10(const input_t& input)
     return { (delta1 * delta3), variations };
 }
 
-void day10_test()
+void Day_2020_10::run_tests() const
 {
     {
         char text1[] = "16\n10\n15\n5\n1\n11\n7\n19\n6\n12\n4\n";
