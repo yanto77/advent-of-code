@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 2, 465, 294);
+
 namespace
 {
     size_t count_occurences(const sv& in, const char counted_ch)
@@ -8,7 +10,7 @@ namespace
     }
 }
 
-output_t day02(const input_t& input)
+output_t Day_2020_2::run_solution(const input_t& input) const
 {
     size_t part1 = 0;
     size_t part2 = 0;
@@ -34,7 +36,7 @@ output_t day02(const input_t& input)
     return { part1, part2 };
 }
 
-void day02_test()
+void Day_2020_2::run_tests() const
 {
     assert(count_occurences("abcdefg", 'c') == 1);
     assert(count_occurences("abababa", 'a') == 4);

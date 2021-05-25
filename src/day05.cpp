@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 5, 953, 615);
+
 namespace
 {
     constexpr uint16_t convert_line(const sv& sv)
@@ -20,7 +22,7 @@ namespace
     }
 }
 
-output_t day05(const input_t& input)
+output_t Day_2020_5::run_solution(const input_t& input) const
 {
     uint16_t max_seat_id = 0; // Part 1
     uint16_t my_seat_id = 0; // Part 2
@@ -54,7 +56,7 @@ output_t day05(const input_t& input)
     return { max_seat_id, my_seat_id };
 }
 
-void day05_test()
+void Day_2020_5::run_tests() const
 {
     static_assert(convert_line("BFFFBBFRRR") == 70 * 8 + 7);
     static_assert(convert_line("FFFBBBFRRR") == 14 * 8 + 7);

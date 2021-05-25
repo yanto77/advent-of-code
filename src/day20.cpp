@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 20, 107399567124539, 1555);
+
 namespace
 {
     enum side_t
@@ -544,7 +546,7 @@ namespace
     }
 }
 
-output_t day20(const input_t& input)
+output_t Day_2020_20::run_solution(const input_t& input) const
 {
     auto tiles = parse_tiles(input);
     const auto& corners = get_corners(tiles);
@@ -563,7 +565,7 @@ output_t day20(const input_t& input)
     return { prod, part2 };
 }
 
-void day20_test()
+void Day_2020_20::run_tests() const
 {
     char text1[] = "Tile 2311:\n"
                    "..##.#..#.\n##..#.....\n#...##..#.\n####.#...#\n##.##.###.\n"

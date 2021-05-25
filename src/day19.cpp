@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 19, 208, 316);
+
 namespace
 {
     struct rule_t
@@ -190,14 +192,14 @@ namespace
     };
 }
 
-output_t day19(const input_t& input)
+output_t Day_2020_19::run_solution(const input_t& input) const
 {
     solver s;
     s.parse(input);
     return s.solve();
 }
 
-void day19_test()
+void Day_2020_19::run_tests() const
 {
     static_assert(append_bits<int>(0b010, 0b001, 2) == 0b1001);
     static_assert(append_bits<int>(0b010, 0b001, 1) == 0b101);

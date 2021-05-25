@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 17, 401, 2224);
+
 namespace
 {
     constexpr size_t X = 32, Y = 32, Z = 16, W = 16;
@@ -149,7 +151,7 @@ namespace
     }
 }
 
-output_t day17(const input_t& input)
+output_t Day_2020_17::run_solution(const input_t& input) const
 {
     auto world = parse_input(input);
     auto world1 = evaluate_pt1(convert_pt1(world), 6);
@@ -160,7 +162,7 @@ output_t day17(const input_t& input)
     return { part1, part2 };
 }
 
-void day17_test()
+void Day_2020_17::run_tests() const
 {
     // .#.
     // ..#

@@ -45,5 +45,4 @@ using namespace std::chrono_literals;
 #include "helpers/timer.h"
 #include "helpers/math.h"
 
-#include "setup/days.h"
 #include "setup/factory.h"

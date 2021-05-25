@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 9, 507622668, 76688505);
+
 namespace
 {
     class solver_t
@@ -75,7 +77,7 @@ namespace
     };
 }
 
-output_t day09(const input_t& input)
+output_t Day_2020_9::run_solution(const input_t& input) const
 {
     solver_t solver;
     solver.parse(input);
@@ -88,7 +90,7 @@ output_t day09(const input_t& input)
     return { invalid_num, static_cast<size_t>(min + max) };
 }
 
-void day09_test()
+void Day_2020_9::run_tests() const
 {
     char text[] = "35\n20\n15\n25\n47\n40\n62\n55\n65\n95\n102\n"
                   "117\n150\n182\n127\n219\n299\n277\n309\n576\n";

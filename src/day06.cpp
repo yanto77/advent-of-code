@@ -1,6 +1,8 @@
 #include "advent2020.h"
 
-output_t day06(const input_t& input)
+ADVENT_DAY(2020, 6, 6947, 3398);
+
+output_t Day_2020_6::run_solution(const input_t& input) const
 {
     struct group_t
     {
@@ -44,6 +46,6 @@ output_t day06(const input_t& input)
     return { acc1, acc2 };
 }
 
-void day06_test()
+void Day_2020_6::run_tests() const
 {
 }

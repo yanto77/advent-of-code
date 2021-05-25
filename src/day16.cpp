@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 16, 21956, 3709435214239);
+
 namespace
 {
     [[maybe_unused]]
@@ -225,12 +227,12 @@ namespace
     }
 }
 
-output_t day16(const input_t& input)
+output_t Day_2020_16::run_solution(const input_t& input) const
 {
     return evaluate(input);
 }
 
-void day16_test()
+void Day_2020_16::run_tests() const
 {
     // {
     //     char input[128] =

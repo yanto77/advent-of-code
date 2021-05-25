@@ -1,5 +1,7 @@
 #include "advent2020.h"
 
+ADVENT_DAY(2020, 15, 1294, 573522);
+
 namespace
 {
     uint32_t solve(const std::vector<uint32_t>& input, uint32_t limit)
@@ -33,14 +35,14 @@ namespace
     }
 }
 
-output_t day15(const input_t& /* input */)
+output_t Day_2020_15::run_solution(const input_t& /* input */) const
 {
     size_t part1 = solve({ 1, 0, 16, 5, 17, 4 }, 2020);
     size_t part2 = solve({ 1, 0, 16, 5, 17, 4 }, 30000000);
     return { part1, part2 };
 }
 
-void day15_test()
+void Day_2020_15::run_tests() const
 {
     // Turn  1:                              Value=0, Insert={1, 0}
     // Turn  2:                              Value=3, Insert={2, 0}
