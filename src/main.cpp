@@ -1,4 +1,4 @@
-#include "advent2020.h"
+#include "setup/all.h"
 #include <fmt/format.h>
 
 int main()
