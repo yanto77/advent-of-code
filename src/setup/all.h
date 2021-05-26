@@ -47,3 +47,5 @@ using namespace std::chrono_literals;
 #include <helpers/math.h>
 
 #include <setup/factory.h>
+
+#include <fmt/format.h>
