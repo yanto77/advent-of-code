@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.16)
-project (advent2020)
+project (advent_of_code)
 
 
 add_subdirectory(include/3rd-party/fmt EXCLUDE_FROM_ALL)
@@ -8,7 +8,7 @@ add_subdirectory(include/3rd-party/fmt EXCLUDE_FROM_ALL)
 # Compilation configuration (includes, links, properties)
 #
 
-set(exec_NAME advent2020)
+set(exec_NAME advent_of_code)
 add_executable(${exec_NAME}
     src/setup/factory.cpp
     src/main.cpp
@@ -60,7 +60,7 @@ set_target_properties(${exec_NAME} PROPERTIES CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Add compiler warnings
 #
 
-target_compile_options(advent2020 PRIVATE
+target_compile_options(advent_of_code PRIVATE
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
         # Warnings
         -Weverything
