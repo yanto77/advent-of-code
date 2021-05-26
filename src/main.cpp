@@ -55,14 +55,23 @@ namespace
     }
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+    size_t filter_year = (argc > 1) ? std::atoi(argv[1]) : 0;
+    size_t filter_day = (argc > 2) ? std::atoi(argv[2]) : 0;
+
     int64_t time_total = 0;
     for (const auto& [year, days] : DayFactory::get_years())
     {
+        if (filter_year != 0 && year != filter_year)
+            continue;
+
         int64_t time_year = 0;
         for (const auto& [day, create_fn] : days)
         {
+            if (filter_day != 0 && day != filter_day)
+                continue;
+
             const std::unique_ptr<IDay> inst = create_fn();
             const auto& [result, time] = run_single_day(year, day, inst.get());
             print_results(year, day, inst->get_valid(), result, time);
