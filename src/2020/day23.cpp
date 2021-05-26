@@ -1,4 +1,4 @@
-#include "advent2020.h"
+#include "setup/all.h"
 
 ADVENT_DAY(2020, 23, 53248976, 418819514477);
 

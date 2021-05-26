@@ -24,6 +24,7 @@
 
 using namespace std::chrono_literals;
 
+// Include assert() for all builds (incl. Release)
 #ifdef NDEBUG
     #undef NDEBUG
     #include <cassert>
@@ -32,17 +33,17 @@ using namespace std::chrono_literals;
     #include <cassert>
 #endif
 
-#include "helpers/array.h"
-#include "helpers/bit.h"
-#include "helpers/conv.h"
-#include "helpers/hash.h"
-#include "helpers/input.h"
-#include "helpers/pow.h"
-#include "helpers/print.h"
-#include "helpers/string.h"
-#include "helpers/vec2.h"
-#include "helpers/vec3.h"
-#include "helpers/timer.h"
-#include "helpers/math.h"
+#include <helpers/array.h>
+#include <helpers/bit.h>
+#include <helpers/conv.h>
+#include <helpers/hash.h>
+#include <helpers/input.h>
+#include <helpers/pow.h>
+#include <helpers/print.h>
+#include <helpers/string.h>
+#include <helpers/vec2.h>
+#include <helpers/vec3.h>
+#include <helpers/timer.h>
+#include <helpers/math.h>
 
-#include "setup/factory.h"
+#include <setup/factory.h>

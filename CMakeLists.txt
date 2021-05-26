@@ -43,7 +43,7 @@ add_executable(${exec_NAME}
 target_link_libraries(${exec_NAME} fmt::fmt)
 target_include_directories(${exec_NAME} SYSTEM PRIVATE include/3rd-party/fmt/include)
 
-target_precompile_headers(${exec_NAME} PRIVATE src/advent2020.h)
+target_precompile_headers(${exec_NAME} PRIVATE src/setup/all.h)
 
 target_include_directories(${exec_NAME} SYSTEM PRIVATE include/)
 target_include_directories(${exec_NAME} SYSTEM PRIVATE src/)
