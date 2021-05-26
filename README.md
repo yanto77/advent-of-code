@@ -1,7 +1,18 @@
-# advent2020
+# advent-of-code
 
-Personal [Advent of Code 2020](http://adventofcode.com/2020/) C++ solutions.
+Solutions for [Advent of Code](http://adventofcode.com/) in C++.
 
-Project is based on https://github.com/Voltara/advent2018-fast
+Project is based on [Voltara/advent2018-fast](https://github.com/Voltara/advent2018-fast), but has been modified since.
 
-Cleaned up notes available: [https://yanto.fi/2021/03/advent-of-code-2020/](https://yanto.fi/2021/03/advent-of-code-2020/)
+
+## 2020
+
+Status: 50*, all days run in 650-700 ms.
+
+Notes available here:
+[part1](https://yanto.fi/2021/03/advent-of-code-2020/),
+[part2](https://yanto.fi/2021/05/advent-of-code-2020-part-2/).
+
+## 2019
+
+Status: 0*
