@@ -31,11 +31,38 @@ inline std::vector<sv> split_multi(const sv& input, const sv& delim)
 }
 
 /**
+ * Split string by delimiters into multiple parts, run `cb` on each part
+ */
+inline void split_multi(const sv& input, const sv& delim, std::function<void(const sv&)> callback)
+{
+    size_t start = 0;
+    while (start < input.size())
+    {
+        size_t pos = input.find(delim, start);
+        if (pos == sv::npos)
+        {
+            if (start < input.size()) // fill in the last part
+                callback(sv { &input[start], input.size() - start });
+
+            break;
+        }
+
+        callback(sv { &input[start], pos - start });
+        start = pos + delim.size();
+    }
+}
+
+/**
  * Split string by delimiters into multiple parts
  */
 inline std::vector<sv> split_multi(const sv& input, char delim)
 {
     return split_multi(input, sv { &delim, 1 });
+}
+
+inline void split_multi(const sv& input, char delim, std::function<void(const sv&)> callback)
+{
+    split_multi(input, sv { &delim, 1 }, callback);
 }
 
 /**
