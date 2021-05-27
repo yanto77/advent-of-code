@@ -7,6 +7,12 @@
 
 /// Input helpers
 
+/// Get full input as a single line
+inline sv get_sv(const input_t& input)
+{
+    return sv { input.s, static_cast<size_t>(input.len) };
+}
+
 inline void parse_input(const input_t& input, std::function<void(const std::string_view&)> line_cb)
 {
     for (size_t size = 0, i = 0; i < input.len; i++)
