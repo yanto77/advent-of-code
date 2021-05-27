@@ -45,11 +45,16 @@ void print_col(const cnt& data)
 }
 
 template <typename cnt>
-void print_row(const cnt& data)
+void print_row(const cnt& data, ssize_t linebreak = -1)
 {
-    for (const auto& d : data)
+    for (size_t idx = 0; idx < data.size(); ++idx)
     {
-        printf("%d, ", static_cast<int>(d));
+        printf("%d, ", static_cast<int>(data[idx]));
+
+        if (linebreak != -1 && (idx + 1) % linebreak == 0)
+        {
+            printf("\n");
+        }
     }
     printf("\n");
 }
