@@ -44,18 +44,24 @@ std::pair<T, size_t> to_int(const sv& input, size_t start)
 }
 
 /**
- * Convert string of multiple ints delimited by `delim`
+ * Convert string of multiple ints delimited by non-numeric char
  * @param input input string
- * @param input delimiter character
  * @returns vector of parsed ints
  */
 template <typename T>
-inline std::vector<T> to_multi_int(const sv& input, char delim)
+inline std::vector<T> to_multi_int(const sv& input)
 {
     std::vector<T> out;
-    for (const auto& part : split_multi(input, delim))
+
+    size_t ch_idx = 0; // line character index
+    while (ch_idx < input.size())
     {
-        out.push_back(to_int<T>(part));
+        const auto& [num, end] = to_int<T>(input, ch_idx);
+        out.push_back(num);
+        ch_idx = end + 1;
+
+        if (end == SIZE_MAX)
+            break;
     }
 
     return out;
