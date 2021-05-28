@@ -46,9 +46,10 @@ namespace
         }
 
         // at least one group of exactly 2 digits
-        bool small_group = std::any_of(counter.begin(), counter.end(), [](uint8_t x) { return x == 2; });
+        bool small_group = std::any_of(counter.begin(), counter.end(),
+            [](uint8_t x) { return x == 2; });
 
-        return { increasing && adjacent, increasing && small_group };
+        return { true, small_group };
     }
 }
 
