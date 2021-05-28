@@ -21,6 +21,7 @@
 #include <unordered_map>
 #include <vector>
 #include <immintrin.h>
+#include <mmintrin.h>
 
 using namespace std::chrono_literals;
 
