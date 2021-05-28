@@ -1,12 +1,14 @@
 #include "setup/all.h"
 
-ADVENT_DAY(2019, 3, 1519, 0);
+ADVENT_DAY(2019, 3, 1519, 14358);
 
 namespace
 {
     typedef std::vector<vec2i> polyline_t;
     typedef std::array<vec2i, 2> segment_t;
+    typedef std::vector<std::pair<vec2i, size_t>> cross_list_t;
 
+    // Ref: https://en.wikipedia.org/wiki/Intersection_(Euclidean_geometry)#Two_line_segments
     // Ref: https://stackoverflow.com/a/35474310
     constexpr bool intersect(const segment_t& s1, const segment_t& s2, vec2i& point)
     {
@@ -26,16 +28,13 @@ namespace
         float r = static_cast<float>(dx * by - dy * bx) / det;
         float s = static_cast<float>(ax * dy - ay * dx) / det;
 
-        if (!(r < 0 || r > 1 || s < 0 || s > 1))
+        bool hit = !(r < 0 || r > 1 || s < 0 || s > 1);
+        if (hit)
         {
             point.x = s1[0].x + static_cast<int32_t>(r * static_cast<float>((s1[1].x - s1[0].x)));
             point.y = s1[0].y + static_cast<int32_t>(r * static_cast<float>((s1[1].y - s1[0].y)));
-
-            // point.x = s1[0].x + static_cast<int32_t>(s * static_cast<float>((s1[1].x - s1[0].x)));
-            // point.y = s1[0].y + static_cast<int32_t>(s * static_cast<float>((s1[1].y - s1[0].y)));
         }
-
-        return !(r < 0 || r > 1 || s < 0 || s > 1);
+        return hit;
     }
 
     polyline_t get_polyline(const sv& line)
@@ -58,56 +57,77 @@ namespace
     }
 
     // get manhattan distance from {0, 0}
-    size_t dist(const vec2i& in)
-    {
-        return abs(in.x) + abs(in.y);
-    }
+    size_t get_dist(const vec2i& in) { return abs(in.x) + abs(in.y); }
 
-    vec2i get_closest_intersection(const polyline_t& line1, const polyline_t& line2)
+    // get manhattan distance between two vectors
+    size_t get_dist(const vec2i& a, const vec2i& b) { return abs(a.x - b.x) + abs(a.y - b.y); }
+
+    // get manhattan distance for a segment
+    size_t get_dist(const segment_t& s) { return abs(s[0].x - s[1].x) + abs(s[0].y - s[1].y);}
+
+    cross_list_t get_intersections(const polyline_t& a, const polyline_t& b)
     {
-        vec2i closest_point { INT_MAX / 2, INT_MAX / 2 };
-        
-        for (size_t idx1 = 0; idx1 < line1.size() - 1; ++idx1)
+        cross_list_t out;
+        size_t dist_a = 0;
+        for (size_t idx_a = 0; idx_a < a.size() - 1; ++idx_a)
         {
-            segment_t s1 { line1[idx1], line1[idx1+1] };
-            for (size_t idx2 = 0; idx2 < line2.size() - 1; ++idx2)
+            segment_t sa { a[idx_a], a[idx_a+1] };
+            dist_a += get_dist(sa);
+
+            size_t dist_b = 0;
+            for (size_t idx_b = 0; idx_b < b.size() - 1; ++idx_b)
             {
-                segment_t s2 { line2[idx2], line2[idx2+1] };
+                segment_t sb { b[idx_b], b[idx_b+1] };
+                dist_b += get_dist(sb);
 
                 vec2i point;
-                if (intersect(s1, s2, point))
+                if (intersect(sa, sb, point))
                 {
-                    // fmt::print("intersection! s1: [{}, {}], [{}, {}], s2: [{}, {}], [{}, {}]\n", 
-                    // s1[0].x, s1[0].y, s1[1].x, s1[1].y, 
-                    // s2[0].x, s2[0].y, s2[1].x, s2[1].y);
-
-                    // fmt::print(" -> point: [{}, {}], dist: {}\n", point.x, point.y, dist(point));
-
-                    if (point != vec2i{0, 0} && dist(point) < dist(closest_point))
-                    {
-                        closest_point = point;
-                    }
+                    size_t extra_dist = get_dist(sa[1], point) + get_dist(sb[1], point);
+                    out.push_back({ point, dist_a + dist_b - extra_dist });
                 }
             }
         }
 
+        return out;
+    }
+
+    vec2i get_closest_pt1(const cross_list_t& points)
+    {
+        vec2i closest_point { INT_MAX / 2, INT_MAX / 2 };
+
+        for (const auto& [point, dist]: points)
+            if (point != vec2i{0, 0} && get_dist(point) < get_dist(closest_point))
+                closest_point = point;
+
         return closest_point;
+    }
+
+    size_t get_distance_pt2(const cross_list_t& points)
+    {
+        size_t closest_dist = SIZE_MAX;
+
+        for (const auto& [point, dist]: points)
+            if (point != vec2i{0, 0} && dist < closest_dist)
+                closest_dist = dist;
+
+        return closest_dist;
     }
 }
 
 output_t Day_2019_3::run_solution(const input_t& input) const
 {
     std::vector<polyline_t> lines;
-
     parse_input(input, [&](const sv& line)
     {
         lines.push_back(get_polyline(line));
     });
 
-    auto point = get_closest_intersection(lines[0], lines[1]);
-    // fmt::print("point 1: {}, {}\n", point.x, point.y);
+    const auto& points = get_intersections(lines[0], lines[1]);
+    size_t part1 = get_dist(get_closest_pt1(points));
+    size_t part2 = get_distance_pt2(points);
 
-    return {dist(point), 0};
+    return {part1, part2};
 }
 
 void Day_2019_3::run_tests() const
@@ -126,24 +146,24 @@ void Day_2019_3::run_tests() const
     {
         auto line1 = get_polyline(sv{ inputs[0].data(), inputs[0].length() });
         auto line2 = get_polyline(sv{ inputs[1].data(), inputs[1].length() });
-        auto point = get_closest_intersection(line1, line2);
-        // fmt::print("point 1: {}, {}\n", point.x, point.y);
-        assert(dist(point) == 6);
+        auto points = get_intersections(line1, line2);
+        assert(get_dist(get_closest_pt1(points)) == 6);
+        assert(get_distance_pt2(points) == 30);
     }
 
     {
         auto line1 = get_polyline(sv{ inputs[2].data(), inputs[2].length() });
         auto line2 = get_polyline(sv{ inputs[3].data(), inputs[3].length() });
-        auto point = get_closest_intersection(line1, line2);
-        // fmt::print("point 2: {}, {}\n", point.x, point.y);
-        assert(dist(point) == 159);
+        auto points = get_intersections(line1, line2);
+        assert(get_dist(get_closest_pt1(points)) == 159);
+        assert(get_distance_pt2(points) == 610);
     }
 
     {
         auto line1 = get_polyline(sv{ inputs[4].data(), inputs[4].length() });
         auto line2 = get_polyline(sv{ inputs[5].data(), inputs[5].length() });
-        auto point = get_closest_intersection(line1, line2);
-        // fmt::print("point 3: {}, {}\n", point.x, point.y);
-        assert(dist(point) == 135);
+        auto points = get_intersections(line1, line2);
+        assert(get_dist(get_closest_pt1(points)) == 135);
+        assert(get_distance_pt2(points) == 410);
     }
 }
