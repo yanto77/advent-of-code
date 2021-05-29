@@ -13,6 +13,7 @@ add_executable(${exec_NAME}
     src/setup/factory.cpp
     src/main.cpp
 
+    src/2019/intcode.cpp
     src/2019/day01.cpp
     src/2019/day02.cpp
     src/2019/day03.cpp
