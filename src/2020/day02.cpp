@@ -18,8 +18,10 @@ output_t Day_2020_2::run_solution(const input_t& input) const
     parse_input(input, [&](const sv& line)
     {
         // Parsing line
-        const auto& [min, idx1] = to_int<int>(line, 0);
-        const auto& [max, idx2] = to_int<int>(line, idx1+1);
+        size_t mid = line.find_first_of('-', 0);
+        const int min = to_int<int>(sv { &line[0], mid });
+        const auto& [max, idx2] = to_int<int>(line, mid+1);
+
         const char ch = line[idx2+1];
         const sv pwd { &line[idx2+4], line.size() - idx2 - 4};
 
