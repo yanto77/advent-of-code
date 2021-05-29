@@ -6,16 +6,17 @@
 
 enum instr: uint8_t
 {
-    // arg1 + arg2 => arg3
-    SUM = 1,
-    // arg1 * arg2 => arg3
-    MULTIPLY = 2,
-    // write input to arg1
-    INPUT = 3,
-    // output value of arg1
-    OUTPUT = 4,
+    SUM         = 1, // arg1 + arg2 => arg3
+    MULTIPLY    = 2, // arg1 * arg2 => arg3
+    INPUT       = 3, // write input to arg1
+    OUTPUT      = 4, // output value of arg1
 
-    HALT = 99
+    JUMP_EQ     = 5,
+    JUMP_NEQ    = 6,
+    CMP_LESS    = 7,
+    CMP_EQ      = 8,
+
+    HALT        = 99
 };
 
 struct intcode_solver_t
@@ -23,16 +24,19 @@ struct intcode_solver_t
   public:
     intcode_solver_t()
     {
+        reset();
     }
 
     intcode_solver_t(const sv& input)
         : program(to_multi_int<int32_t>(input))
     {
+        reset();
     }
 
     intcode_solver_t(const std::string& input)
         : intcode_solver_t(sv { input.data(), input.length() })
     {
+        reset();
     }
 
     std::vector<int32_t> execute(const std::vector<int32_t>& data)
@@ -53,19 +57,19 @@ struct intcode_solver_t
             {
                 case instr::SUM:
                 {
-                    program[get_addr(3)] = get_param(1, m1) + get_param(2, m2);
+                    memory[get_addr(3)] = get_param(1, m1) + get_param(2, m2);
                     ip += 4;
                     break;
                 }
                 case instr::MULTIPLY:
                 {
-                    program[get_addr(3)] = get_param(1, m1) * get_param(2, m2);
+                    memory[get_addr(3)] = get_param(1, m1) * get_param(2, m2);
                     ip += 4;
                     break;
                 }
                 case instr::INPUT:
                 {
-                    program[get_addr(1)] = read_input();
+                    memory[get_addr(1)] = read_input();
                     ip += 2;
                     break;
                 }
@@ -73,6 +77,34 @@ struct intcode_solver_t
                 {
                     write_output(get_param(1, m1));
                     ip += 2;
+                    break;
+                }
+                case instr::JUMP_EQ:
+                {
+                    if (get_param(1, m1) != 0)
+                        ip = get_param(2, m2);
+                    else
+                        ip += 3;
+                    break;
+                }
+                case instr::JUMP_NEQ:
+                {
+                    if (get_param(1, m1) == 0)
+                        ip = get_param(2, m2);
+                    else
+                        ip += 3;
+                    break;
+                }
+                case instr::CMP_LESS:
+                {
+                    memory[get_addr(3)] = (get_param(1, m1) < get_param(2, m2)) ? 1 : 0;
+                    ip += 4;
+                    break;
+                }
+                case instr::CMP_EQ:
+                {
+                    memory[get_addr(3)] = (get_param(1, m1) == get_param(2, m2)) ? 1 : 0;
+                    ip += 4;
                     break;
                 }
                 case instr::HALT:
@@ -85,6 +117,13 @@ struct intcode_solver_t
         }
     }
 
+    void reset()
+    {
+        ip = 0;
+        idp = 0;
+        memory = program;
+    }
+
     static void run_tests();
 
   private:
@@ -95,18 +134,18 @@ struct intcode_solver_t
         if (immediate)
             return get_addr(n);
         else
-            return program.at(get_addr(n));
+            return memory.at(get_addr(n));
     }
 
     int32_t get_addr(uint8_t n) const
     {
-        return program.at(ip + n);
+        return memory.at(ip + n);
     }
 
     // Get {opcode, mode of 1st param, mode of 2nd param, mode of 3rd param }
     std::tuple<uint8_t, bool, bool, bool> get_opcode() const
     {
-        const auto& digits = get_digits<5>(program[ip]);
+        const auto& digits = get_digits<5>(memory[ip]);
         return
         {
             (digits[3] * 10 + digits[4]),
@@ -132,7 +171,9 @@ struct intcode_solver_t
   public:
     size_t ip = 0; // instruction pointer
     size_t idp = 0; // input data pointer
-    std::vector<int32_t> program;
+
+    const std::vector<int32_t> program; // program, constant (always equal to input)
+    std::vector<int32_t> memory; // program, as loaded into memory, may be modified
 
     std::vector<int32_t> input_data;
     std::vector<int32_t> output_data;
