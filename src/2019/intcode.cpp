@@ -1,8 +1,11 @@
 #include "intcode.h"
 #include "setup/all.h"
+#include <thread>
 
 namespace
 {
+    constexpr bool DEBUG_PRINT = false;
+
     struct intcode_test
     {
         std::string input;
@@ -32,6 +35,19 @@ namespace
             .end_state = { 3500, 9, 10, 70, 2, 3, 11, 0, 99, 30, 40, 50 }
         },
     };
+
+    const char* to_str(uint8_t value)
+    {
+        switch (value)
+        {
+            case SUM: return "SUM";
+            case MULTIPLY: return "MULTIPLY";
+            case INPUT: return "INPUT";
+            case OUTPUT: return "OUTPUT";
+            case HALT: return "HALT";
+            default: return "<ERR>";
+        }
+    }
 }
 
 void intcode_solver_t::run_tests()
@@ -46,4 +62,38 @@ void intcode_solver_t::run_tests()
 
         assert(solver.program == test.end_state);
     }
+}
+
+void intcode_solver_t::debug_pre_exec()
+{
+    if (!DEBUG_PRINT)
+        return;
+
+    const auto& [opcode, m1, m2, m3] = get_opcode();
+
+    fmt::print("opcode: {} (instr: {}, ip {})\n", opcode, to_str(opcode), ip);
+    fmt::print("  pre memory : ");
+    for (uint8_t i = 0; i < 8; ++i)
+    {
+        fmt::print("{:4}, ", program[ip + i]);
+    }
+    fmt::print("\n");
+}
+
+void intcode_solver_t::debug_post_exec()
+{
+    if (!DEBUG_PRINT)
+        return;
+
+    fmt::print("  post memory: ");
+    for (uint8_t i = 0; i < 8; ++i)
+    {
+        fmt::print("{:4}, ", program[ip + i]);
+    }
+    fmt::print("\n");
+
+    fmt::print("  output     : "); print_row(output_data); fmt::print("\n");
+
+    fmt::print("\n");
+    std::this_thread::sleep_for(100ms);
 }
