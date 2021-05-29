@@ -16,16 +16,19 @@ using sv = std::string_view;
 template <typename T>
 T to_int(const sv& input)
 {
+    int8_t sgn = +1;
     T n = 0;
     for (auto ch: input)
     {
-        uint8_t d = ch - '0';
-        if (d <= 9)
+        if (ch == '-')
+            sgn = -1;
+        else if (uint8_t d = ch - '0'; d <= 9)
             n = 10 * n + d;
-        else return n; // stop on first non-digit
+        else
+            return sgn * n; // stop on first non-digit
     }
 
-    return n;
+    return sgn * n;
 }
 
 /**
@@ -37,8 +40,7 @@ T to_int(const sv& input)
 template <typename T>
 std::pair<T, size_t> to_int(const sv& input, size_t start)
 {
-    // TODO: update to use to_int<T>() above??
-    size_t end = input.find_first_not_of("0123456789", start);
+    size_t end = input.find_first_not_of("-0123456789", start);
     sv token { &input[start], end - start };
     return { to_int<T>(token), end };
 }
