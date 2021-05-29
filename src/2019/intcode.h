@@ -122,6 +122,7 @@ struct intcode_solver_t
         ip = 0;
         idp = 0;
         memory = program;
+        output_data.clear();
     }
 
     static void run_tests();
