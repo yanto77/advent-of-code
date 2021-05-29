@@ -7,10 +7,12 @@ namespace
 {
     int32_t run_single_guess(intcode_solver_t solver, uint8_t verb, uint8_t noun)
     {
-        solver.program[1] = verb;
-        solver.program[2] = noun;
+        solver.reset();
+        solver.memory[1] = verb;
+        solver.memory[2] = noun;
         solver.execute();
-        return solver.program[0];
+
+        return solver.memory[0];
     }
 
     int32_t run_multiple_guesses(intcode_solver_t solver, int32_t expected)
