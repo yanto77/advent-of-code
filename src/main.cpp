@@ -49,8 +49,8 @@ namespace
         fmt::print("{}: {} [{:6} μs]\n", day_str, to_str(valid), time);
         if (valid != valid_t::OK)
         {
-            fmt::print("  - Expected: pt1 = {}, pt2 = {}\n", expected.part1, expected.part2);
-            fmt::print("  - Actual  : pt1 = {}, pt2 = {}\n", actual.part1, actual.part2);
+            fmt::print("  - Expected: pt1 = {}  pt2 = {}\n", expected.part1, expected.part2);
+            fmt::print("  - Actual  : pt1 = {}  pt2 = {}\n", actual.part1, actual.part2);
         }
     }
 }
