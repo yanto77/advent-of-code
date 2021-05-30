@@ -158,7 +158,9 @@ void intcode_solver_t::run_tests()
     {
         intcode_solver_t solver(test.program);
 
-        const auto& output = solver.execute(test.input);
+        solver.io.set_input(test.input);
+        solver.execute();
+        const auto& output = solver.io.get_output();
 
         if (solver.memory != test.end_state)
         {
@@ -207,7 +209,7 @@ void intcode_solver_t::debug_post_exec()
     }
     fmt::print("\n");
 
-    fmt::print("  output     : "); print_row(output_data); fmt::print("\n");
+    fmt::print("  output     : "); print_row(io.get_output()); fmt::print("\n");
 
     fmt::print("\n");
     std::this_thread::sleep_for(100ms);

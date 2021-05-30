@@ -19,7 +19,50 @@ enum instr: uint8_t
     HALT        = 99
 };
 
-struct intcode_solver_t
+class intcode_solver_io_t
+{
+  public:
+    void set_input(const std::vector<int32_t>& data)
+    {
+        input_data = data;
+    }
+
+    void append_input(int32_t value)
+    {
+        input_data.push_back(value);
+    }
+
+    std::vector<int32_t> get_output()
+    {
+        return output_data;
+    }
+
+    void reset()
+    {
+        idp = 0;
+        input_data.clear();
+        output_data.clear();
+    }
+
+  private:
+    friend class intcode_solver_t;
+    int32_t get_next_input()
+    {
+        return input_data[idp++];
+    }
+
+    void append_output(int32_t value)
+    {
+        output_data.push_back(value);
+    }
+
+  public:
+    size_t idp = 0; // input data pointer
+    std::vector<int32_t> input_data;
+    std::vector<int32_t> output_data;
+};
+
+class intcode_solver_t
 {
   public:
     intcode_solver_t()
@@ -39,90 +82,26 @@ struct intcode_solver_t
         reset();
     }
 
-    std::vector<int32_t> execute(const std::vector<int32_t>& data)
-    {
-        input_data = data;
-        execute();
-        return output_data;
-    }
-
     void execute()
     {
         while (true)
         {
             debug_pre_exec();
 
-            const auto& [opcode, m1, m2, m3] = get_opcode();
-            switch (opcode)
-            {
-                case instr::SUM:
-                {
-                    memory[get_addr(3)] = get_param(1, m1) + get_param(2, m2);
-                    ip += 4;
-                    break;
-                }
-                case instr::MULTIPLY:
-                {
-                    memory[get_addr(3)] = get_param(1, m1) * get_param(2, m2);
-                    ip += 4;
-                    break;
-                }
-                case instr::INPUT:
-                {
-                    memory[get_addr(1)] = read_input();
-                    ip += 2;
-                    break;
-                }
-                case instr::OUTPUT:
-                {
-                    write_output(get_param(1, m1));
-                    ip += 2;
-                    break;
-                }
-                case instr::JUMP_EQ:
-                {
-                    if (get_param(1, m1) != 0)
-                        ip = get_param(2, m2);
-                    else
-                        ip += 3;
-                    break;
-                }
-                case instr::JUMP_NEQ:
-                {
-                    if (get_param(1, m1) == 0)
-                        ip = get_param(2, m2);
-                    else
-                        ip += 3;
-                    break;
-                }
-                case instr::CMP_LESS:
-                {
-                    memory[get_addr(3)] = (get_param(1, m1) < get_param(2, m2)) ? 1 : 0;
-                    ip += 4;
-                    break;
-                }
-                case instr::CMP_EQ:
-                {
-                    memory[get_addr(3)] = (get_param(1, m1) == get_param(2, m2)) ? 1 : 0;
-                    ip += 4;
-                    break;
-                }
-                case instr::HALT:
-                {
-                    return;
-                }
-            }
+            bool halt = execute_once();
 
             debug_post_exec();
+
+            if (halt)
+                break;
         }
     }
 
     void reset()
     {
         ip = 0;
-        idp = 0;
         memory = program;
-        output_data.clear();
+        io.reset();
     }
 
     static void run_tests();
@@ -156,14 +135,71 @@ struct intcode_solver_t
         };
     }
 
-    int32_t read_input()
+    // returns true if halt requested, false if can continue
+    bool execute_once()
     {
-        return input_data[idp++];
-    }
+        const auto& [opcode, m1, m2, m3] = get_opcode();
+        switch (opcode)
+        {
+            case instr::SUM:
+            {
+                memory[get_addr(3)] = get_param(1, m1) + get_param(2, m2);
+                ip += 4;
+                break;
+            }
+            case instr::MULTIPLY:
+            {
+                memory[get_addr(3)] = get_param(1, m1) * get_param(2, m2);
+                ip += 4;
+                break;
+            }
+            case instr::INPUT:
+            {
+                memory[get_addr(1)] = io.get_next_input();
+                ip += 2;
+                break;
+            }
+            case instr::OUTPUT:
+            {
+                io.append_output(get_param(1, m1));
+                ip += 2;
+                break;
+            }
+            case instr::JUMP_EQ:
+            {
+                if (get_param(1, m1) != 0)
+                    ip = get_param(2, m2);
+                else
+                    ip += 3;
+                break;
+            }
+            case instr::JUMP_NEQ:
+            {
+                if (get_param(1, m1) == 0)
+                    ip = get_param(2, m2);
+                else
+                    ip += 3;
+                break;
+            }
+            case instr::CMP_LESS:
+            {
+                memory[get_addr(3)] = (get_param(1, m1) < get_param(2, m2)) ? 1 : 0;
+                ip += 4;
+                break;
+            }
+            case instr::CMP_EQ:
+            {
+                memory[get_addr(3)] = (get_param(1, m1) == get_param(2, m2)) ? 1 : 0;
+                ip += 4;
+                break;
+            }
+            case instr::HALT:
+            {
+                return true;
+            }
+        }
 
-    void write_output(int32_t value)
-    {
-        output_data.push_back(value);
+        return false;
     }
 
     void debug_pre_exec();
@@ -171,11 +207,9 @@ struct intcode_solver_t
 
   public:
     size_t ip = 0; // instruction pointer
-    size_t idp = 0; // input data pointer
 
     const std::vector<int32_t> program; // program, constant (always equal to input)
     std::vector<int32_t> memory; // program, as loaded into memory, may be modified
 
-    std::vector<int32_t> input_data;
-    std::vector<int32_t> output_data;
+    intcode_solver_io_t io;
 };
