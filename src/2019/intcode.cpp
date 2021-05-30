@@ -151,6 +151,7 @@ namespace
             case CMP_LESS: return "CMP_LESS";
             case CMP_EQ: return "CMP_EQ";
             case HALT: return "HALT";
+            case OFFSET_RBP: return "OFFSET_RBP";
         }
 
         assert(false);
