@@ -21,7 +21,6 @@
 #include <unordered_map>
 #include <vector>
 #include <immintrin.h>
-#include <mmintrin.h>
 
 using namespace std::chrono_literals;
 
@@ -51,3 +50,4 @@ using namespace std::chrono_literals;
 #include <setup/factory.h>
 
 #include <fmt/format.h>
+#include <fmt/ranges.h>

@@ -45,6 +45,15 @@ inline void reset_bitmask(std::vector<bool>& trg, const std::vector<bool>& mask)
     }
 }
 
+/// write specific `value` at locations of `trg` specified by `mask`
+template <typename T>
+constexpr void write_bitmask(T& trg, T mask, T value)
+{
+    reset_bitmask(value, ~mask); // remove parts we dont write
+    reset_bitmask(trg, mask); // reset parts we will write
+    set_bitmask(trg, value); // write the parts into target
+}
+
 template <typename T>
 constexpr bool get_bit(T num, size_t bit)
 {

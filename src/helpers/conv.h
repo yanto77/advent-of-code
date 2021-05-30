@@ -9,6 +9,17 @@
 using sv = std::string_view;
 
 /**
+ * Convert single char into int
+ * @param input input char
+ * @returns parsed int
+ */
+template <typename T>
+T to_int(char ch)
+{
+    return ch - '0';
+}
+
+/**
  * Convert full string into single int
  * @param input input string
  * @returns parsed int
