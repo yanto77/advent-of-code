@@ -82,17 +82,17 @@ class intcode_solver_t
         reset();
     }
 
-    void execute()
+    void execute(bool accept_yields = false)
     {
-        while (true)
+        while (!is_halted)
         {
             debug_pre_exec();
 
-            bool halt = execute_once();
+            bool yield = execute_once();
 
             debug_post_exec();
 
-            if (halt)
+            if (yield && accept_yields)
                 break;
         }
     }
@@ -100,6 +100,7 @@ class intcode_solver_t
     void reset()
     {
         ip = 0;
+        is_halted = false;
         memory = program;
         io.reset();
     }
@@ -135,7 +136,7 @@ class intcode_solver_t
         };
     }
 
-    // returns true if halt requested, false if can continue
+    // returns true if yielding requested, false if can continue
     bool execute_once()
     {
         const auto& [opcode, m1, m2, m3] = get_opcode();
@@ -195,11 +196,12 @@ class intcode_solver_t
             }
             case instr::HALT:
             {
-                return true;
+                is_halted = true;
+                break;
             }
         }
 
-        return false;
+        return (opcode == instr::OUTPUT);
     }
 
     void debug_pre_exec();
@@ -207,6 +209,8 @@ class intcode_solver_t
 
   public:
     size_t ip = 0; // instruction pointer
+
+    bool is_halted = false;
 
     const std::vector<int32_t> program; // program, constant (always equal to input)
     std::vector<int32_t> memory; // program, as loaded into memory, may be modified

@@ -146,9 +146,15 @@ namespace
             case MULTIPLY: return "MULTIPLY";
             case INPUT: return "INPUT";
             case OUTPUT: return "OUTPUT";
+            case JUMP_EQ: return "JUMP_EQ";
+            case JUMP_NEQ: return "JUMP_NEQ";
+            case CMP_LESS: return "CMP_LESS";
+            case CMP_EQ: return "CMP_EQ";
             case HALT: return "HALT";
-            default: return "<ERR>";
         }
+
+        assert(false);
+        return "<ERR>";
     }
 }
 
