@@ -22,17 +22,17 @@ enum instr: uint8_t
 class intcode_solver_io_t
 {
   public:
-    void set_input(const std::vector<int32_t>& data)
+    void set_input(const std::vector<int64_t>& data)
     {
         input_data = data;
     }
 
-    void append_input(int32_t value)
+    void append_input(int64_t value)
     {
         input_data.push_back(value);
     }
 
-    std::vector<int32_t> get_output()
+    std::vector<int64_t> get_output()
     {
         return output_data;
     }
@@ -46,20 +46,20 @@ class intcode_solver_io_t
 
   private:
     friend class intcode_solver_t;
-    int32_t get_next_input()
+    int64_t get_next_input()
     {
         return input_data[idp++];
     }
 
-    void append_output(int32_t value)
+    void append_output(int64_t value)
     {
         output_data.push_back(value);
     }
 
   public:
     size_t idp = 0; // input data pointer
-    std::vector<int32_t> input_data;
-    std::vector<int32_t> output_data;
+    std::vector<int64_t> input_data;
+    std::vector<int64_t> output_data;
 };
 
 class intcode_solver_t
@@ -71,7 +71,7 @@ class intcode_solver_t
     }
 
     intcode_solver_t(const sv& input)
-        : program(to_multi_int<int32_t>(input))
+        : program(to_multi_int<int64_t>(input))
     {
         reset();
     }
@@ -110,7 +110,7 @@ class intcode_solver_t
   private:
     // `n` -> position argument from instruction pointer
     // `immediate` -> parameter mode (true: value as is, false: memory addr)
-    int32_t get_param(uint8_t n, bool immediate) const
+    int64_t get_param(uint8_t n, bool immediate) const
     {
         if (immediate)
             return get_addr(n);
@@ -118,7 +118,7 @@ class intcode_solver_t
             return memory.at(get_addr(n));
     }
 
-    int32_t get_addr(uint8_t n) const
+    int64_t get_addr(uint8_t n) const
     {
         return memory.at(ip + n);
     }
@@ -212,8 +212,8 @@ class intcode_solver_t
 
     bool is_halted = false;
 
-    const std::vector<int32_t> program; // program, constant (always equal to input)
-    std::vector<int32_t> memory; // program, as loaded into memory, may be modified
+    const std::vector<int64_t> program; // program, constant (always equal to input)
+    std::vector<int64_t> memory; // program, as loaded into memory, may be modified
 
     intcode_solver_io_t io;
 };
