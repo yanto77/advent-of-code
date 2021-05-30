@@ -5,7 +5,7 @@ ADVENT_DAY(2019, 2, 4090689, 7733);
 
 namespace
 {
-    int32_t run_single_guess(intcode_solver_t& solver, uint8_t verb, uint8_t noun)
+    int64_t run_single_guess(intcode_solver_t& solver, uint8_t verb, uint8_t noun)
     {
         solver.reset();
         solver.memory[1] = verb;
@@ -15,7 +15,7 @@ namespace
         return solver.memory[0];
     }
 
-    int32_t run_multiple_guesses(intcode_solver_t& solver, int32_t expected)
+    int64_t run_multiple_guesses(intcode_solver_t& solver, int64_t expected)
     {
         for (uint8_t i = 0; i < 99; ++i)
             for (uint8_t j = 0; j < 99; ++j)

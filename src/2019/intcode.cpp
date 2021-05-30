@@ -9,9 +9,9 @@ namespace
     struct intcode_test
     {
         std::string program;
-        std::vector<int32_t> end_state;
-        std::vector<int32_t> input;
-        std::vector<int32_t> output;
+        std::vector<int64_t> end_state;
+        std::vector<int64_t> input;
+        std::vector<int64_t> output;
     };
 
     const std::vector<intcode_test> test_data =

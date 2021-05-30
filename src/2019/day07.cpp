@@ -11,7 +11,7 @@ namespace
 
     size_t test_config_pt1(intcode_solver_t& base, const std::array<uint8_t, 5>& phases)
     {
-        int32_t signal = 0;
+        int64_t signal = 0;
         for (uint8_t idx = 0; idx < 5; ++idx)
         {
             base.reset();
@@ -32,7 +32,7 @@ namespace
             amps[idx].io.set_input({ phases[idx] });
         }
 
-        int32_t signal = 0;
+        int64_t signal = 0;
         while (std::all_of(amps.begin(), amps.end(), [](const auto& s) { return !s.is_halted; }))
         {
             for (uint8_t idx = 0; idx < 5; ++idx)
