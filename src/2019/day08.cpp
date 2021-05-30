@@ -1,5 +1,4 @@
 #include "setup/all.h"
-#include "intcode.h"
 
 ADVENT_DAY(2019, 8, 2080, 1);
 

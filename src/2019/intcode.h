@@ -16,6 +16,8 @@ enum instr: uint8_t
     CMP_LESS    = 7,
     CMP_EQ      = 8,
 
+    OFFSET_RBP  = 9, // update relative base pointer
+
     HALT        = 99
 };
 
@@ -100,6 +102,7 @@ class intcode_solver_t
     void reset()
     {
         ip = 0;
+        rbp = 0;
         is_halted = false;
         memory = program;
         io.reset();
@@ -108,32 +111,37 @@ class intcode_solver_t
     static void run_tests();
 
   private:
+    // get pointer to memory address, guarantees the address exists
     // `n` -> position argument from instruction pointer
     // `immediate` -> parameter mode (true: value as is, false: memory addr)
-    int64_t get_param(uint8_t n, bool immediate) const
+    int64_t* get_addr(uint8_t n, uint8_t mode)
     {
-        if (immediate)
-            return get_addr(n);
-        else
-            return memory.at(get_addr(n));
-    }
+        int64_t addr = -1;
+        if (mode == 0)
+        {
+            addr = memory.at(ip + n);
+        }
+        else if (mode == 1)
+        {
+            addr = ip + n;
+        }
+        else if (mode == 2)
+        {
+            addr = rbp + memory.at(ip + n);
+        }
 
-    int64_t get_addr(uint8_t n) const
-    {
-        return memory.at(ip + n);
+        if (addr >= memory.size()) // ensure there's memory to read from
+        {
+            memory.resize(addr + 1, 0);
+        }
+        return &memory.at(addr);
     }
 
     // Get {opcode, mode of 1st param, mode of 2nd param, mode of 3rd param }
-    std::tuple<uint8_t, bool, bool, bool> get_opcode() const
+    std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> get_opcode() const
     {
         const auto& digits = get_digits<5>(memory[ip]);
-        return
-        {
-            (digits[3] * 10 + digits[4]),
-            digits[2] == 1,
-            digits[1] == 1,
-            digits[0] == 1,
-        };
+        return { (digits[3] * 10 + digits[4]), digits[2], digits[1], digits[0] };
     }
 
     // returns true if yielding requested, false if can continue
@@ -144,59 +152,71 @@ class intcode_solver_t
         {
             case instr::SUM:
             {
-                memory[get_addr(3)] = get_param(1, m1) + get_param(2, m2);
+                *get_addr(3, m3) = *get_addr(1, m1) + *get_addr(2, m2);
                 ip += 4;
                 break;
             }
             case instr::MULTIPLY:
             {
-                memory[get_addr(3)] = get_param(1, m1) * get_param(2, m2);
+                *get_addr(3, m3) = *get_addr(1, m1) * *get_addr(2, m2);
                 ip += 4;
                 break;
             }
             case instr::INPUT:
             {
-                memory[get_addr(1)] = io.get_next_input();
+                *get_addr(1, m1) = io.get_next_input();
                 ip += 2;
                 break;
             }
             case instr::OUTPUT:
             {
-                io.append_output(get_param(1, m1));
+                io.append_output(*get_addr(1, m1));
                 ip += 2;
                 break;
             }
             case instr::JUMP_EQ:
             {
-                if (get_param(1, m1) != 0)
-                    ip = get_param(2, m2);
+                if (*get_addr(1, m1) != 0)
+                    ip = *get_addr(2, m2);
                 else
                     ip += 3;
                 break;
             }
             case instr::JUMP_NEQ:
             {
-                if (get_param(1, m1) == 0)
-                    ip = get_param(2, m2);
+                if (*get_addr(1, m1) == 0)
+                    ip = *get_addr(2, m2);
                 else
                     ip += 3;
                 break;
             }
             case instr::CMP_LESS:
             {
-                memory[get_addr(3)] = (get_param(1, m1) < get_param(2, m2)) ? 1 : 0;
+                *get_addr(3, m3) = (*get_addr(1, m1) < *get_addr(2, m2)) ? 1 : 0;
                 ip += 4;
                 break;
             }
             case instr::CMP_EQ:
             {
-                memory[get_addr(3)] = (get_param(1, m1) == get_param(2, m2)) ? 1 : 0;
+                *get_addr(3, m3) = (*get_addr(1, m1) == *get_addr(2, m2)) ? 1 : 0;
                 ip += 4;
+                break;
+            }
+            case instr::OFFSET_RBP:
+            {
+                rbp += *get_addr(1, m1);
+                ip += 2;
                 break;
             }
             case instr::HALT:
             {
                 is_halted = true;
+                break;
+            }
+            default:
+            {
+                fmt::print("unsupported opcode: {}\n", opcode);
+                assert(false);
                 break;
             }
         }
@@ -209,6 +229,7 @@ class intcode_solver_t
 
   public:
     size_t ip = 0; // instruction pointer
+    size_t rbp = 0; // relative base pointer
 
     bool is_halted = false;
 
