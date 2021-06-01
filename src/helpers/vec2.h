@@ -34,6 +34,24 @@ struct vec2
     friend bool operator==(const vec2<T>& lhs, const vec2<T>& rhs) { return lhs.x == rhs.x && lhs.y == rhs.y; }
 };
 
-typedef vec2<int> vec2i;
+namespace std
+{
+    template <typename T>
+    struct hash<vec2<T>>
+    {
+        // Ref: https://stackoverflow.com/a/17017281
+        size_t operator()( const vec2<T>& v ) const
+        {
+            size_t res = 17;
+            res = res * 31 + hash<T>()( v.x );
+            res = res * 31 + hash<T>()( v.y );
+            return res;
+        }
+    };
+}
+
+
+typedef vec2<int32_t> vec2i;
+typedef vec2<uint32_t> vec2u;
 typedef vec2<float> vec2f;
 typedef vec2<double> vec2d;
