@@ -16,6 +16,9 @@ struct vec2
     constexpr vec2<T>& operator/=(const T rhs) { x /= rhs; y /= rhs; return *this; }
     constexpr vec2<T>& operator*=(const T rhs) { x *= rhs; y *= rhs; return *this; }
 
+    constexpr T norm() { return static_cast<T>(sqrt(x*x + y*y)); };
+    constexpr T norm_sq() { return x*x + y*y; };
+
     constexpr friend vec2<T> operator+(vec2<T> lhs, const vec2<T>& rhs) { lhs += rhs; return lhs; }
     constexpr friend vec2<T> operator-(vec2<T> lhs, const vec2<T>& rhs) { lhs -= rhs; return lhs; }
     constexpr friend vec2<T> operator/(vec2<T> lhs, const vec2<T>& rhs) { lhs /= rhs; return lhs; }
@@ -31,7 +34,7 @@ struct vec2
     constexpr friend vec2<T> operator/(const T lhs, vec2<T> rhs) { rhs /= lhs; return rhs; }
     constexpr friend vec2<T> operator*(const T lhs, vec2<T> rhs) { rhs *= lhs; return rhs; }
 
-    friend bool operator==(const vec2<T>& lhs, const vec2<T>& rhs) { return lhs.x == rhs.x && lhs.y == rhs.y; }
+    constexpr friend bool operator==(const vec2<T>& lhs, const vec2<T>& rhs) { return lhs.x == rhs.x && lhs.y == rhs.y; }
 };
 
 namespace std
@@ -49,7 +52,6 @@ namespace std
         }
     };
 }
-
 
 typedef vec2<int32_t> vec2i;
 typedef vec2<uint32_t> vec2u;
