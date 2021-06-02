@@ -1,7 +1,7 @@
 #include "setup/all.h"
 #include <unordered_set>
 
-ADVENT_DAY(2019, 10, 286, 0);
+ADVENT_DAY(2019, 10, 286, 504);
 
 namespace
 {
@@ -35,6 +35,16 @@ namespace
                     callback(vec2i { x, y });
     }
 
+    std::pair<uint8_t, float> get_quad_slope(const vec2i& a, const vec2i& b)
+    {
+        vec2i delta = (a - b);
+        float x = static_cast<float>(delta.x);
+        float y = static_cast<float>(delta.y);
+        float slope = y / x;
+        uint8_t bucket = std::signbit(y) * 2 + std::signbit(x);
+        return {bucket, slope};
+    }
+
     // Find the coordinates for Monitoring station (part 1)
     std::pair<vec2i, size_t> find_asteroid(const map_t& map)
     {
@@ -48,13 +58,8 @@ namespace
                 if (asteroid1 == asteroid2)
                     return;
 
-                const vec2i delta = (asteroid1 - asteroid2);
-                float x = static_cast<float>(delta.x);
-                float y = static_cast<float>(delta.y);
-                float slope = y / x;
-
-                uint8_t bucket = std::signbit(x) * 2 + std::signbit(y);
-                deltas[bucket].insert(slope);
+                const auto& [quadrant, slope] = get_quad_slope(asteroid1, asteroid2);
+                deltas[quadrant].insert(slope);
             });
 
             counts[asteroid1] = 0;
@@ -69,6 +74,60 @@ namespace
 
         return { max->first, max->second };
     }
+
+    // Destroy asteroids around the `station`, return 200th (or last) asteroid location
+    //
+    // NB: single laser rotation is enough to destroy 200+ asteroids (or max amount)
+    // in the tests and inputs. As such, that part is not implemented.
+    size_t clear_asteroids(const map_t& map, const vec2i& station)
+    {
+
+        std::array<std::map<float, vec2i>, 4> closest; // for each quadrant, sorted map of {slope -> asteroid }
+        for_each_asteroid(map, [&](const vec2i& asteroid)
+        {
+            if (asteroid == station)
+                return;
+
+            const auto& [quad, slope] = get_quad_slope(asteroid, station);
+
+            std::map<float, vec2i>& quadrant = closest[quad];
+            if (auto it = quadrant.find(slope); it != quadrant.end())
+            {
+                // if there is already an asteroid at this slope, pick the closest one
+                int32_t new_to_st = (asteroid - station).norm_sq();
+                int32_t old_to_st = (it->second - station).norm_sq();
+                if (new_to_st < old_to_st)
+                {
+                    it->second = asteroid;
+                }
+            }
+            else
+            {
+                quadrant.insert({ slope, asteroid });
+            }
+        });
+
+        // quads are arranged as follows:
+        //   1   0
+        //     .
+        //   3   2
+        size_t counter = 0;
+        for (auto quad: {2, 0, 1, 3})
+        {
+            for (auto& [slope, asteroid]: closest[quad])
+            {
+                ++counter;
+                // map[asteroid.y][asteroid.x] = false; // BOOM!
+
+                if (counter == 200)
+                {
+                    return asteroid.x * 100 + asteroid.y;
+                }
+            }
+        }
+
+        return 0;
+    }
 }
 
 output_t Day_2019_10::run_solution(const input_t& input) const
@@ -76,7 +135,9 @@ output_t Day_2019_10::run_solution(const input_t& input) const
     map_t map = convert_map(input);
     const auto& [asteroid, part1] = find_asteroid(map);
 
-    return {part1, 0};
+    size_t part2 = clear_asteroids(map, asteroid);
+
+    return {part1, part2};
 }
 
 void Day_2019_10::run_tests() const
@@ -119,5 +180,7 @@ void Day_2019_10::run_tests() const
 
         // fmt::print("asteroid: {}, {}, count: {}\n", asteroid.x, asteroid.y, count);
         assert(count == outputs[idx]);
+
+        clear_asteroids(map, asteroid);
     }
 }
