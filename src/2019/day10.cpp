@@ -24,87 +24,50 @@ namespace
         return out;
     }
 
-    std::pair<vec2i, size_t> find_asteroid(const map_t& map)
+    void for_each_asteroid(const map_t& map, std::function<void(const vec2i&)> callback)
     {
         const size_t y_dim = map.size();
         const size_t x_dim = map[0].size();
 
+        for (int32_t y = 0; y < y_dim; ++y)
+            for (int32_t x = 0; x < x_dim; ++x)
+                if (map[y][x])
+                    callback(vec2i { x, y });
+    }
+
+    // Find the coordinates for Monitoring station (part 1)
+    std::pair<vec2i, size_t> find_asteroid(const map_t& map)
+    {
         std::unordered_map<vec2i, size_t> counts;
 
-        for (int32_t y1 = 0; y1 < y_dim; ++y1)
+        for_each_asteroid(map, [&](const vec2i& asteroid1)
         {
-            for (int32_t x1 = 0; x1 < x_dim; ++x1)
+            std::array<std::unordered_set<float>, 4> deltas;
+            for_each_asteroid(map, [&](const vec2i& asteroid2)
             {
-                if (!map[y1][x1])
-                    continue;
+                if (asteroid1 == asteroid2)
+                    return;
 
-                std::array<std::unordered_set<float>, 4> deltas;
+                const vec2i delta = (asteroid1 - asteroid2);
+                float x = static_cast<float>(delta.x);
+                float y = static_cast<float>(delta.y);
+                float slope = y / x;
 
-                const vec2i asteroid1 { x1, y1 };
-                for (int32_t y2 = 0; y2 < y_dim; ++y2)
-                {
-                    for (int32_t x2 = 0; x2 < x_dim; ++x2)
-                    {
-                        if (!map[y2][x2])
-                            continue;
+                uint8_t bucket = std::signbit(x) * 2 + std::signbit(y);
+                deltas[bucket].insert(slope);
+            });
 
-                        const vec2i asteroid2 { x2, y2 };
-                        if (asteroid1 == asteroid2)
-                            continue;
-
-                        const vec2i delta = (asteroid1 - asteroid2);
-                        float x = static_cast<float>(delta.y);
-                        float y = static_cast<float>(delta.x);
-                        float slope = y / x;
-
-                        uint8_t bucket = std::signbit(x) * 2 + std::signbit(y);
-                        deltas[bucket].insert(slope);
-
-                        // size_t asd2 = 0;
-                        // for (const auto& asd: deltas)
-                        // {
-                        //     asd2 += asd.size();
-                        // }
-
-                        // fmt::print("checking: ({}, {}) <-> ({}, {}), delta: ({}, {}), slope: {}, bucket: {}, count: {}\n", 
-                        //     asteroid1.x, asteroid1.y, 
-                        //     asteroid2.x, asteroid2.y, 
-                        //     delta.x, delta.y, 
-                        //     slope,
-                        //     bucket,
-                        //     asd2
-                        // );
-                    }
-                }
-
-
-                counts[asteroid1] = 0;
-                for (const auto& bucket: deltas)
-                {
-                    counts[asteroid1] += bucket.size();
-                }
-                // printf("  => adding count: %zu\n\n", counts[asteroid1]);
-            }
-        }
-
-        // for (auto& asd: counts)
-        // {
-        //     fmt::print("key: ({}, {}), count: {}\n", asd.first.x, asd.first.y, asd.second);
-        // }
-    
-        vec2i max_asteroid;
-        size_t max_count = 0;
-
-        for (const auto& count: counts)
-        {
-            if (count.second > max_count)
+            counts[asteroid1] = 0;
+            for (const auto& bucket: deltas)
             {
-                max_count = count.second;
-                max_asteroid = count.first;
+                counts[asteroid1] += bucket.size();
             }
-        }
+        });
 
-        return { max_asteroid, max_count };
+        auto max = std::max_element(std::begin(counts), std::end(counts),
+            [] (const auto& p1, const auto& p2) { return p1.second < p2.second; });
+
+        return { max->first, max->second };
     }
 }
 
