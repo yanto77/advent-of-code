@@ -15,4 +15,4 @@ Notes available here:
 
 ## 2019
 
-Status: 0*
+Status: 20*, mostly not optimized.
