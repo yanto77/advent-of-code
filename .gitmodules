@@ -1,3 +1,6 @@
 [submodule "include/3rd-party/fmt"]
 	path = include/3rd-party/fmt
 	url = https://github.com/fmtlib/fmt
+[submodule "include/3rd-party/mem_track"]
+	path = include/3rd-party/mem_track
+	url = git@git.yanto.fi:yanto/mem_track.git

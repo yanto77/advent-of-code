@@ -84,5 +84,6 @@ int main(int argc, char *argv[])
     }
 
     fmt::print("=> Total for all years: {:6} μs\n\n", time_total);
+
     return 0;
 }
