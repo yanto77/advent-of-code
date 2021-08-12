@@ -3,6 +3,7 @@ project (advent_of_code)
 
 
 add_subdirectory(include/3rd-party/fmt EXCLUDE_FROM_ALL)
+add_subdirectory(include/3rd-party/mem_track)
 
 #
 # Compilation configuration (includes, links, properties)
@@ -52,8 +53,9 @@ add_executable(${exec_NAME}
     src/2020/day25.cpp
 )
 
-target_link_libraries(${exec_NAME} fmt::fmt)
+target_link_libraries(${exec_NAME} fmt::fmt mem_track)
 target_include_directories(${exec_NAME} SYSTEM PRIVATE include/3rd-party/fmt/include)
+target_include_directories(${exec_NAME} SYSTEM PRIVATE include/3rd-party/mem_track/src)
 
 target_precompile_headers(${exec_NAME} PRIVATE src/setup/all.h)
 
@@ -87,6 +89,11 @@ target_compile_options(advent_of_code PRIVATE
         -Wno-sign-compare
         -Wno-padded
         -Wno-weak-vtables # allow abstract classes
+        -Wno-keyword-macro # allows overriding new/delete
+        -Wno-disabled-macro-expansion
+        -Wno-old-style-cast
+        -Wno-implicit-int-float-conversion
+        -Wno-cast-align
         # Code Generation Convention
         -fwrapv
         -pedantic
@@ -95,6 +102,11 @@ target_compile_options(advent_of_code PRIVATE
         /W4
     >
 )
+
+# `-rdynamic` instructs the linker to add all symbols to the dynamic symbol table 
+# (as opposed to only the used ones). This allows backtrace_symbols() to convert 
+# addresses to function names.
+target_link_options(advent_of_code PRIVATE "-rdynamic")
 
 cmake_policy(SET CMP0092 NEW) # Windows specific: Do not add /W3, as we are adding /W4 already.
 

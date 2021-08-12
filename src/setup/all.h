@@ -22,6 +22,9 @@
 #include <vector>
 #include <immintrin.h>
 
+#include <fmt/format.h>
+#include <fmt/ranges.h>
+
 using namespace std::chrono_literals;
 
 // Include assert() for all builds (incl. Release)
@@ -48,6 +51,3 @@ using namespace std::chrono_literals;
 #include <helpers/num.h>
 
 #include <setup/factory.h>
-
-#include <fmt/format.h>
-#include <fmt/ranges.h>
