@@ -84,6 +84,7 @@ class intcode_solver_t
         reset();
     }
 
+    // execute whole program, until it halts, or outputs data and yields are accepted
     void execute(bool accept_yields = false)
     {
         while (!is_halted)
@@ -111,6 +112,8 @@ class intcode_solver_t
     static void run_tests();
 
   private:
+    
+
     // get pointer to memory address, guarantees the address exists
     // `n` -> position argument from instruction pointer
     // `immediate` -> parameter mode (true: value as is, false: memory addr)
@@ -144,6 +147,7 @@ class intcode_solver_t
         return { (digits[3] * 10 + digits[4]), digits[2], digits[1], digits[0] };
     }
 
+    // execute single instruction
     // returns true if yielding requested, false if can continue
     bool execute_once()
     {

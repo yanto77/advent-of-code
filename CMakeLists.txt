@@ -25,6 +25,7 @@ add_executable(${exec_NAME}
     src/2019/day08.cpp
     src/2019/day09.cpp
     src/2019/day10.cpp
+    src/2019/day11.cpp
     
     src/2020/day01.cpp
     src/2020/day02.cpp
@@ -53,14 +54,20 @@ add_executable(${exec_NAME}
     src/2020/day25.cpp
 )
 
-target_link_libraries(${exec_NAME} fmt::fmt mem_track)
-target_include_directories(${exec_NAME} SYSTEM PRIVATE include/3rd-party/fmt/include)
-target_include_directories(${exec_NAME} SYSTEM PRIVATE include/3rd-party/mem_track/src)
-
 target_precompile_headers(${exec_NAME} PRIVATE src/setup/all.h)
+target_link_libraries(${exec_NAME}
+    fmt::fmt
+    mem_track
+)
+target_include_directories(${exec_NAME}
+    SYSTEM PRIVATE include/3rd-party/fmt/include
+    SYSTEM PRIVATE include/3rd-party/mem_track/src
+)
+target_include_directories(${exec_NAME}
+    SYSTEM PRIVATE include/
+    SYSTEM PRIVATE src/
+)
 
-target_include_directories(${exec_NAME} SYSTEM PRIVATE include/)
-target_include_directories(${exec_NAME} SYSTEM PRIVATE src/)
 if (UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
 endif (UNIX)
