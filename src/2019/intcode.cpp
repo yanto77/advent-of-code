@@ -164,10 +164,7 @@ void intcode_solver_t::run_tests()
     for (const auto& test: test_data)
     {
         intcode_solver_t solver(test.program);
-
-        solver.io.set_input(test.input);
-        solver.execute();
-        const auto& output = solver.io.get_output();
+        solver.execute(false, test.input);
 
         if (solver.memory != test.end_state)
         {
@@ -176,6 +173,8 @@ void intcode_solver_t::run_tests()
             fmt::print("    - expected: "); print_row(test.end_state);
             fmt::print("    - actual  : "); print_row(solver.program);
         }
+
+        const auto& output = solver.output_data;
         if (output != test.output)
         {
             fmt::print("Unexpected output\n");
@@ -183,6 +182,7 @@ void intcode_solver_t::run_tests()
             fmt::print("    - expected: "); print_row(test.output);
             fmt::print("    - actual  : "); print_row(output);
         }
+        
         assert(solver.memory == test.end_state);
         assert(output == test.output);
     }
@@ -216,7 +216,7 @@ void intcode_solver_t::debug_post_exec()
     }
     fmt::print("\n");
 
-    fmt::print("  output     : "); print_row(io.get_output()); fmt::print("\n");
+    fmt::print("  output     : "); print_row(output_data); fmt::print("\n");
 
     fmt::print("\n");
     std::this_thread::sleep_for(100ms);

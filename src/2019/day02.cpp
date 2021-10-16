@@ -10,7 +10,7 @@ namespace
         solver.reset();
         solver.memory[1] = verb;
         solver.memory[2] = noun;
-        solver.execute();
+        solver.execute(false);
 
         return solver.memory[0];
     }

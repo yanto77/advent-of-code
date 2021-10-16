@@ -6,14 +6,12 @@ ADVENT_DAY(2019, 9, 3507134798, 84513);
 output_t Day_2019_9::run_solution(const input_t& input) const
 {
     intcode_solver_t solver(get_sv(input));
-    solver.io.set_input({ 1 });
-    solver.execute();
-    size_t part1 = solver.io.get_output().front();
+    solver.execute(false, { 1 });
+    size_t part1 = solver.output_data.front();
     
     solver.reset();
-    solver.io.set_input({ 2 });
-    solver.execute();
-    size_t part2 = solver.io.get_output().front();
+    solver.execute(false, { 2 });
+    size_t part2 = solver.output_data.front();
 
     return {part1, part2};
 }
@@ -28,23 +26,23 @@ void Day_2019_9::run_tests() const
         intcode_solver_t solver(std::string {
             "109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99"
         });
-        solver.execute();
+        solver.execute(false);
         std::vector<int64_t> expected = {
             109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99
         };
-        assert(solver.io.get_output() == expected);
+        assert(solver.output_data == expected);
     }
     {
         intcode_solver_t solver(std::string {"1102,34915192,34915192,7,4,7,99,0"});
-        solver.execute();
+        solver.execute(false);
         std::vector<int64_t> expected = {1219070632396864};
-        assert(solver.io.get_output() == expected);
+        assert(solver.output_data == expected);
     }
     {
         intcode_solver_t solver(std::string {"104,1125899906842624,99"});
-        solver.execute();
+        solver.execute(false);
         std::vector<int64_t> expected = {1125899906842624};
-        assert(solver.io.get_output() == expected);
+        assert(solver.output_data == expected);
     }
 
     // TODO:

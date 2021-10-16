@@ -56,10 +56,10 @@ output_t Day_2019_13::run_solution(const input_t& input) const
         game_t game(input);
         while (!game.solver.is_halted)
         {
-            game.solver.execute();
+            game.solver.execute(false);
         }
 
-        const auto& output = game.solver.io.get_output();
+        const auto& output = game.solver.output_data;
         for (size_t i = 0; i < output.size(); i += 3)
         {
             part1 += (static_cast<uint8_t>(output[i + 2]) == T_BLOCK);
@@ -71,18 +71,10 @@ output_t Day_2019_13::run_solution(const input_t& input) const
         game_t game(input);
         game.tiles = {};
         game.solver.memory[0] = 2; // set free-to-play mode
-        game.solver.io.set_input({ 0 });
 
         size_t ball = 0, paddle = 0, score = 0;
-
         while (!game.solver.is_halted)
         {
-            auto update_input = [&]() -> void
-            {
-                auto joystick = (paddle > ball) ? -1 : (paddle < ball) ? 1 : 0;
-                game.solver.io.input_data[0] = joystick;
-            };
-
             uint8_t op = game.solver.execute(true);
             if (game.solver.is_halted)
             {
@@ -90,7 +82,8 @@ output_t Day_2019_13::run_solution(const input_t& input) const
             }
             else if (op == instr::INPUT)
             {
-                game.solver.io.idp--; // re-use the same input
+                auto joystick = (paddle > ball) ? -1 : (paddle < ball) ? 1 : 0;
+                *game.solver.idp = joystick;
 
                 // game.print_map();
                 // std::this_thread::sleep_for(1ms);
@@ -100,7 +93,7 @@ output_t Day_2019_13::run_solution(const input_t& input) const
                 game.solver.execute(true);
                 game.solver.execute(true);
 
-                const auto& out = game.solver.io.get_output();
+                const auto& out = game.solver.output_data;
                 const auto x = out[0];
                 const auto y = out[1];
                 const auto z = out[2];
@@ -114,18 +107,12 @@ output_t Day_2019_13::run_solution(const input_t& input) const
                     game.tiles[y][x] = static_cast<uint8_t>(z);
 
                     if (z == T_PADDLE)
-                    {
                         paddle = x;
-                        update_input();
-                    }
                     else if (z == T_BALL)
-                    {
                         ball = x;
-                        update_input();
-                    }
                 }
                 
-                game.solver.io.reset();
+                game.solver.output_data.clear();
             }
         }
 
