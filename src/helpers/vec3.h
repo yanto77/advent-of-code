@@ -35,6 +35,11 @@ struct vec3
     constexpr friend vec3<T> operator*(const T lhs, vec3<T> rhs) { rhs *= lhs; return rhs; }
 
     bool operator==(const vec3<T>& v) const { return x == v.x && y == v.y && z == v.z; }
+
+    constexpr T& operator[](size_t idx) { return (idx == 0) ? x : ((idx == 1) ? y : z); }
+    constexpr const T& operator[](size_t idx) const { return (idx == 0) ? x : ((idx == 1) ? y : z); }
+
+    constexpr size_t sum_abs() const { return llabs(x) + llabs(y) + llabs(z); }
 };
 
 namespace std
