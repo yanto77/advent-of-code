@@ -85,19 +85,24 @@ class intcode_solver_t
     }
 
     // execute whole program, until it halts, or outputs data and yields are accepted
-    void execute(bool accept_yields = false)
+    // returns the last opcode, when yielding/halting
+    uint8_t execute(bool accept_yields = false)
     {
         while (!is_halted)
         {
             debug_pre_exec();
 
-            bool yield = execute_once();
+            uint8_t opcode = execute_once();
 
             debug_post_exec();
 
-            if (yield && accept_yields)
-                break;
+            if (accept_yields && (opcode == instr::OUTPUT))
+            {
+                return opcode;
+            }
         }
+
+        return instr::HALT;
     }
 
     void reset()
@@ -112,8 +117,6 @@ class intcode_solver_t
     static void run_tests();
 
   private:
-    
-
     // get pointer to memory address, guarantees the address exists
     // `n` -> position argument from instruction pointer
     // `immediate` -> parameter mode (true: value as is, false: memory addr)
@@ -147,9 +150,8 @@ class intcode_solver_t
         return { (digits[3] * 10 + digits[4]), digits[2], digits[1], digits[0] };
     }
 
-    // execute single instruction
-    // returns true if yielding requested, false if can continue
-    bool execute_once()
+    // execute single instruction, and return its opcode
+    uint8_t execute_once()
     {
         const auto& [opcode, m1, m2, m3] = get_opcode();
         switch (opcode)
@@ -225,7 +227,7 @@ class intcode_solver_t
             }
         }
 
-        return (opcode == instr::OUTPUT);
+        return opcode;
     }
 
     void debug_pre_exec();
