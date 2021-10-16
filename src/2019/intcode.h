@@ -21,49 +21,6 @@ enum instr: uint8_t
     HALT        = 99
 };
 
-class intcode_solver_io_t
-{
-  public:
-    void set_input(const std::vector<int64_t>& data)
-    {
-        input_data = data;
-    }
-
-    void append_input(int64_t value)
-    {
-        input_data.push_back(value);
-    }
-
-    std::vector<int64_t> get_output()
-    {
-        return output_data;
-    }
-
-    void reset()
-    {
-        idp = 0;
-        input_data.clear();
-        output_data.clear();
-    }
-
-  private:
-    friend class intcode_solver_t;
-    int64_t get_next_input()
-    {
-        return input_data[idp++];
-    }
-
-    void append_output(int64_t value)
-    {
-        output_data.push_back(value);
-    }
-
-  public:
-    size_t idp = 0; // input data pointer
-    std::vector<int64_t> input_data;
-    std::vector<int64_t> output_data;
-};
-
 class intcode_solver_t
 {
   public:
@@ -84,21 +41,49 @@ class intcode_solver_t
         reset();
     }
 
-    // execute whole program, until it halts, or outputs data and yields are accepted
+    // execute whole program, until it halts, or, may yield on input/output instructions. 
+    // NB: user is responsible for filling in the inputs immediately after yield!
     // returns the last opcode, when yielding/halting
-    uint8_t execute(bool accept_yields = false)
+    uint8_t execute(bool yield_on_io)
     {
         while (!is_halted)
         {
-            debug_pre_exec();
+            // debug_pre_exec();
 
             uint8_t opcode = execute_once();
 
-            debug_post_exec();
+            // debug_post_exec();
 
-            if (accept_yields && (opcode == instr::OUTPUT))
+            if (yield_on_io && (opcode == instr::OUTPUT || opcode == instr::INPUT))
             {
                 return opcode;
+            }
+        }
+
+        return instr::HALT;
+    }
+
+    // execute() where the input is predefined, so this runs through the program 
+    // supplying the input values when asked for
+    uint8_t execute(bool yield_on_io, const std::vector<int64_t>& input_data)
+    {
+        size_t input_idx = 0;
+        while (!is_halted)
+        {
+            uint8_t op = execute(true);
+            if (op == instr::HALT)
+            {
+                return op;
+            }
+            else if (op == instr::INPUT)
+            {
+                if (input_idx < input_data.size())
+                    *idp = input_data[input_idx++];
+                else return op;
+            }
+            else if (op == instr::OUTPUT && yield_on_io)
+            {
+                return op;
             }
         }
 
@@ -109,9 +94,10 @@ class intcode_solver_t
     {
         ip = 0;
         rbp = 0;
+        idp = nullptr;
         is_halted = false;
         memory = program;
-        io.reset();
+        output_data.clear();
     }
 
     static void run_tests();
@@ -170,13 +156,13 @@ class intcode_solver_t
             }
             case instr::INPUT:
             {
-                *get_addr(1, m1) = io.get_next_input();
+                idp = get_addr(1, m1);
                 ip += 2;
                 break;
             }
             case instr::OUTPUT:
             {
-                io.append_output(*get_addr(1, m1));
+                output_data.push_back(*get_addr(1, m1));
                 ip += 2;
                 break;
             }
@@ -234,13 +220,13 @@ class intcode_solver_t
     void debug_post_exec();
 
   public:
+    bool is_halted = false;
+
     size_t ip = 0; // instruction pointer
     size_t rbp = 0; // relative base pointer
-
-    bool is_halted = false;
+    int64_t* idp = nullptr; // input data pointer, valid immediately after program yields on INPUT, otherwise undefined
 
     const std::vector<int64_t> program; // program, constant (always equal to input)
     std::vector<int64_t> memory; // program, as loaded into memory, may be modified
-
-    intcode_solver_io_t io;
+    std::vector<int64_t> output_data;
 };

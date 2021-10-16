@@ -15,9 +15,8 @@ namespace
         for (uint8_t idx = 0; idx < 5; ++idx)
         {
             base.reset();
-            base.io.set_input({phases[idx], signal});
-            base.execute();
-            signal = base.io.get_output().front();
+            base.execute(false, { phases[idx], signal });
+            signal = base.output_data.front();
         }
         return signal;
     }
@@ -29,7 +28,8 @@ namespace
         for (uint8_t idx = 0; idx < 5; ++idx)
         {
             amps[idx].reset();
-            amps[idx].io.set_input({ phases[idx] });
+            auto op = amps[idx].execute(true, { phases[idx] });
+            assert(op == instr::INPUT);
         }
 
         int64_t signal = 0;
@@ -37,11 +37,12 @@ namespace
         {
             for (uint8_t idx = 0; idx < 5; ++idx)
             {
-                amps[idx].io.append_input(signal);
-                amps[idx].execute(true);
-                signal = amps[idx].io.get_output().back();
+                *amps[idx].idp = signal;
+                amps[idx].execute(true, {}); // execute until next input instr
+                signal = amps[idx].output_data.back();
             }
         }
+
         return signal;
     }
 

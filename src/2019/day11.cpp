@@ -43,13 +43,12 @@ namespace
         while (!solver.is_halted)
         {
             const bool tile = color_map[ship.pos.y][ship.pos.x];
-            solver.io.set_input({ static_cast<uint8_t>(tile) });
 
             // we always expect two outputs
-            solver.execute(true);
+            solver.execute(true, { static_cast<uint8_t>(tile) });
             solver.execute(true);
 
-            const auto& output = solver.io.get_output();
+            const auto& output = solver.output_data;
             if (output.size() == 0) // robot is finished
                 break;
 
@@ -73,7 +72,7 @@ namespace
             };
             ship.pos += turns[ship.dir];
 
-            solver.io.reset();
+            solver.output_data.clear();
         }
 
         return { painted_map, color_map };
