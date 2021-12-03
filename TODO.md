@@ -4,6 +4,14 @@ Some ideas for additional things.
 
 ## Code specific
 
+* Experiment with custom hashmaps:
+    - https://github.com/JCash/containers
+    - https://codingtidbit.com/2020/01/02/c14-20-heterogeneous-lookup-benchmark/
+    - https://probablydance.com/2017/02/26/i-wrote-the-fastest-hashtable/
+    - https://artificial-mind.net/blog/2021/10/09/unordered-map-badness
+    - https://www.andreinc.net/2021/10/02/implementing-hash-tables-in-c-part-1
+    - https://www.codeproject.com/Articles/5314559/Multi-Level-Cache-that-Does-Up-To-A-Billion-Lookup
+
 * Extract more standardized algorithms outside the day-implementations.
 
 ### algo-header
