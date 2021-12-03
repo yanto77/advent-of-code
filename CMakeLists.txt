@@ -55,6 +55,10 @@ add_executable(${exec_NAME}
     src/2020/day23.cpp
     src/2020/day24.cpp
     src/2020/day25.cpp
+
+    src/2021/day01.cpp
+    src/2021/day02.cpp
+    src/2021/day03.cpp
 )
 
 target_precompile_headers(${exec_NAME} PRIVATE src/setup/all.h)
