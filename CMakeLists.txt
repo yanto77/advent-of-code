@@ -28,6 +28,7 @@ add_executable(${exec_NAME}
     src/2019/day11.cpp
     src/2019/day12.cpp
     src/2019/day13.cpp
+    src/2019/day14.cpp
     
     src/2020/day01.cpp
     src/2020/day02.cpp
