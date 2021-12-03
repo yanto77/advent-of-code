@@ -25,7 +25,10 @@
 #include <fmt/format.h>
 #include <fmt/ranges.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wheader-hygiene"
 using namespace std::chrono_literals;
+#pragma clang diagnostic pop
 
 // Include assert() for all builds (incl. Release)
 #ifdef NDEBUG

@@ -1,6 +1,7 @@
 #pragma once
 #include <string_view>
 #include <vector>
+#include <functional>
 
 using sv = std::string_view;
 
