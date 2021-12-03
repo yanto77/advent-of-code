@@ -1,8 +1,12 @@
 #pragma once
-#include <vector>
+#include <cassert>
 #include <cstddef>
 #include <cstdint>
+#include <fmt/format.h>
+#include <helpers/conv.h>
 #include <helpers/string.h>
+#include <helpers/num.h>
+#include <vector>
 
 enum instr: uint8_t
 {

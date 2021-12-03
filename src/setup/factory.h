@@ -38,7 +38,7 @@ class DayFactory
 
     static std::unique_ptr<IDay> create(size_t year, size_t day);
 
-    static std::map<size_t, year_map_t>& get_years() { return s_years; };
+    static std::map<size_t, year_map_t>& get_years() { return s_years; }
 
   private:
     static std::map<size_t, year_map_t> s_years;

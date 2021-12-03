@@ -1,5 +1,4 @@
 #include "setup/all.h"
-#include <fmt/format.h>
 
 namespace
 {

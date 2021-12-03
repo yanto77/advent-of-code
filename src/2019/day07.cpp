@@ -30,6 +30,7 @@ namespace
             amps[idx].reset();
             auto op = amps[idx].execute(true, { phases[idx] });
             assert(op == instr::INPUT);
+            (void)op;
         }
 
         int64_t signal = 0;
