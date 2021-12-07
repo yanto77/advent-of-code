@@ -28,18 +28,21 @@ template <typename T>
 T to_int(const sv& input)
 {
     int8_t sgn = +1;
-    T n = 0;
-    for (auto ch: input)
+    T num = 0;
+
+    size_t ch_idx = input.find_first_of("-0123456789");
+    while (ch_idx < input.size())
     {
+        char ch = input[ch_idx++];
         if (ch == '-')
             sgn = -1;
         else if (uint8_t d = ch - '0'; d <= 9)
-            n = 10 * n + d;
+            num = 10 * num + d;
         else
-            return sgn * n; // stop on first non-digit
+            return sgn * num; // stop on first non-digit
     }
 
-    return sgn * n;
+    return sgn * num;
 }
 
 /**
@@ -57,7 +60,7 @@ std::pair<T, size_t> to_int(const sv& input, size_t start)
 }
 
 /**
- * Convert string of multiple ints delimited by non-numeric char
+ * Convert string of multiple ints delimited by single non-numeric char
  * @param input input string
  * @returns vector of parsed ints
  */
