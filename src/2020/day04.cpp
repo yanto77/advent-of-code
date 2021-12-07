@@ -24,7 +24,7 @@ namespace
 
 output_t Day_2020_4::run_solution(const input_t& input) const
 {
-    uint8_t pass_filled = 0;
+    std::bitset<8> pass_filled {};
     bool pass_valid = true;
 
     size_t filled_nb = 0;
@@ -39,7 +39,7 @@ output_t Day_2020_4::run_solution(const input_t& input) const
                 const auto& [key_str, val_str] = split_single(field, ":");
 
                 const Field key = s_fields.at(key_str);
-                set_bit(pass_filled, key);
+                pass_filled.set(key);
 
                 const int value = to_int<int>(val_str);
                 if (key == Field::byr) 
@@ -76,13 +76,14 @@ output_t Day_2020_4::run_solution(const input_t& input) const
         }
         else
         {
-            constexpr uint8_t optional = 0b00000010;
-            bool all_filled = (pass_filled | optional) == UINT8_MAX;
+            constexpr std::bitset<8> optional {0b00000010};
+            bool all_filled = (pass_filled | optional).all();
+
             filled_nb += static_cast<int>(all_filled);
             valid_nb += static_cast<int>(all_filled && pass_valid);
 
             // reset
-            pass_filled = 0;
+            pass_filled.reset();
             pass_valid = true;
         }
     });

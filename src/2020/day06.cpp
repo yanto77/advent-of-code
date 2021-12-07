@@ -6,8 +6,8 @@ output_t Day_2020_6::run_solution(const input_t& input) const
 {
     struct group_t
     {
-        uint32_t p1 = 0; // anyone
-        uint32_t p2 = UINT32_MAX; // everyone
+        std::bitset<32> p1 { 0 }; // anyone
+        std::bitset<32> p2 { UINT32_MAX }; // everyone
     };
 
     std::vector<group_t> v { group_t() };
@@ -24,10 +24,10 @@ output_t Day_2020_6::run_solution(const input_t& input) const
         }
         else
         {
-            uint32_t input_bits = 0;
+            std::bitset<32> input_bits = 0;
             for (int i = 0; i < line.size(); ++i)
             {
-                set_bit(input_bits, line[i] - static_cast<int>('a'));
+                input_bits.set(line[i] - static_cast<int>('a'));
             }
 
             v[index].p1 |= input_bits;
@@ -39,8 +39,8 @@ output_t Day_2020_6::run_solution(const input_t& input) const
     uint16_t acc2 = 0;
     for (size_t i = 0; i <= index; ++i)
     {
-        acc1 += count_bits(v[i].p1);
-        acc2 += count_bits(v[i].p2);
+        acc1 += v[i].p1.count();
+        acc2 += v[i].p2.count();
     }
 
     return { acc1, acc2 };
