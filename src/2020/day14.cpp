@@ -26,19 +26,6 @@ namespace
         }
     };
 
-    [[maybe_unused]]
-    void custom_print_bits(uint64_t trg, bool color = false)
-    {
-        for (int i = MASK_BIT_COUNT; i >= 0; --i)
-        {
-            if (color)
-                printf(get_bit(trg, i) ? COLOR_GREEN() "1" : COLOR_CYAN() "0");
-            else
-                printf(get_bit(trg, i) ? "1" : "0");
-            printf(COLOR_RESET());
-        }
-    }
-
     void apply_pt1(memory_t& memory, const mask_t& mask, uint64_t addr, uint64_t value)
     {
         set_bitmask(value, mask.set1);

@@ -60,18 +60,6 @@ constexpr bool get_bit(T num, size_t bit)
     return ((num >> bit) & 1) == 1;
 }
 
-template <typename T>
-constexpr uint8_t count_bits(T n)
-{
-    uint8_t count = 0;
-    while (n)
-    {
-        count += n & 1;
-        n >>= 1;
-    }
-    return count;
-}
-
 inline uint8_t count_bits(const std::vector<bool>& bits)
 {
     uint8_t count = 0;

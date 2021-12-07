@@ -12,12 +12,12 @@ namespace
     [[maybe_unused]]
     uint32_t convert_basic(const char* input)
     {
-        uint32_t output = 0;
+        std::bitset<32> output { 0 };
         for (size_t c = 0; c < 32; ++c)
             if (input[c] == '#')
-                set_bit(output, c);
+                output.set(c);
 
-        return output;
+        return static_cast<uint32_t>(output.to_ulong());
     }
 
     [[maybe_unused]]
