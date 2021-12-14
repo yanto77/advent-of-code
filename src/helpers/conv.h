@@ -5,6 +5,7 @@
 #include <string_view>
 
 #include "string.h"
+#include "input.h"
 
 using sv = std::string_view;
 
@@ -81,6 +82,12 @@ inline std::vector<T> to_multi_int(const sv& input)
     }
 
     return out;
+}
+
+template <typename T>
+inline std::vector<T> to_multi_int(const input_t& input)
+{
+    return to_multi_int<T>(sv { input.s, input.len - 1 });
 }
 
 /**
