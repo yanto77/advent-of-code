@@ -61,6 +61,7 @@ add_executable(${exec_NAME}
     src/2021/day03.cpp
     src/2021/day04.cpp
     src/2021/day05.cpp
+    src/2021/day06.cpp
 )
 
 target_precompile_headers(${exec_NAME} PRIVATE src/setup/all.h)
@@ -92,7 +93,7 @@ target_compile_options(advent_of_code PRIVATE
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
         # Warnings
         -Weverything
-        -Werror
+        # -Werror
         -Wall
         -Wextra
         -Wpedantic
