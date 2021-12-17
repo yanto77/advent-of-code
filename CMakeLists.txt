@@ -133,6 +133,8 @@ cmake_policy(SET CMP0092 NEW) # Windows specific: Do not add /W3, as we are addi
 #
 
 add_custom_command(TARGET ${exec_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/input" "${CMAKE_BINARY_DIR}/input"
-    COMMENT "Copying input data to build dir"
+    COMMAND ${CMAKE_COMMAND} -E create_symlink
+        "${CMAKE_SOURCE_DIR}/input"
+        "${CMAKE_BINARY_DIR}/input"
+    COMMENT "Creating a link to input data in build dir"
 )
