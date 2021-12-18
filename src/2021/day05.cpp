@@ -6,31 +6,6 @@ namespace
 {
     struct line_t { vec2i p1; vec2i p2; };
 
-    // considers point on a segment (non-infinite line)
-    // ref: https://stackoverflow.com/a/11908158
-    bool is_point_on_segment(const vec2i& point, const line_t& line)
-    {
-        const int dxc = point.x - line.p1.x;
-        const int dyc = point.y - line.p1.y;
-
-        const int dxl = line.p2.x - line.p1.x;
-        const int dyl = line.p2.y - line.p1.y;
-
-        const int cross = dxc * dyl - dyc * dxl;
-
-        if (cross != 0)
-            return false;
-
-        if (abs(dxl) >= abs(dyl))
-            return dxl > 0 ? 
-                line.p1.x <= point.x && point.x <= line.p2.x :
-                line.p2.x <= point.x && point.x <= line.p1.x;
-        else
-            return dyl > 0 ? 
-                line.p1.y <= point.y && point.y <= line.p2.y :
-                line.p2.y <= point.y && point.y <= line.p1.y;
-    }
-
     std::vector<line_t> parse_lines(const input_t& input)
     {
         std::vector<line_t> lines;
@@ -45,14 +20,6 @@ namespace
             vec2i p1 { to_int<uint16_t>(p1x), to_int<uint16_t>(p1y) };
             vec2i p2 { to_int<uint16_t>(p2x), to_int<uint16_t>(p2y) };
 
-            // fmt::print("line: {}\n", line);
-            // fmt::print(" -> p1: ({}, {}), p2: ({}, {})\n", p1.x, p1.y, p2.x, p2.y);
-
-            // assert(p1.x <= 1000);
-            // assert(p1.y <= 1000);
-            // assert(p2.x <= 1000);
-            // assert(p2.y <= 1000);
-
             lines.push_back(line_t { p1, p2 });
         });
 
@@ -61,28 +28,49 @@ namespace
 
     size_t compute_overlapping_lines(const std::vector<line_t>& lines, bool ignore_diagonals)
     {
-        size_t counter = 0;
+        std::array<std::array<uint8_t, 1000>, 1000> map {};
 
-        for (int x = 0; x < 1000; x++)
+        // paint lines on the map
+        for (const auto& line: lines)
         {
-            for (int y = 0; y < 1000; y++)
+            if (line.p1.x == line.p2.x)
             {
-                size_t cell_counter = 0;
-                vec2i point {y, x};
+                int min_row = min(line.p1.y, line.p2.y);
+                int max_row = max(line.p1.y, line.p2.y);
+                for (int row = min_row; row < max_row + 1; row++)
+                    map[row][line.p1.x] += 1;
+            }
+            else if (line.p1.y == line.p2.y)
+            {
+                int min_col = min(line.p1.x, line.p2.x);
+                int max_col = max(line.p1.x, line.p2.x);
+                for (int col = min_col; col < max_col + 1; col++)
+                    map[line.p1.y][col] += 1;
+            }
+            else if (!ignore_diagonals)
+            {
+                vec2i pos = line.p1;
+                vec2i delta = {
+                    (line.p1.x < line.p2.x) ? 1 : -1,
+                    (line.p1.y < line.p2.y) ? 1 : -1,
+                };
 
-                for (const auto& line: lines)
+                map[pos.y][pos.x] += 1;
+
+                while(true)
                 {
-                    if (ignore_diagonals && line.p1.x != line.p2.x && line.p1.y != line.p2.y)
-                        continue;
-
-                    if (is_point_on_segment(point, line))
-                        cell_counter++;
+                    pos += delta;
+                    map[pos.y][pos.x] += 1;
+                    if (pos == line.p2)
+                        break;
                 }
-
-                counter += (cell_counter >= 2);
             }
         }
 
+        size_t counter = 0;
+        for (const auto& row: map)
+            for (uint8_t cell: row)
+                counter += (cell >= 2);
         return counter;
     }
 }
