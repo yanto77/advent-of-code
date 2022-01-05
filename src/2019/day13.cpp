@@ -25,7 +25,7 @@ namespace
         [[maybe_unused]]
         void print_map() const
         {
-            printf("\x1B[2J\x1B[H"); // clear screen and move cursor to top-left corner
+            clear_screen();
             printf("map: \n");
 
             for (size_t y = 0; y < Y; y++)
