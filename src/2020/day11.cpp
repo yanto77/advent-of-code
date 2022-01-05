@@ -207,7 +207,7 @@ namespace
 
             if constexpr (DEBUG_VISUALIZE)
             {
-                printf("\x1B[2J\x1B[H"); // clear screen and move cursor to top-left corner
+                clear_screen();
                 printf("\n\nStep: %zu\n", steps + 1);
                 print_seat_map(next);
                 getchar();

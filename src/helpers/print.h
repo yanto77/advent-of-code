@@ -35,6 +35,12 @@
 
 // TODO: to_string() methods?
 
+inline void clear_screen()
+{
+    // clear screen and move cursor to top-left corner
+    printf("\x1B[2J\x1B[H");
+}
+
 template <typename cnt>
 void print_col(const cnt& data)
 {
