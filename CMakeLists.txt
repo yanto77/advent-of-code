@@ -3,7 +3,6 @@ project (advent_of_code)
 
 
 add_subdirectory(include/3rd-party/fmt EXCLUDE_FROM_ALL)
-add_subdirectory(include/3rd-party/mem_track)
 
 #
 # Compilation configuration (includes, links, properties)
@@ -75,11 +74,9 @@ add_executable(${exec_NAME}
 target_precompile_headers(${exec_NAME} PRIVATE src/setup/all.h)
 target_link_libraries(${exec_NAME}
     fmt::fmt
-    mem_track
 )
 target_include_directories(${exec_NAME}
     SYSTEM PRIVATE include/3rd-party/fmt/include
-    SYSTEM PRIVATE include/3rd-party/mem_track/src
 )
 target_include_directories(${exec_NAME}
     SYSTEM PRIVATE include/
