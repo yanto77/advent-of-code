@@ -66,7 +66,6 @@ add_executable(${exec_NAME}
     src/2021/day09.cpp
     src/2021/day10.cpp
     src/2021/day11.cpp
-    src/2021/day12.cpp
 
     src/2022/day01.cpp
 )

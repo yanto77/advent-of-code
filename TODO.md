@@ -46,6 +46,10 @@ permutations:
 vector contains value
     2020/23
 
+graphs
+    vertex list + link list (+ weights) -> 2 sets of (dyn) arrays
+    adjancency matrix (v^2) -> static array 
+
 
 ## Project specific 
 
