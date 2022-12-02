@@ -238,7 +238,7 @@ namespace
     }
 }
 
-output_t Day_2020_11::run_solution(str_view input) const
+result_t Day_2020_11::run_solution(str_view input) const
 {
     seat_map_t test_map = parse(input);
     const auto& [steps, after_map] = simulate_until_stable(test_map, true);

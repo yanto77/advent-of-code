@@ -124,7 +124,7 @@ namespace
     }
 }
 
-output_t Day_2020_8::run_solution(str_view input) const
+result_t Day_2020_8::run_solution(str_view input) const
 {
     const program_t& prg = parse(input);
 

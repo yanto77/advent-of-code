@@ -35,7 +35,7 @@ namespace
     }
 }
 
-output_t Day_2020_15::run_solution(str_view /* input */) const
+result_t Day_2020_15::run_solution(str_view /* input */) const
 {
     size_t part1 = solve({ 1, 0, 16, 5, 17, 4 }, 2020);
     size_t part2 = solve({ 1, 0, 16, 5, 17, 4 }, 30000000);

@@ -64,7 +64,7 @@ namespace
     }
 }
 
-output_t Day_2021_7::run_solution(str_view input) const
+result_t Day_2021_7::run_solution(str_view input) const
 {
     const std::vector<int32_t> data = to_multi_int<int32_t>(input);
     const auto& [part1, part2] = get_best_fuel(data);

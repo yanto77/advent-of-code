@@ -132,7 +132,7 @@ namespace
     }
 }
 
-output_t Day_2021_9::run_solution(str_view input) const
+result_t Day_2021_9::run_solution(str_view input) const
 {
     map_t map = get_padded_map(input);
     const auto& [part1, part2] = get_both_parts(map);

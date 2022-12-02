@@ -111,13 +111,13 @@ namespace
         bool skip_next = false;
     };
 
-    output_t evaluate(str_view input)
+    result_t evaluate(str_view input)
     {
         parser_t parser;
         data_t data;
         data.rules.reserve(25);
 
-        output_t out;
+        result_t out;
 
         parse_input(input, [&](str_view line)
         {
@@ -227,7 +227,7 @@ namespace
     }
 }
 
-output_t Day_2020_16::run_solution(str_view input) const
+result_t Day_2020_16::run_solution(str_view input) const
 {
     return evaluate(input);
 }

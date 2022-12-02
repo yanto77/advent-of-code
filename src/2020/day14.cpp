@@ -85,7 +85,7 @@ namespace
     }
 }
 
-output_t Day_2020_14::run_solution(str_view input) const
+result_t Day_2020_14::run_solution(str_view input) const
 {
     size_t part1 = evaluate(input, true);
     size_t part2 = evaluate(input, false);

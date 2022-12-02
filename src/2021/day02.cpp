@@ -2,7 +2,7 @@
 
 ADVENT_DAY(2021, 2, 2272262, 2134882034);
 
-output_t Day_2021_2::run_solution(str_view input) const
+result_t Day_2021_2::run_solution(str_view input) const
 {
     vec2i p1_pos {0, 0}; // { horizontal pos, depth }
     vec3i p2_pos {0, 0, 0}; // { horizontal pos, depth, aim }

@@ -22,7 +22,7 @@ namespace
     };
 }
 
-output_t Day_2020_4::run_solution(str_view input) const
+result_t Day_2020_4::run_solution(str_view input) const
 {
     std::bitset<8> pass_filled {};
     bool pass_valid = true;

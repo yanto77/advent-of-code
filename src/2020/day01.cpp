@@ -40,7 +40,7 @@ void Day_2020_1::run_tests() const
 {
 }
 
-output_t Day_2020_1::run_solution(str_view input) const
+result_t Day_2020_1::run_solution(str_view input) const
 {
     std::vector<int> v;
     v.reserve(1000);

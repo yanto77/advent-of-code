@@ -27,7 +27,7 @@ namespace
     }
 }
 
-output_t Day_2019_2::run_solution(str_view input) const
+result_t Day_2019_2::run_solution(str_view input) const
 {
     intcode_solver_t solver(input);
 

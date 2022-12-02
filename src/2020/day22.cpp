@@ -168,7 +168,7 @@ namespace
     }
 }
 
-output_t Day_2020_22::run_solution(str_view input) const
+result_t Day_2020_22::run_solution(str_view input) const
 {
     auto decks = parse_decks(input);
     auto [part1, p1_won_part1] = play_game(decks);

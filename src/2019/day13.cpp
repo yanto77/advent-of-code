@@ -47,7 +47,7 @@ namespace
     };
 }
 
-output_t Day_2019_13::run_solution(str_view input) const
+result_t Day_2019_13::run_solution(str_view input) const
 {
     size_t part1 = 0, part2 = 0;
 

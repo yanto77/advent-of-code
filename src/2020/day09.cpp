@@ -77,7 +77,7 @@ namespace
     };
 }
 
-output_t Day_2020_9::run_solution(str_view input) const
+result_t Day_2020_9::run_solution(str_view input) const
 {
     solver_t solver;
     solver.parse(input);

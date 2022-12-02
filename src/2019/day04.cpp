@@ -42,7 +42,7 @@ namespace
     }
 }
 
-output_t Day_2019_4::run_solution(str_view /* input */) const
+result_t Day_2019_4::run_solution(str_view /* input */) const
 {
     size_t min = 145852;
     size_t max = 616942;

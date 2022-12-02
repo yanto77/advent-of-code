@@ -22,7 +22,7 @@ namespace
     }
 }
 
-output_t Day_2020_5::run_solution(str_view input) const
+result_t Day_2020_5::run_solution(str_view input) const
 {
     uint16_t max_seat_id = 0; // Part 1
     uint16_t my_seat_id = 0; // Part 2

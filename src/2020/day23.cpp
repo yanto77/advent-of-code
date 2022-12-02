@@ -177,7 +177,7 @@ namespace
     }
 }
 
-output_t Day_2020_23::run_solution(str_view input) const
+result_t Day_2020_23::run_solution(str_view input) const
 {
     auto out = parse(input);
     size_t part1 = evaluate(out, 100).get_score_part1();

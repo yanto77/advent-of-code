@@ -86,7 +86,7 @@ namespace
     }
 }
 
-output_t Day_2020_24::run_solution(str_view input) const
+result_t Day_2020_24::run_solution(str_view input) const
 {
     const auto& map = parse_and_fill(input);
     size_t part1 = count_flipped(map);

@@ -83,7 +83,7 @@ namespace
     }
 }
 
-output_t Day_2020_3::run_solution(str_view input) const
+result_t Day_2020_3::run_solution(str_view input) const
 {
     const tree_map_t& map = get_tree_map(input);
 

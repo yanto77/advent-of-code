@@ -32,7 +32,7 @@ void Day_2019_1::run_tests() const
     static_assert(fn2(100756) == 50346);
 }
 
-output_t Day_2019_1::run_solution(str_view input) const
+result_t Day_2019_1::run_solution(str_view input) const
 {
     size_t sum1 = 0;
     size_t sum2 = 0;

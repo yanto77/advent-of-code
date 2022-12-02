@@ -115,7 +115,7 @@ namespace
     }
 }
 
-output_t Day_2019_3::run_solution(str_view input) const
+result_t Day_2019_3::run_solution(str_view input) const
 {
     std::vector<polyline_t> lines;
     parse_input(input, [&](str_view line)

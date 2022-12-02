@@ -151,7 +151,7 @@ namespace
     }
 }
 
-output_t Day_2020_17::run_solution(str_view input) const
+result_t Day_2020_17::run_solution(str_view input) const
 {
     auto world = parse(input);
     auto world1 = evaluate_pt1(convert_pt1(world), 6);

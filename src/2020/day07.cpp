@@ -12,7 +12,7 @@ struct link_t
     int cost;
 };
 
-struct result_t
+struct data_t
 {
     key_dict_t key_dict;
     std::vector<link_t> graph;
@@ -41,9 +41,9 @@ namespace
         // TODO: regexing seems to take bunch of time, so what about just going by whitespaces? using e.g. parse_multi()
     }
 
-    result_t parse(str_view input)
+    data_t parse(str_view input)
     {
-        result_t result;
+        data_t result;
         result.key_dict.reserve(1000);
 
         // 1. Map with increasing index for every new bag color.
@@ -89,7 +89,7 @@ namespace
         return result;
     }
 
-    size_t get_links_to(result_t& res, str_view node)
+    size_t get_links_to(data_t& res, str_view node)
     {
         std::set<size_t> links_to_node;
         std::queue<size_t> node_queue;
@@ -115,7 +115,7 @@ namespace
         return links_to_node.size();
     }
 
-    size_t get_contained_nodes(result_t& res, str_view node)
+    size_t get_contained_nodes(data_t& res, str_view node)
     {
         std::vector<std::pair<size_t, uint>> contained;
         std::queue<std::pair<size_t, uint>> node_queue;
@@ -145,9 +145,9 @@ namespace
     }
 }
 
-output_t Day_2020_7::run_solution(str_view input) const
+result_t Day_2020_7::run_solution(str_view input) const
 {
-    result_t res = parse(input);
+    data_t res = parse(input);
 
     const size_t con_nb = get_links_to(res, "shiny gold");
     const size_t con_cost = get_contained_nodes(res, "shiny gold");

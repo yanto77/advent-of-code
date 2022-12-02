@@ -149,7 +149,7 @@ namespace
             construct_subrule(rules, 31);
         }
 
-        output_t solve()
+        result_t solve()
         {
             std::bitset<256> r42 = get_as_bitset(42);
             std::bitset<256> r31 = get_as_bitset(31);
@@ -192,7 +192,7 @@ namespace
     };
 }
 
-output_t Day_2020_19::run_solution(str_view input) const
+result_t Day_2020_19::run_solution(str_view input) const
 {
     solver s;
     s.parse(input);

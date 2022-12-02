@@ -84,7 +84,7 @@ namespace
     }
 }
 
-output_t Day_2020_10::run_solution(str_view input) const
+result_t Day_2020_10::run_solution(str_view input) const
 {
     std::vector<uint8_t> element_deltas = parse(input);
 

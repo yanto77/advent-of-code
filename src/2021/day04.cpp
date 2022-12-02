@@ -179,7 +179,7 @@ namespace
     }
 }
 
-output_t Day_2021_4::run_solution(str_view input) const
+result_t Day_2021_4::run_solution(str_view input) const
 {
     const game_t game_data = parse(input);
     size_t part1 = get_part1(game_data);

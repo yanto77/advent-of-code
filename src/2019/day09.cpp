@@ -3,7 +3,7 @@
 
 ADVENT_DAY(2019, 9, 3507134798, 84513);
 
-output_t Day_2019_9::run_solution(str_view input) const
+result_t Day_2019_9::run_solution(str_view input) const
 {
     intcode_solver_t solver(input);
     solver.execute(false, { 1 });

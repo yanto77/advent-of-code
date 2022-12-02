@@ -2,7 +2,7 @@
 
 ADVENT_DAY(2022, 1, 69626, 206780);
 
-output_t Day_2022_1::run_solution(str_view input) const
+result_t Day_2022_1::run_solution(str_view input) const
 {
     std::array<size_t, 3> maxCounts = {};
     size_t currValue = 0;

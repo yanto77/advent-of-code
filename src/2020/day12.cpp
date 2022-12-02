@@ -171,7 +171,7 @@ namespace
     }
 }
 
-output_t Day_2020_12::run_solution(str_view input) const
+result_t Day_2020_12::run_solution(str_view input) const
 {
     std::vector<order_t> orders = parse(input);
 

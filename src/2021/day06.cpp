@@ -40,7 +40,7 @@ namespace
     }
 }
 
-output_t Day_2021_6::run_solution(str_view input) const
+result_t Day_2021_6::run_solution(str_view input) const
 {
     size_t part1 = get_fish_count(input, 80);
     size_t part2 = get_fish_count(input, 256);

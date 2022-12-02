@@ -126,7 +126,7 @@ namespace
     }
 }
 
-output_t Day_2020_13::run_solution(str_view input) const
+result_t Day_2020_13::run_solution(str_view input) const
 {
     data_t data = parse(input);
 

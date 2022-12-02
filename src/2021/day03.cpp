@@ -83,7 +83,7 @@ namespace
     }
 }
 
-output_t Day_2021_3::run_solution(str_view input) const
+result_t Day_2021_3::run_solution(str_view input) const
 {
     const std::vector<uint16_t> data = get_bitset_data(input, 12);
     const auto& [ gamma, epsilon ] = get_part1(data, 12);

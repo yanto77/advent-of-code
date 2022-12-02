@@ -131,7 +131,7 @@ namespace
     }
 }
 
-output_t Day_2021_8::run_solution(str_view input) const
+result_t Day_2021_8::run_solution(str_view input) const
 {
     const auto& [part1, part2] = compute_answers(input);
     return { part1, part2 };

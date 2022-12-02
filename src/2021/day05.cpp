@@ -75,7 +75,7 @@ namespace
     }
 }
 
-output_t Day_2021_5::run_solution(str_view input) const
+result_t Day_2021_5::run_solution(str_view input) const
 {
     std::vector<line_t> lines = parse_lines(input);
 

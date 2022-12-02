@@ -103,7 +103,7 @@ namespace
     }
 }
 
-output_t Day_2019_6::run_solution(str_view input) const
+result_t Day_2019_6::run_solution(str_view input) const
 {
     // {key => value}, where `value` is in orbit around `key`
     const auto& orbits = parse(input);

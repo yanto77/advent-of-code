@@ -13,7 +13,7 @@ struct input_t
     ssize_t len;
 };
 
-struct output_t
+struct result_t
 {
     size_t part1 = 0;
     size_t part2 = 0;

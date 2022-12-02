@@ -546,7 +546,7 @@ namespace
     }
 }
 
-output_t Day_2020_20::run_solution(str_view input) const
+result_t Day_2020_20::run_solution(str_view input) const
 {
     auto tiles = parse_tiles(input);
     const auto& corners = get_corners(tiles);

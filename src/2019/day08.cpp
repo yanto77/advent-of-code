@@ -82,7 +82,7 @@ namespace
     }
 }
 
-output_t Day_2019_8::run_solution(str_view input) const
+result_t Day_2019_8::run_solution(str_view input) const
 {
     image_t image = parse_image(input);
     size_t part1 = get_part1(image);

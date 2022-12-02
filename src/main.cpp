@@ -15,8 +15,8 @@ namespace
         const std::string input = load_input(in_fname);
 
         // Run once to validate result
-        output_t actual = inst->run_solution(input);
-        output_t expected = inst->get_valid();
+        result_t actual = inst->run_solution(input);
+        result_t expected = inst->get_valid();
         if (expected != actual)
         {
             fmt::print("{}/{:02}: ERR\n", year, day);

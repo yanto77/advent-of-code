@@ -130,7 +130,7 @@ namespace
     }
 }
 
-output_t Day_2019_10::run_solution(str_view input) const
+result_t Day_2019_10::run_solution(str_view input) const
 {
     map_t map = convert_map(input);
     const auto& [asteroid, part1] = find_asteroid(map);

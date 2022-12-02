@@ -2,7 +2,7 @@
 
 ADVENT_DAY(2020, 6, 6947, 3398);
 
-output_t Day_2020_6::run_solution(str_view input) const
+result_t Day_2020_6::run_solution(str_view input) const
 {
     struct group_t
     {
