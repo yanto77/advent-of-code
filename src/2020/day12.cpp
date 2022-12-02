@@ -87,16 +87,16 @@ namespace
         return ERR;
     }
 
-    std::vector<order_t> parse_input(const input_t& input)
+    std::vector<order_t> parse(str_view input)
     {
         std::vector<order_t> orders;
         orders.reserve(1000);
 
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             orders.push_back(order_t {
                 .action = char_to_action(line[0]),
-                .value = to_int<uint16_t>(sv { &line[1], line.size() - 1 })
+                .value = to_int<uint16_t>(str_view { &line[1], line.size() - 1 })
             });
         });
 
@@ -171,9 +171,9 @@ namespace
     }
 }
 
-output_t Day_2020_12::run_solution(const input_t& input) const
+output_t Day_2020_12::run_solution(str_view input) const
 {
-    std::vector<order_t> orders = parse_input(input);
+    std::vector<order_t> orders = parse(input);
 
     ship_pos_t ship1 = iterate_orders_pt1(orders);
     vec2i ship2 = iterate_orders_pt2(orders);
@@ -187,9 +187,8 @@ output_t Day_2020_12::run_solution(const input_t& input) const
 void Day_2020_12::run_tests() const
 {
     char text1[] = "F10\nN3\nF7\nR90\nF11\n";
-    input_t input1 { text1, sizeof(text1) };
 
-    std::vector<order_t> orders = parse_input(input1);
+    std::vector<order_t> orders = parse(text1);
     assert(orders.size() != 0);
 
     ship_pos_t ship = iterate_orders_pt1(orders);

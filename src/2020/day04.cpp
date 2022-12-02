@@ -22,7 +22,7 @@ namespace
     };
 }
 
-output_t Day_2020_4::run_solution(const input_t& input) const
+output_t Day_2020_4::run_solution(str_view input) const
 {
     std::bitset<8> pass_filled {};
     bool pass_valid = true;
@@ -30,11 +30,11 @@ output_t Day_2020_4::run_solution(const input_t& input) const
     size_t filled_nb = 0;
     size_t valid_nb = 0;
 
-    parse_input(input, [&](const sv& line)
+    parse_input(input, [&](str_view line)
     {
         if (line != "")
         {
-            for (const sv& field : split_multi(line, " "))
+            for (str_view field : split_multi(line, " "))
             {
                 const auto& [key_str, val_str] = split_single(field, ":");
 

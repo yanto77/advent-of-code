@@ -13,7 +13,7 @@ namespace
         uint64_t set1 = 0;
         uint64_t setX = 0;
 
-        void parse_from(const sv& input)
+        void parse_from(str_view input)
         {
             set0 = set1 = setX = 0;
 
@@ -50,14 +50,14 @@ namespace
         } while (floating_values);
     }
 
-    size_t evaluate(const input_t& input, bool part1 = true)
+    size_t evaluate(str_view input, bool part1 = true)
     {
         mask_t mask;
 
         memory_t memory;
         memory.reserve(part1 ? 1000 : 100000);
 
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             const auto& [type, arg] = split_single(line, " = ");
             if (type.starts_with("mask"))
@@ -66,7 +66,7 @@ namespace
             }
             else
             {
-                uint64_t addr = to_int<uint64_t>(sv { &type[4], type.size() - 5 });
+                uint64_t addr = to_int<uint64_t>(str_view { &type[4], type.size() - 5 });
                 uint64_t value = to_int<uint64_t>(arg);
 
                 if (part1)
@@ -85,7 +85,7 @@ namespace
     }
 }
 
-output_t Day_2020_14::run_solution(const input_t& input) const
+output_t Day_2020_14::run_solution(str_view input) const
 {
     size_t part1 = evaluate(input, true);
     size_t part2 = evaluate(input, false);
@@ -98,15 +98,13 @@ void Day_2020_14::run_tests() const
                     "mem[8] = 11\n"
                     "mem[7] = 101\n"
                     "mem[8] = 0\n";
-    input_t test1 { input1, sizeof(input1) };
-    size_t test1_out = evaluate(test1, true);
+    size_t test1_out = evaluate(input1, true);
     assert(test1_out == 165);
 
     char input2[] = "mask = 000000000000000000000000000000X1001X\n"
                     "mem[42] = 100\n"
                     "mask = 00000000000000000000000000000000X0XX\n"
                     "mem[26] = 1\n";
-    input_t test2 { input2, sizeof(input2) };
-    size_t test2_out = evaluate(test2, false);
+    size_t test2_out = evaluate(input2, false);
     assert(test2_out == 208);
 }

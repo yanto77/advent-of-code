@@ -10,7 +10,7 @@ namespace
     typedef std::array<uint8_t, 4> signal_out_t; // output signal with proper digits
     struct signal_pair_t { signal_t in; signal_t out; };
 
-    void parse_line(const sv& line, signal_pair_t* result)
+    void parse_line(str_view line, signal_pair_t* result)
     {
         bool left = true;
         int index = 0;
@@ -96,12 +96,12 @@ namespace
         return map;
     }
 
-    std::pair<size_t, size_t> compute_answers(const input_t& input)
+    std::pair<size_t, size_t> compute_answers(str_view input)
     {
         size_t part1 = 0;
         size_t part2 = 0;
 
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             signal_pair_t signals;
             parse_line(line, &signals);
@@ -131,7 +131,7 @@ namespace
     }
 }
 
-output_t Day_2021_8::run_solution(const input_t& input) const
+output_t Day_2021_8::run_solution(str_view input) const
 {
     const auto& [part1, part2] = compute_answers(input);
     return { part1, part2 };
@@ -150,9 +150,8 @@ void Day_2021_8::run_tests() const
         "bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef\n"
         "egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb\n"
         "gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce\n";
-    input_t test1 { text1, sizeof(text1) };
 
-    const auto& [part1, part2] = compute_answers(test1);
+    const auto& [part1, part2] = compute_answers(text1);
     assert(part1 == 26);
     assert(part2 == 61229);
 }

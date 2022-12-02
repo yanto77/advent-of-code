@@ -9,10 +9,10 @@ namespace
     typedef std::array<std::array<std::array<bool, X>, Y>, Z> world_pt1_t;
     typedef std::array<std::array<std::array<std::array<bool, X>, Y>, Z>, W> world_pt2_t;
 
-    input_world_t parse_input(const input_t& input)
+    input_world_t parse(str_view input)
     {
         input_world_t world;
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             std::vector<bool> vec;
             for (char ch: line) vec.push_back(ch == '#');
@@ -151,9 +151,9 @@ namespace
     }
 }
 
-output_t Day_2020_17::run_solution(const input_t& input) const
+output_t Day_2020_17::run_solution(str_view input) const
 {
-    auto world = parse_input(input);
+    auto world = parse(input);
     auto world1 = evaluate_pt1(convert_pt1(world), 6);
     auto world2 = evaluate_pt2(convert_pt2(world), 6);
 

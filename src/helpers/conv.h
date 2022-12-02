@@ -7,7 +7,6 @@
 #include "string.h"
 #include "input.h"
 
-using sv = std::string_view;
 
 /**
  * Convert single char into int
@@ -26,7 +25,7 @@ T to_int(char ch)
  * @returns parsed int
  */
 template <typename T>
-T to_int(const sv& input)
+T to_int(str_view input)
 {
     int8_t sgn = +1;
     T num = 0;
@@ -53,10 +52,10 @@ T to_int(const sv& input)
  * @returns pair of { parsed int, index of next unparsed char }
  */
 template <typename T>
-std::pair<T, size_t> to_int(const sv& input, size_t start)
+std::pair<T, size_t> to_int(str_view input, size_t start)
 {
     size_t end = input.find_first_not_of("-0123456789", start);
-    sv token { &input[start], end - start };
+    str_view token { &input[start], end - start };
     return { to_int<T>(token), end };
 }
 
@@ -66,7 +65,7 @@ std::pair<T, size_t> to_int(const sv& input, size_t start)
  * @returns vector of parsed ints
  */
 template <typename T>
-inline std::vector<T> to_multi_int(const sv& input)
+inline std::vector<T> to_multi_int(str_view input)
 {
     std::vector<T> out;
 
@@ -82,12 +81,6 @@ inline std::vector<T> to_multi_int(const sv& input)
     }
 
     return out;
-}
-
-template <typename T>
-inline std::vector<T> to_multi_int(const input_t& input)
-{
-    return to_multi_int<T>(sv { input.s, input.len - 1 });
 }
 
 /**
@@ -129,7 +122,7 @@ constexpr inline int hex_to_dec(unsigned char hex_digit)
  * @param input hex string, including # ("#123abc")
  * @returns int
  */
-constexpr inline int hex_to_dec(const sv& input)
+constexpr inline int hex_to_dec(str_view input)
 {
     return hex_to_dec(input[1]) * 1048576 // 16^5
            + hex_to_dec(input[2]) * 65536 // 16^4

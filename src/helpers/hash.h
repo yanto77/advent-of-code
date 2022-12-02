@@ -5,10 +5,10 @@
 
 // D. J. Bernstein hash function
 // Modified from: https://codereview.stackexchange.com/a/85745
-inline size_t djb_hash(const std::string_view& sv)
+inline size_t djb_hash(const std::string_view& str_view)
 {
     size_t hash = 5381;
-    for (auto ch : sv)
+    for (auto ch : str_view)
     {
         hash = 33 * hash ^ static_cast<size_t>(ch);
     }
@@ -29,10 +29,10 @@ inline size_t djb_hash(const std::deque<int>& deque)
 
 // Fowler/Noll/Vo (FNV) hash function, variant 1a
 // Modified from: https://codereview.stackexchange.com/a/85745
-inline size_t fnv1a_hash(const std::string_view& sv)
+inline size_t fnv1a_hash(const std::string_view& str_view)
 {
     size_t hash = 0x811c9dc5;
-    for (auto ch : sv)
+    for (auto ch : str_view)
     {
         hash ^= static_cast<unsigned char>(ch);
         hash *= 0x01000193;

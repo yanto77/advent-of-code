@@ -17,7 +17,7 @@ namespace
     std::unordered_map<size_t, std::string> debug_map;
 
     // returns [output_id, output_num]
-    std::pair<size_t, size_t> parse_num_type(const sv& line)
+    std::pair<size_t, size_t> parse_num_type(str_view line)
     {
         const auto& [num, type] = split_single(line, " ");
         // fmt::print("  -> num: [{}] type: [{} = {}]\n", num, fnv1a_hash(type), type);
@@ -27,11 +27,11 @@ namespace
     }
 
     [[maybe_unused]]
-    recipe_list_t parse(const input_t& input)
+    recipe_list_t parse(str_view input)
     {
         recipe_list_t recipes;
 
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             const auto& [ins, out] = split_single(line, " => ");
 
@@ -139,7 +139,7 @@ namespace
     }
 }
 
-output_t Day_2019_14::run_solution(const input_t& /* input */) const
+output_t Day_2019_14::run_solution(str_view /* input */) const
 {
     size_t part1 = 0, part2 = 0;
     return {part1, part2};

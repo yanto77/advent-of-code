@@ -4,26 +4,26 @@ ADVENT_DAY(2020, 2, 465, 294);
 
 namespace
 {
-    size_t count_occurences(const sv& in, const char counted_ch)
+    size_t count_occurences(str_view in, const char counted_ch)
     {
         return std::count_if(in.begin(), in.end(), [&](const char ch) { return ch == counted_ch; });
     }
 }
 
-output_t Day_2020_2::run_solution(const input_t& input) const
+output_t Day_2020_2::run_solution(str_view input) const
 {
     size_t part1 = 0;
     size_t part2 = 0;
 
-    parse_input(input, [&](const sv& line)
+    parse_input(input, [&](str_view line)
     {
         // Parsing line
         size_t mid = line.find_first_of('-', 0);
-        const int min = to_int<int>(sv { &line[0], mid });
+        const int min = to_int<int>(str_view { &line[0], mid });
         const auto& [max, idx2] = to_int<int>(line, mid+1);
 
         const char ch = line[idx2+1];
-        const sv pwd { &line[idx2+4], line.size() - idx2 - 4};
+        const str_view pwd { &line[idx2+4], line.size() - idx2 - 4};
 
         // Part 1
         size_t count = count_occurences(pwd, ch);

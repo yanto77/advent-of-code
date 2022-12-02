@@ -32,7 +32,7 @@ namespace
         input_t input = load_input(in_fname);
 
         auto t0 = std::chrono::steady_clock::now();
-        output_t result = inst->run_solution(input);
+        output_t result = inst->run_solution(str_view { input.s, (size_t)input.len });
         auto elapsed = (std::chrono::steady_clock::now() - t0);
         int64_t time = (elapsed.count() / 1000);
 

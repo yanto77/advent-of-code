@@ -27,7 +27,7 @@ namespace
         (Hand::Paper),    (Hand::Scissors), (Hand::Rock)
     };
 
-    Round parse_line(const sv& line)
+    Round parse_line(str_view line)
     {
         Round round;
 
@@ -43,12 +43,12 @@ namespace
     }
 }
 
-output_t Day_2022_2::run_solution(const input_t& input) const
+output_t Day_2022_2::run_solution(str_view input) const
 {
     size_t part1 = 0;
     size_t part2 = 0;
 
-    parse_input(input, [&](const sv& line)
+    parse_input(input, [&](str_view line)
     {
         Round round = parse_line(line);
         part1 += s_points[(round.opponent * 3) + round.you];

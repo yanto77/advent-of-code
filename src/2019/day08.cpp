@@ -30,10 +30,10 @@ namespace
         fmt::print("\n");
     }
 
-    image_t parse_image(const input_t& input)
+    image_t parse_image(str_view input)
     {
         image_t image;
-        for (size_t i = 0; i < (input.len - 1); ++i)
+        for (size_t i = 0; i < (input.size() - 1); ++i)
         {
             const size_t layer = i / (W*H);
             if (layer >= image.size())
@@ -42,7 +42,7 @@ namespace
             }
 
             const size_t pos = i % (W*H);
-            const char value = input.s[i];
+            const char value = input[i];
             if (value == '1')
                 image[layer].values.set((W*H)-1 - pos);
             else if (value == '2')
@@ -82,7 +82,7 @@ namespace
     }
 }
 
-output_t Day_2019_8::run_solution(const input_t& input) const
+output_t Day_2019_8::run_solution(str_view input) const
 {
     image_t image = parse_image(input);
     size_t part1 = get_part1(image);

@@ -5,10 +5,10 @@ ADVENT_DAY(2020, 10, 2664, 148098383347712);
 namespace
 {
     // Returns a vector of element-wise differences (between sorted adapters)
-    std::vector<uint8_t> parse_input(const input_t& in)
+    std::vector<uint8_t> parse(str_view in)
     {
         std::vector<uint8_t> out;
-        parse_input(in, [&](const sv& line)
+        parse_input(in, [&](str_view line)
         {
             out.push_back(to_int<uint8_t>(line));
         });
@@ -84,9 +84,9 @@ namespace
     }
 }
 
-output_t Day_2020_10::run_solution(const input_t& input) const
+output_t Day_2020_10::run_solution(str_view input) const
 {
-    std::vector<uint8_t> element_deltas = parse_input(input);
+    std::vector<uint8_t> element_deltas = parse(input);
 
     const auto& [delta1, delta3] = count_specific_elements(element_deltas);
     size_t variations = count_variations(element_deltas);
@@ -98,8 +98,7 @@ void Day_2020_10::run_tests() const
 {
     {
         char text1[] = "16\n10\n15\n5\n1\n11\n7\n19\n6\n12\n4\n";
-        input_t input1 { text1, sizeof(text1) };
-        std::vector<uint8_t> deltas = parse_input(input1);
+        std::vector<uint8_t> deltas = parse(text1);
         const auto& [delta1, delta3] = count_specific_elements(deltas);
         assert(delta1 == 7 && delta3 == 5);
 
@@ -112,8 +111,7 @@ void Day_2020_10::run_tests() const
         char text2[] = "28\n33\n18\n42\n31\n14\n46\n20\n48\n47\n24\n23\n49\n45\n"
                        "19\n38\n39\n11\n1\n32\n25\n35\n8\n17\n7\n9\n4\n2\n34\n"
                        "10\n3\n";
-        input_t input2 { text2, sizeof(text2) };
-        std::vector<uint8_t> deltas = parse_input(input2);
+        std::vector<uint8_t> deltas = parse(text2);
         const auto& [delta1, delta3] = count_specific_elements(deltas);
         assert(delta1 == 22 && delta3 == 10);
 

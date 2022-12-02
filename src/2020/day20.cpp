@@ -61,20 +61,20 @@ namespace
         }
     };
 
-    std::vector<tile_t> parse_tiles(const input_t& input)
+    std::vector<tile_t> parse_tiles(str_view input)
     {
         std::vector<tile_t> tiles;
 
         enum { ID, MAP } state = ID;
         int row = 0;
         tile_t tile;
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             if (state == ID)
             {
                 // assumes IDs are 4-num
                 tile = {};
-                tile.id = to_int<int>(sv { line.data() + 5, 4 });
+                tile.id = to_int<int>(str_view { line.data() + 5, 4 });
 
                 state = MAP;
                 row = 0;
@@ -546,7 +546,7 @@ namespace
     }
 }
 
-output_t Day_2020_20::run_solution(const input_t& input) const
+output_t Day_2020_20::run_solution(str_view input) const
 {
     auto tiles = parse_tiles(input);
     const auto& corners = get_corners(tiles);
@@ -603,9 +603,8 @@ void Day_2020_20::run_tests() const
                    "#.#.#####.\n.#..######\n..#.......\n######....\n####.#..#.\n"
                    ".#...#.##.\n#.#####.##\n..#.###...\n..#.......\n..#.###...\n"
                    "\n";
-    input_t test1 { text1, sizeof(text1) };
 
-    auto tiles = parse_tiles(test1);
+    auto tiles = parse_tiles(text1);
     const auto& corners = get_corners(tiles);
 
     // Part 1

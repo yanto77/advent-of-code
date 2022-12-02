@@ -23,12 +23,12 @@ namespace
         { '<', '>' },
     };
 
-    std::pair<size_t, size_t> solve(const input_t& input)
+    std::pair<size_t, size_t> solve(str_view input)
     {
         size_t part1 = 0;
         std::vector<size_t> part2vec {};
 
-        parse_input(input, [&](const sv& line){
+        parse_input(input, [&](str_view line){
 
             std::stack<char> symbols;
             bool valid = true;
@@ -70,7 +70,7 @@ namespace
     }
 }
 
-output_t Day_2021_10::run_solution(const input_t& input) const
+output_t Day_2021_10::run_solution(str_view input) const
 {
     const auto& [part1, part2] = solve(input);
     return { part1, part2 };
@@ -90,9 +90,8 @@ void Day_2021_10::run_tests() const
         "<{([([[(<>()){}]>(<<{{\n"
         "<{([{{}}[<[[[<>{}]]]>[]]\n"
         "";
-    input_t test1 { text1, sizeof(text1) };
 
-    const auto& [part1, part2] = solve(test1);
+    const auto& [part1, part2] = solve(text1);
     assert(part1 == 26397);
     assert(part2 == 288957);
 }

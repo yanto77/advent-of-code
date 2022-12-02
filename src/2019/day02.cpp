@@ -27,9 +27,9 @@ namespace
     }
 }
 
-output_t Day_2019_2::run_solution(const input_t& input) const
+output_t Day_2019_2::run_solution(str_view input) const
 {
-    intcode_solver_t solver(get_sv(input));
+    intcode_solver_t solver(input);
 
     size_t part1 = run_single_guess(solver, 12, 2);
     size_t part2 = run_multiple_guesses(solver, 19690720);

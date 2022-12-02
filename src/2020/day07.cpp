@@ -3,7 +3,7 @@
 
 ADVENT_DAY(2020, 7, 172, 39645);
 
-typedef std::unordered_map<sv, size_t> key_dict_t;
+typedef std::unordered_map<str_view, size_t> key_dict_t;
 
 struct link_t
 {
@@ -20,7 +20,7 @@ struct result_t
 
 namespace
 {
-    std::pair<uint8_t, sv> parse_single_bag(const sv& text)
+    std::pair<uint8_t, str_view> parse_single_bag(str_view text)
     {
         static constexpr auto pattern = ctll::fixed_string { "\\s?(no|[0-9]+) ([a-z ]+) bags?\\.?$" };
         auto m = ctre::match<pattern>(text);
@@ -41,14 +41,14 @@ namespace
         // TODO: regexing seems to take bunch of time, so what about just going by whitespaces? using e.g. parse_multi()
     }
 
-    result_t parse_input(const input_t& input)
+    result_t parse(str_view input)
     {
         result_t result;
         result.key_dict.reserve(1000);
 
         // 1. Map with increasing index for every new bag color.
         size_t idx = -1;
-        auto get_id = [&](const sv& key) -> size_t
+        auto get_id = [&](str_view key) -> size_t
         {
             auto it = result.key_dict.find(key);
             if (it != result.key_dict.end())
@@ -65,14 +65,14 @@ namespace
         // 2. Parse the strings, for example:
         //   - given: "muted plum bags contain 3 shiny brown bags, 4 shiny teal bags."
         //   - saves: MP => {{3, SB}, {4, ST}} (where MP, SB, and ST are indexes)
-        parse_input(input, [&](const sv& line) 
+        parse_input(input, [&](str_view line) 
         {
             auto [node_from, value] = split_single(line, " bags contain ");
             const auto from_id = get_id(node_from);
 
             value.remove_suffix(1); // remove last period
 
-            for (const sv& part : split_multi(value, ", "))
+            for (str_view part : split_multi(value, ", "))
             {
                 const auto& [cost, node_to] = parse_single_bag(part);
                 if (cost != 0)
@@ -89,7 +89,7 @@ namespace
         return result;
     }
 
-    size_t get_links_to(result_t& res, const sv& node)
+    size_t get_links_to(result_t& res, str_view node)
     {
         std::set<size_t> links_to_node;
         std::queue<size_t> node_queue;
@@ -115,7 +115,7 @@ namespace
         return links_to_node.size();
     }
 
-    size_t get_contained_nodes(result_t& res, const sv& node)
+    size_t get_contained_nodes(result_t& res, str_view node)
     {
         std::vector<std::pair<size_t, uint>> contained;
         std::queue<std::pair<size_t, uint>> node_queue;
@@ -145,9 +145,9 @@ namespace
     }
 }
 
-output_t Day_2020_7::run_solution(const input_t& input) const
+output_t Day_2020_7::run_solution(str_view input) const
 {
-    result_t res = parse_input(input);
+    result_t res = parse(input);
 
     const size_t con_nb = get_links_to(res, "shiny gold");
     const size_t con_cost = get_contained_nodes(res, "shiny gold");
@@ -189,7 +189,7 @@ void Day_2020_7::run_tests() const
                       "faded blue bags contain no other bags.\n"
                       "dotted black bags contain no other bags.\n";
 
-        auto res = parse_input(input_t { text, sizeof(text) });
+        auto res = parse(text);
         const size_t con_nb = get_links_to(res, "shiny gold");
         const size_t con_cost = get_contained_nodes(res, "shiny gold");
         assert(con_nb == 4);
@@ -204,7 +204,7 @@ void Day_2020_7::run_tests() const
                       "dark green bags contain 2 dark blue bags.\n"
                       "dark blue bags contain 2 dark violet bags.\n"
                       "dark violet bags contain no other bags.\n";
-        auto res = parse_input(input_t { text, sizeof(text) });
+        auto res = parse(text);
         const size_t con_nb = get_links_to(res, "shiny gold");
         const size_t con_cost = get_contained_nodes(res, "shiny gold");
         assert(con_nb == 0);

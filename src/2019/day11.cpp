@@ -79,9 +79,9 @@ namespace
     }
 }
 
-output_t Day_2019_11::run_solution(const input_t& input) const
+output_t Day_2019_11::run_solution(str_view input) const
 {
-    intcode_solver_t solver(get_sv(input));
+    intcode_solver_t solver(input);
     const auto& [painted_map_pt1, color_map_pt1] = paint_map(solver, false);
 
     solver.reset();

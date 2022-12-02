@@ -33,12 +33,12 @@ namespace
         printf(" - Program size: %zu. Registers: ip %zu, acc: %d\n", prg.size(), regs.ip, regs.acc);
     }
 
-    program_t parse_input(const input_t& input)
+    program_t parse(str_view input)
     {
         program_t program;
         program.reserve(1000);
 
-        parse_input(input, [&](const sv& line) 
+        parse_input(input, [&](str_view line) 
         {
             op_t op;
             if (line.starts_with("acc"))
@@ -58,7 +58,7 @@ namespace
                 assert(false && "not implemented");
             }
 
-            sv value_str { &line[5], (line.size() - 5) };
+            str_view value_str { &line[5], (line.size() - 5) };
             const int16_t sign = (line[4] == '+') ? 1 : -1;
             const int16_t value = to_int<int16_t>(value_str);
             op.arg1 = sign * value;
@@ -124,9 +124,9 @@ namespace
     }
 }
 
-output_t Day_2020_8::run_solution(const input_t& input) const
+output_t Day_2020_8::run_solution(str_view input) const
 {
-    const program_t& prg = parse_input(input);
+    const program_t& prg = parse(input);
 
     const auto& [reg1, acc1] = execute_until_loop(prg);
     const auto& [reg2, acc2] = bruteforce_find(prg);
@@ -145,9 +145,7 @@ void Day_2020_8::run_tests() const
                     "acc +1\n"
                     "jmp -4\n"
                     "acc +6\n";
-    input_t test1 { input1, sizeof(input1) };
-
-    program_t prg = parse_input(test1);
+    program_t prg = parse(input1);
     const registers_t& reg = execute_until_loop(prg);
     assert(reg.ip == 1 && reg.acc == 5);
 }

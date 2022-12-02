@@ -2,7 +2,7 @@
 
 ADVENT_DAY(2020, 6, 6947, 3398);
 
-output_t Day_2020_6::run_solution(const input_t& input) const
+output_t Day_2020_6::run_solution(str_view input) const
 {
     struct group_t
     {
@@ -15,7 +15,7 @@ output_t Day_2020_6::run_solution(const input_t& input) const
 
     size_t index = 0;
 
-    parse_input(input, [&](const sv& line)
+    parse_input(input, [&](str_view line)
     {
         if (line.empty())
         {

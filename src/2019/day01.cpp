@@ -32,11 +32,11 @@ void Day_2019_1::run_tests() const
     static_assert(fn2(100756) == 50346);
 }
 
-output_t Day_2019_1::run_solution(const input_t& input) const
+output_t Day_2019_1::run_solution(str_view input) const
 {
     size_t sum1 = 0;
     size_t sum2 = 0;
-    parse_input(input, [&](const sv& line)
+    parse_input(input, [&](str_view line)
     {
         auto value = to_int<int32_t>(line);
         sum1 += fn1(value);

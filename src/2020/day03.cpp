@@ -51,12 +51,12 @@ namespace
         return _mm256_movemask_epi8(v);
     }
 
-    tree_map_t get_tree_map(const input_t& input)
+    tree_map_t get_tree_map(str_view input)
     {
         tree_map_t map {};
 
         size_t row = 0;
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             map[row] = convert_avx2(line.data());
             ++row;
@@ -83,7 +83,7 @@ namespace
     }
 }
 
-output_t Day_2020_3::run_solution(const input_t& input) const
+output_t Day_2020_3::run_solution(str_view input) const
 {
     const tree_map_t& map = get_tree_map(input);
 

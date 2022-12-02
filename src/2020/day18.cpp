@@ -9,7 +9,7 @@ namespace
     const prec_map_t pt1 = { { '+', 1 }, { '*', 1 } };
     const prec_map_t pt2 = { { '+', 2 }, { '*', 1 } };
 
-    size_t solve_single(const prec_map_t& prec, const sv& line)
+    size_t solve_single(const prec_map_t& prec, str_view line)
     {
         std::stack<size_t> nums;
         std::stack<char> ops;
@@ -86,11 +86,11 @@ namespace
     }
 }
 
-output_t Day_2020_18::run_solution(const input_t& input) const
+output_t Day_2020_18::run_solution(str_view input) const
 {
     size_t part1 = 0;
     size_t part2 = 0;
-    parse_input(input, [&](const sv& line)
+    parse_input(input, [&](str_view line)
     {
         part1 += solve_single(pt1, line);
         part2 += solve_single(pt2, line);

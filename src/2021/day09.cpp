@@ -9,7 +9,7 @@ namespace
     constexpr size_t PAD = 1;
     typedef std::array<std::array<uint8_t, X_DIM + 2 * PAD>, Y_DIM + 2 * PAD> map_t;
 
-    map_t get_padded_map(const input_t& input)
+    map_t get_padded_map(str_view input)
     {
         map_t map;
         for (int y = 0; y < Y_DIM + 2 * PAD; y++)
@@ -17,7 +17,7 @@ namespace
                 map[y][x] = 9;
 
         size_t in_y = 0;
-        parse_input(input, [&](const sv& line_str)
+        parse_input(input, [&](str_view line_str)
         {
             for (size_t in_x = 0; in_x < X_DIM; in_x++)
                 map[in_y+PAD][in_x+PAD] = to_int<uint8_t>(line_str[in_x]);
@@ -132,7 +132,7 @@ namespace
     }
 }
 
-output_t Day_2021_9::run_solution(const input_t& input) const
+output_t Day_2021_9::run_solution(str_view input) const
 {
     map_t map = get_padded_map(input);
     const auto& [part1, part2] = get_both_parts(map);
@@ -148,8 +148,6 @@ void Day_2021_9::run_tests() const
     //     "8767896789\n"
     //     "9899965678\n"
     //     "";
-    // input_t test1 { text1, sizeof(text1) };
-
-    // size_t part1 = get_part1(test1);
+    // size_t part1 = get_part1(text1);
     // fmt::print("test1: {}\n", part1);
 }

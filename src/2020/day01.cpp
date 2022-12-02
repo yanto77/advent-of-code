@@ -40,11 +40,11 @@ void Day_2020_1::run_tests() const
 {
 }
 
-output_t Day_2020_1::run_solution(const input_t& input) const
+output_t Day_2020_1::run_solution(str_view input) const
 {
     std::vector<int> v;
     v.reserve(1000);
-    parse_input(input, [&](const sv& line) 
+    parse_input(input, [&](str_view line) 
     { 
         v.emplace_back(to_int<int>(line)); 
     });

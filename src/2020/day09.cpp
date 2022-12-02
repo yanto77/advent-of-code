@@ -10,9 +10,9 @@ namespace
             std::vector<int64_t> data;
 
         public:
-            void parse(const input_t& in)
+            void parse(str_view in)
             {
-                parse_input(in, [&](const sv& line)
+                parse_input(in, [&](str_view line)
                 {
                     data.push_back(to_int<int64_t>(line));
                 });
@@ -77,7 +77,7 @@ namespace
     };
 }
 
-output_t Day_2020_9::run_solution(const input_t& input) const
+output_t Day_2020_9::run_solution(str_view input) const
 {
     solver_t solver;
     solver.parse(input);
@@ -94,10 +94,9 @@ void Day_2020_9::run_tests() const
 {
     char text[] = "35\n20\n15\n25\n47\n40\n62\n55\n65\n95\n102\n"
                   "117\n150\n182\n127\n219\n299\n277\n309\n576\n";
-    input_t input { text, sizeof(text) };
 
     solver_t solver;
-    solver.parse(input);
+    solver.parse(text);
 
     assert(solver.data[0] == 35);
     assert(solver.data[19] == 576);

@@ -33,7 +33,7 @@ namespace
     };
     struct rule_t
     {
-        sv type;
+        str_view type;
         range_t r1;
         range_t r2;
         size_t index; // index from the ticket values
@@ -111,7 +111,7 @@ namespace
         bool skip_next = false;
     };
 
-    output_t evaluate(const input_t& input)
+    output_t evaluate(str_view input)
     {
         parser_t parser;
         data_t data;
@@ -119,7 +119,7 @@ namespace
 
         output_t out;
 
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             // skip unnecessary lines
             if (parser.skip_next)
@@ -227,7 +227,7 @@ namespace
     }
 }
 
-output_t Day_2020_16::run_solution(const input_t& input) const
+output_t Day_2020_16::run_solution(str_view input) const
 {
     return evaluate(input);
 }
@@ -248,8 +248,7 @@ void Day_2020_16::run_tests() const
     //         "40,4,50\n"
     //         "55,2,20\n"
     //         "38,6,12\n";
-    //     input_t test1 { input, 128 };
-    //     const auto& [part1, part2] = evaluate(test1);
+    //     const auto& [part1, part2] = evaluate(input);
     //     assert(part1 == 71);
     // }
     {
@@ -264,8 +263,7 @@ void Day_2020_16::run_tests() const
                         "3,9,18\n"
                         "15,1,5\n"
                         "5,14,9\n";
-        input_t test2 { input2, sizeof(input2) };
-        const auto& [part1, part2] = evaluate(test2);
+        const auto& [part1, part2] = evaluate(input2);
         assert(part2 == 1);
     }
 }

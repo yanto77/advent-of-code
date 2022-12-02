@@ -2,12 +2,12 @@
 
 ADVENT_DAY(2021, 2, 2272262, 2134882034);
 
-output_t Day_2021_2::run_solution(const input_t& input) const
+output_t Day_2021_2::run_solution(str_view input) const
 {
     vec2i p1_pos {0, 0}; // { horizontal pos, depth }
     vec3i p2_pos {0, 0, 0}; // { horizontal pos, depth, aim }
 
-    parse_input(input, [&](const sv& line)
+    parse_input(input, [&](str_view line)
     {
         switch (line[0])
         {

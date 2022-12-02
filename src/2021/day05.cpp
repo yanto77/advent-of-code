@@ -6,11 +6,11 @@ namespace
 {
     struct line_t { vec2i p1; vec2i p2; };
 
-    std::vector<line_t> parse_lines(const input_t& input)
+    std::vector<line_t> parse_lines(str_view input)
     {
         std::vector<line_t> lines;
     
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             const auto& [p1_str, p2_str] = split_single(line, " -> ");
 
@@ -75,7 +75,7 @@ namespace
     }
 }
 
-output_t Day_2021_5::run_solution(const input_t& input) const
+output_t Day_2021_5::run_solution(str_view input) const
 {
     std::vector<line_t> lines = parse_lines(input);
 
@@ -98,9 +98,8 @@ void Day_2021_5::run_tests() const
         "3,4 -> 1,4\n"
         "0,0 -> 8,8\n"
         "5,5 -> 8,2\n";
-    input_t test1 { text1, sizeof(text1) };
 
-    std::vector<line_t> lines = parse_lines(test1);
+    std::vector<line_t> lines = parse_lines(text1);
     size_t part1 = compute_overlapping_lines(lines, true);
     assert(5 == part1);
     size_t part2 = compute_overlapping_lines(lines, false);

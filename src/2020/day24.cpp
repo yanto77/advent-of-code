@@ -8,11 +8,11 @@ namespace
     typedef std::array<std::array<bool, MAP_DIM>, MAP_DIM> hex_map_t;
     constexpr vec2i MAP_CENTER = { MAP_DIM / 2, MAP_DIM / 2 };
 
-    hex_map_t parse_and_fill(const input_t& input)
+    hex_map_t parse_and_fill(str_view input)
     {
         hex_map_t hex_map {};
 
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             // std::cout << line << std::endl;
 
@@ -86,7 +86,7 @@ namespace
     }
 }
 
-output_t Day_2020_24::run_solution(const input_t& input) const
+output_t Day_2020_24::run_solution(str_view input) const
 {
     const auto& map = parse_and_fill(input);
     size_t part1 = count_flipped(map);
@@ -116,9 +116,8 @@ void Day_2020_24::run_tests() const
                       "eneswnwswnwsenenwnwnwwseeswneewsenese\n"
                       "neswnwewnwnwseenwseesewsenwsweewe\n"
                       "wseweeenwnesenwwwswnew\n";
-    input_t test1 { text1, sizeof(text1) };
 
-    const auto& init_map = parse_and_fill(test1);
+    const auto& init_map = parse_and_fill(text1);
     assert(10 == count_flipped(init_map));
     assert(37 == count_flipped(simulate(init_map, 10)));
     assert(132 == count_flipped(simulate(init_map, 20)));

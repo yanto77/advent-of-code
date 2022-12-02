@@ -54,11 +54,11 @@ namespace
         fmt::print(COLOR_RESET());
     }
 
-    map_t parse_map(const input_t& input)
+    map_t parse_map(str_view input)
     {
         map_t map {};
 
-        char* read_ptr = input.s;
+        const char* read_ptr = input.data();
         for (int y = 0 + PAD; y < 10 + PAD; y++)
         {
             for (int x = 0 + PAD; x < 10 + PAD; x++)
@@ -130,7 +130,7 @@ namespace
         return flashes;
     }
 
-    std::pair<size_t, size_t> solve(const input_t& input)
+    std::pair<size_t, size_t> solve(str_view input)
     {
         size_t flashes = 0;
         size_t step = 0;
@@ -165,7 +165,7 @@ namespace
     }
 }
 
-output_t Day_2021_11::run_solution(const input_t& input) const
+output_t Day_2021_11::run_solution(str_view input) const
 {
     const auto& [part1, part2] = solve(input);
     return { part1, part2 };
@@ -185,9 +185,8 @@ void Day_2021_11::run_tests() const
         "4846848554\n"
         "5283751526\n"
         "";
-    input_t test1 { text1, sizeof(text1) };
 
-    const auto& [part1, part2] = solve(test1);
+    const auto& [part1, part2] = solve(text1);
     // fmt::print("test part1: {}, part2: {}\n", part1, part2);
     assert(part1 == 1656);
     assert(part2 == 195);

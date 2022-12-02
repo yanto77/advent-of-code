@@ -130,13 +130,13 @@ namespace
         }
     };
 
-    cups_t parse(input_t input)
+    cups_t parse(str_view input)
     {
         std::vector<uint32_t> in;
         in.reserve(10);
 
-        for (size_t i = 0; input.s[i] != '\n'; ++i)
-            in.push_back((input.s[i] - '0'));
+        for (size_t i = 0; input[i] != '\n'; ++i)
+            in.push_back((input[i] - '0'));
 
         cups_t out;
         out.links = std::vector<uint32_t>(10, 0);
@@ -177,7 +177,7 @@ namespace
     }
 }
 
-output_t Day_2020_23::run_solution(const input_t& input) const
+output_t Day_2020_23::run_solution(str_view input) const
 {
     auto out = parse(input);
     size_t part1 = evaluate(out, 100).get_score_part1();
@@ -191,9 +191,7 @@ output_t Day_2020_23::run_solution(const input_t& input) const
 void Day_2020_23::run_tests() const
 {
     char text1[] = "389125467\n";
-    input_t test1 { text1, sizeof(text1) };
-
-    auto out = parse(test1);
+    auto out = parse(text1);
 
     assert(92658374 == evaluate(out, 10).get_score_part1());
     assert(67384529 == evaluate(out, 100).get_score_part1());

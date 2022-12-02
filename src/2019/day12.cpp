@@ -88,7 +88,7 @@ namespace
     };
 }
 
-output_t Day_2019_12::run_solution(const input_t& /* input */) const
+output_t Day_2019_12::run_solution(str_view /* input */) const
 {
     system_t sys = { 
         .pos = { 

@@ -58,9 +58,9 @@ namespace
     }
 }
 
-output_t Day_2019_7::run_solution(const input_t& input) const
+output_t Day_2019_7::run_solution(str_view input) const
 {
-    intcode_solver_t solver(get_sv(input));
+    intcode_solver_t solver(input);
     size_t part1 = find_max_signal(solver, phases_pt1, test_config_pt1);
     size_t part2 = find_max_signal(solver, phases_pt2, test_config_pt2);
 

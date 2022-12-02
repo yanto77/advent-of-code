@@ -4,25 +4,25 @@ ADVENT_DAY(2020, 5, 953, 615);
 
 namespace
 {
-    constexpr uint16_t convert_line(const sv& sv)
+    constexpr uint16_t convert_line(str_view line)
     {
         // withing this method, we don't explicitly set 0 bits,
         // as those are already 0 when initialized
         uint16_t result = 0;
 
         for (uint8_t i = 0; i < 7; ++i)
-            if (sv[i] == 'B')
+            if (line[i] == 'B')
                 set_bit(result, (9 - i));
 
         for (uint8_t i = 0; i < 3; ++i)
-            if (sv[7 + i] == 'R')
+            if (line[7 + i] == 'R')
                 set_bit(result, (2 - i));
 
         return result;
     }
 }
 
-output_t Day_2020_5::run_solution(const input_t& input) const
+output_t Day_2020_5::run_solution(str_view input) const
 {
     uint16_t max_seat_id = 0; // Part 1
     uint16_t my_seat_id = 0; // Part 2
@@ -31,7 +31,7 @@ output_t Day_2020_5::run_solution(const input_t& input) const
     std::array<bool, SEAT_NB> seats;
     seats.fill(false);
 
-    parse_input(input, [&](const sv& line)
+    parse_input(input, [&](str_view line)
     {
         uint16_t seat_id = convert_line(line);
 

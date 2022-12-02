@@ -29,7 +29,7 @@ namespace
     }
 }
 
-output_t Day_2020_25::run_solution(const input_t& /* input */) const
+output_t Day_2020_25::run_solution(str_view /* input */) const
 {
     size_t key1 = transform(8335663, get_loop_size(8614349));
     size_t key2 = transform(8614349, get_loop_size(8335663));

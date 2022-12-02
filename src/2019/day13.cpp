@@ -18,7 +18,7 @@ namespace
         static const size_t Y = 30;
         std::array<std::array<uint8_t, X>, Y> tiles;
 
-        game_t(const input_t& input): solver(get_sv(input)), tiles{}
+        game_t(str_view input): solver(input), tiles{}
         {
         }
 
@@ -47,7 +47,7 @@ namespace
     };
 }
 
-output_t Day_2019_13::run_solution(const input_t& input) const
+output_t Day_2019_13::run_solution(str_view input) const
 {
     size_t part1 = 0, part2 = 0;
 

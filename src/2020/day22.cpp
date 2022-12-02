@@ -83,13 +83,13 @@ namespace std
 
 namespace
 {
-    decks_t parse_decks(const input_t& input)
+    decks_t parse_decks(str_view input)
     {
         decks_t decks;
 
         bool add_to_p1 = true;
         bool skip_line = true;
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             if (skip_line)
             {
@@ -168,7 +168,7 @@ namespace
     }
 }
 
-output_t Day_2020_22::run_solution(const input_t& input) const
+output_t Day_2020_22::run_solution(str_view input) const
 {
     auto decks = parse_decks(input);
     auto [part1, p1_won_part1] = play_game(decks);
@@ -192,9 +192,8 @@ void Day_2020_22::run_tests() const
                        "4\n"
                        "7\n"
                        "10\n";
-        input_t test1 { text1, sizeof(text1) };
 
-        auto decks = parse_decks(test1);
+        auto decks = parse_decks(text1);
         auto [part1, p1_won_part1] = play_game(decks);
         auto [part2, p1_won_part2] = play_game_recursive(decks, false);
 
@@ -214,9 +213,8 @@ void Day_2020_22::run_tests() const
                        "2\n"
                        "29\n"
                        "14\n";
-        input_t test1 { text1, sizeof(text1) };
 
-        auto decks = parse_decks(test1);
+        auto decks = parse_decks(text1);
         auto [part2, p1_won_part2] = play_game_recursive(decks, false);
         assert(part2 == 0);
         assert(p1_won_part2);

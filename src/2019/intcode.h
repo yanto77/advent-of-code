@@ -33,14 +33,14 @@ class intcode_solver_t
         reset();
     }
 
-    intcode_solver_t(const sv& input)
+    intcode_solver_t(str_view input)
         : program(to_multi_int<int64_t>(input))
     {
         reset();
     }
 
     intcode_solver_t(const std::string& input)
-        : intcode_solver_t(sv { input.data(), input.length() })
+        : intcode_solver_t(str_view { input.data(), input.length() })
     {
         reset();
     }

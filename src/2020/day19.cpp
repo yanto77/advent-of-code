@@ -24,12 +24,12 @@ namespace
         // Ref: https://en.wikipedia.org/wiki/Disjunctive_normal_form
         constexpr static size_t RULE_N = 150;
         std::array<std::vector<rule_t>, RULE_N> m_dnf_rules {};
-        std::vector<sv> m_messages {};
+        std::vector<str_view> m_messages {};
 
       private:
         /// Parse `line` into 4-int array `rule_def_t`.
         /// Returns {rule index, std::array<uint8_t, 4>}.
-        std::pair<size_t, std::array<uint8_t, 4>> parse_line(const sv& line) const
+        std::pair<size_t, std::array<uint8_t, 4>> parse_line(str_view line) const
         {
             std::pair<size_t, std::array<uint8_t, 4>> result {};
 
@@ -113,7 +113,7 @@ namespace
         }
 
       public:
-        void parse(const input_t& input)
+        void parse(str_view input)
         {
             // Rule definitions, parsed from input
             //      0: 8 11              => [8, 11, 0, 0]
@@ -126,7 +126,7 @@ namespace
             std::array<std::array<uint8_t, 4>, RULE_N> rules {};
 
             bool fill_rules = true;
-            parse_input(input, [&](const sv& line)
+            parse_input(input, [&](str_view line)
             {
                 if (line.empty()) fill_rules = false;
 
@@ -161,7 +161,7 @@ namespace
             // pt2: match: 0=(8 11), 8=(42 | 42 8), 11=(42 31 | 42 11 31)
             size_t part2 = 0;
 
-            for (const sv& msg : m_messages)
+            for (str_view msg : m_messages)
             {
                 bool fail = false;
                 int r42_match = 0, r31_match = 0;
@@ -192,7 +192,7 @@ namespace
     };
 }
 
-output_t Day_2020_19::run_solution(const input_t& input) const
+output_t Day_2020_19::run_solution(str_view input) const
 {
     solver s;
     s.parse(input);
@@ -252,10 +252,9 @@ void Day_2020_19::run_tests() const
                    "babaaabbbaaabaababbaabababaaab\n"
                    "aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba\n"
                    "\n";
-    input_t test1 { text1, sizeof(text1) };
 
     solver s;
-    s.parse(test1);
+    s.parse(text1);
     auto out = s.solve();
     assert(out.part1 == 3 && out.part2 == 12);
 }

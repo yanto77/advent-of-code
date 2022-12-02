@@ -45,12 +45,12 @@ namespace
         }
     }
 
-    seat_map_t parse_input(const input_t& input)
+    seat_map_t parse(str_view input)
     {
         seat_map_t seats;
         ssize_t len = -1;
 
-        parse_input(input, [&](const sv& line_in) {
+        parse_input(input, [&](str_view line_in) {
             if (len == -1)
                 len = line_in.size();
 
@@ -238,9 +238,9 @@ namespace
     }
 }
 
-output_t Day_2020_11::run_solution(const input_t& input) const
+output_t Day_2020_11::run_solution(str_view input) const
 {
-    seat_map_t test_map = parse_input(input);
+    seat_map_t test_map = parse(input);
     const auto& [steps, after_map] = simulate_until_stable(test_map, true);
     size_t occupied1 = count_occupied(after_map);
 
@@ -262,10 +262,9 @@ void Day_2020_11::run_tests() const
                   "LLLLLLLLLL\n"
                   "L.LLLLLL.L\n"
                   "L.LLLLL.LL\n";
-    input_t test_input { str1, sizeof(str1) };
 
     {
-        seat_map_t test_map = parse_input(test_input);
+        seat_map_t test_map = parse(str1);
         const auto& [steps, after_map] = simulate_until_stable(test_map, true);
 
         char str2[] = "#.#L.L#.##\n"
@@ -278,14 +277,13 @@ void Day_2020_11::run_tests() const
                       "#L#L##L#L#\n"
                       "#.LLLLLL.L\n"
                       "#.#L#L#.##\n";
-        input_t expected_input { str2, sizeof(str2) };
-        seat_map_t expected_map = parse_input(expected_input);
+        seat_map_t expected_map = parse(str2);
         assert(expected_map == after_map);
         assert(steps == 5);
         assert(count_occupied(after_map) == 37);
     }
     {
-        seat_map_t test_map = parse_input(test_input);
+        seat_map_t test_map = parse(str1);
         const auto& [steps, after_map] = simulate_until_stable(test_map, false);
 
         char str2[] = "#.L#.L#.L#\n"
@@ -298,8 +296,7 @@ void Day_2020_11::run_tests() const
                       "LLL###LLL#\n"
                       "#.LLLLL#.L\n"
                       "#.L#LL#.L#\n";
-        input_t expected_input { str2, sizeof(str2) };
-        seat_map_t expected_map = parse_input(expected_input);
+        seat_map_t expected_map = parse(str2);
         assert(expected_map == after_map);
         assert(steps == 6);
         assert(count_occupied(after_map) == 26);

@@ -21,10 +21,10 @@ namespace
         );
     }
 
-    orbits_t parse(const input_t& input)
+    orbits_t parse(str_view input)
     {
         orbits_t links;
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             uint32_t a = get_id(&line[0]);
             uint32_t b = get_id(&line[4]);
@@ -103,7 +103,7 @@ namespace
     }
 }
 
-output_t Day_2019_6::run_solution(const input_t& input) const
+output_t Day_2019_6::run_solution(str_view input) const
 {
     // {key => value}, where `value` is in orbit around `key`
     const auto& orbits = parse(input);
@@ -117,7 +117,7 @@ void Day_2019_6::run_tests() const
 {
     char text1[] = "COM)BBB\nBBB)CCC\nCCC)DDD\nDDD)EEE\nEEE)FFF\nBBB)GGG\n"
                    "GGG)HHH\nDDD)III\nEEE)JJJ\nJJJ)KKK\nKKK)LLL\nKKK)YOU\nIII)SAN\n";
-    const auto& links = parse(input_t { text1, sizeof(text1) });
+    const auto& links = parse(text1);
     assert(get_orbit_checksum(links) == 42 + 12); // the 12 comes from adding YOU+SAN
     assert(get_orbit_difference(links, get_id("YOU"), get_id("SAN")) == 4);
 }

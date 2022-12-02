@@ -3,10 +3,10 @@
 ADVENT_DAY(2021, 1, 1400, 1429);
 
 
-output_t Day_2021_1::run_solution(const input_t& input) const
+output_t Day_2021_1::run_solution(str_view input) const
 {
     std::vector<int32_t> data;
-    parse_input(input, [&](const sv& line)
+    parse_input(input, [&](str_view line)
     {
         data.push_back(to_int<int32_t>(line));
     });

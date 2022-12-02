@@ -20,7 +20,7 @@ namespace
         std::array<uint64_t, 8> allergens {};
         size_t count { 1 };
 
-        void sum(const std::vector<sv>& input)
+        void sum(const std::vector<str_view>& input)
         {
             for (const auto& a : input)
             {
@@ -39,14 +39,14 @@ namespace
         }
     };
 
-    std::array<sv, 8> decide_allergens(std::unordered_map<sv, ingredient_t> ingr_map)
+    std::array<str_view, 8> decide_allergens(std::unordered_map<str_view, ingredient_t> ingr_map)
     {
-        std::array<sv, 8> allergens;
+        std::array<str_view, 8> allergens;
 
         while (true)
         {
             std::array<uint64_t, 8> max_values {};
-            std::array<sv, 8> max_value_names {};
+            std::array<str_view, 8> max_value_names {};
             for (const auto& [name, ingredient] : ingr_map)
             {
                 for (size_t idx = 0; idx < 8; ++idx)
@@ -90,11 +90,11 @@ namespace
         return allergens;
     }
 
-    std::pair<size_t, std::array<sv, 8>> evaluate(const input_t& input)
+    std::pair<size_t, std::array<str_view, 8>> evaluate(str_view input)
     {
-        std::unordered_map<sv, ingredient_t> ingr_map;
+        std::unordered_map<str_view, ingredient_t> ingr_map;
 
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             // std::cout << line << std::endl;
 
@@ -108,7 +108,7 @@ namespace
             // printf(" - ingr: "); print_row(ingredients);
             // printf(" - allerg: "); print_row(allergens);
 
-            for (const sv& ingr : ingredients)
+            for (str_view ingr : ingredients)
             {
                 // printf("- adding to: "); std::cout << ingr << std::endl;
                 auto it = ingr_map.find(ingr);
@@ -140,12 +140,12 @@ namespace
     }
 }
 
-output_t Day_2020_21::run_solution(const input_t& input) const
+output_t Day_2020_21::run_solution(str_view input) const
 {
     const auto& [part1, part2] = evaluate(input);
 
     // TODO: add this into main.cpp validation?
-    std::array<sv, 8> expected { "cljf", "frtfg", "vvfjj", "qmrps", "hvnkk", "qnvx", "cpxmpc", "qsjszn" };
+    std::array<str_view, 8> expected { "cljf", "frtfg", "vvfjj", "qmrps", "hvnkk", "qnvx", "cpxmpc", "qsjszn" };
     assert(part2 == expected);
 
     return { part1, 1 };
@@ -157,8 +157,6 @@ void Day_2020_21::run_tests() const
                    "trh fvjkl sbzzf mxmxvkd (contains dairy)\n"
                    "sqjhc fvjkl (contains soy)\n"
                    "sqjhc mxmxvkd sbzzf (contains fish)\n";
-    input_t input1 { text1, sizeof(text1) };
-
-    const auto& [part1, part2] = evaluate(input1);
+    const auto& [part1, part2] = evaluate(text1);
     assert(part1 == 5);
 }

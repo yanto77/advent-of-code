@@ -3,9 +3,9 @@
 
 ADVENT_DAY(2019, 9, 3507134798, 84513);
 
-output_t Day_2019_9::run_solution(const input_t& input) const
+output_t Day_2019_9::run_solution(str_view input) const
 {
-    intcode_solver_t solver(get_sv(input));
+    intcode_solver_t solver(input);
     solver.execute(false, { 1 });
     size_t part1 = solver.output_data.front();
     

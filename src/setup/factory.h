@@ -3,8 +3,6 @@
 #include <string>
 #include <map>
 
-#include "input_t.h"
-
 // Interface class representing solutions to each day/problem
 class IDay
 {
@@ -16,7 +14,7 @@ class IDay
     virtual output_t get_valid() const = 0;
 
     // Runs both parts of the solution (that is benchmarked)
-    virtual output_t run_solution(const input_t& input) const = 0;
+    virtual output_t run_solution(str_view input) const = 0;
 
     // Runs preliminary tests (optional, excluded from benchmark)
     virtual void run_tests() const = 0;
@@ -57,7 +55,7 @@ class DAY_NAME_(year, day) : public IDay { \
 public: \
     static std::unique_ptr<IDay> create() { return std::make_unique<DAY_NAME_(year, day)>(); } \
     void run_tests() const override; \
-    output_t run_solution(const input_t& input) const override; \
+    output_t run_solution(str_view input) const override; \
     output_t get_valid() const override { return { answer_pt1, answer_pt2 }; } \
 private: \
     static bool s_registered; \

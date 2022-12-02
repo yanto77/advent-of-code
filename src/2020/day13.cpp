@@ -26,7 +26,7 @@ namespace
         return { x, y };
     }
 
-    std::vector<vec2i> parse_eq_line(const sv& line)
+    std::vector<vec2i> parse_eq_line(str_view line)
     {
         std::vector<vec2i> eqs;
 
@@ -45,12 +45,12 @@ namespace
         return eqs;
     }
 
-    data_t parse_input(const input_t& input)
+    data_t parse(str_view input)
     {
         data_t parsed;
 
         bool first = true;
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             if (first)
             {
@@ -126,9 +126,9 @@ namespace
     }
 }
 
-output_t Day_2020_13::run_solution(const input_t& input) const
+output_t Day_2020_13::run_solution(str_view input) const
 {
-    data_t data = parse_input(input);
+    data_t data = parse(input);
 
     const auto& [diff, bus] = evaluate_pt1(data);
     const size_t part1 = diff * bus;
@@ -141,9 +141,8 @@ void Day_2020_13::run_tests() const
     // Part 1
     {
         char text[] = "939\n7,13,x,x,59,x,31,19\n";
-        input_t test1 { text, sizeof(text) };
 
-        data_t data = parse_input(test1);
+        data_t data = parse(text);
         assert(data.t0 == 939);
         assert(data.buslines == std::vector<vec2i>({
             vec2i {0, 7},

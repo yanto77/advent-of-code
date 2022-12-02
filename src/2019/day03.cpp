@@ -37,10 +37,10 @@ namespace
         return hit;
     }
 
-    polyline_t get_polyline(const sv& line)
+    polyline_t get_polyline(str_view line)
     {
         polyline_t out = { vec2i{0, 0} };
-        split_multi(line, ',', [&](const sv& part)
+        split_multi(line, ',', [&](str_view part)
         {
             const auto& [num, end] = to_int<uint16_t>(part, 1);
             switch (part[0]) // R right, U up, D down, L left
@@ -115,10 +115,10 @@ namespace
     }
 }
 
-output_t Day_2019_3::run_solution(const input_t& input) const
+output_t Day_2019_3::run_solution(str_view input) const
 {
     std::vector<polyline_t> lines;
-    parse_input(input, [&](const sv& line)
+    parse_input(input, [&](str_view line)
     {
         lines.push_back(get_polyline(line));
     });
@@ -144,24 +144,24 @@ void Day_2019_3::run_tests() const
     };
 
     {
-        auto line1 = get_polyline(sv{ inputs[0].data(), inputs[0].length() });
-        auto line2 = get_polyline(sv{ inputs[1].data(), inputs[1].length() });
+        auto line1 = get_polyline(str_view{ inputs[0].data(), inputs[0].length() });
+        auto line2 = get_polyline(str_view{ inputs[1].data(), inputs[1].length() });
         auto points = get_intersections(line1, line2);
         assert(get_dist(get_closest_pt1(points)) == 6);
         assert(get_distance_pt2(points) == 30);
     }
 
     {
-        auto line1 = get_polyline(sv{ inputs[2].data(), inputs[2].length() });
-        auto line2 = get_polyline(sv{ inputs[3].data(), inputs[3].length() });
+        auto line1 = get_polyline(str_view{ inputs[2].data(), inputs[2].length() });
+        auto line2 = get_polyline(str_view{ inputs[3].data(), inputs[3].length() });
         auto points = get_intersections(line1, line2);
         assert(get_dist(get_closest_pt1(points)) == 159);
         assert(get_distance_pt2(points) == 610);
     }
 
     {
-        auto line1 = get_polyline(sv{ inputs[4].data(), inputs[4].length() });
-        auto line2 = get_polyline(sv{ inputs[5].data(), inputs[5].length() });
+        auto line1 = get_polyline(str_view{ inputs[4].data(), inputs[4].length() });
+        auto line2 = get_polyline(str_view{ inputs[5].data(), inputs[5].length() });
         auto points = get_intersections(line1, line2);
         assert(get_dist(get_closest_pt1(points)) == 135);
         assert(get_distance_pt2(points) == 410);

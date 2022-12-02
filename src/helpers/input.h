@@ -7,26 +7,20 @@
 
 /// Input helpers
 
-/// Get full input as a single line
-inline sv get_sv(const input_t& input)
+inline void parse_input(str_view input, std::function<void(const std::string_view&)> line_cb)
 {
-    return sv { input.s, static_cast<size_t>(input.len) };
-}
-
-inline void parse_input(const input_t& input, std::function<void(const std::string_view&)> line_cb)
-{
-    for (size_t size = 0, i = 0; i < input.len; i++)
+    for (size_t size = 0, i = 0; i < input.size(); i++)
     {
-        if (input.s[i] != '\n')
+        if (input[i] != '\n')
         {
             ++size;
         }
         else
         {
 #ifdef __linux__
-            std::string_view line { &input.s[i - size], size };
+            std::string_view line { &input[i - size], size };
 #elif _WIN32
-            std::string_view line { &input.s[i - size], size - 1 }; // account for "\r\n"
+            std::string_view line { &input[i - size], size - 1 }; // account for "\r\n"
 #endif
             line_cb(line);
             size = 0;

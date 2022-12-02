@@ -83,13 +83,13 @@ namespace
         std::vector<card_t> cards {};
     };
 
-    game_t parse_input(const input_t& input)
+    game_t parse(str_view input)
     {
         bool parse_cards = false;
         bool skip_next = false;
         game_t game_data;
 
-        parse_input(input, [&](const sv& line)
+        parse_input(input, [&](str_view line)
         {
             if (skip_next)
             {
@@ -118,11 +118,11 @@ namespace
                 else 
                 {
                     assert(line.size() == 14);
-                    temp_card.numbers[card_index][0] = to_int<uint16_t>(sv{ &line[0 + 0], 2 });
-                    temp_card.numbers[card_index][1] = to_int<uint16_t>(sv{ &line[0 + 3], 2 });
-                    temp_card.numbers[card_index][2] = to_int<uint16_t>(sv{ &line[0 + 6], 2 });
-                    temp_card.numbers[card_index][3] = to_int<uint16_t>(sv{ &line[0 + 9], 2 });
-                    temp_card.numbers[card_index][4] = to_int<uint16_t>(sv{ &line[0 + 12], 2 });
+                    temp_card.numbers[card_index][0] = to_int<uint16_t>(str_view{ &line[0 + 0], 2 });
+                    temp_card.numbers[card_index][1] = to_int<uint16_t>(str_view{ &line[0 + 3], 2 });
+                    temp_card.numbers[card_index][2] = to_int<uint16_t>(str_view{ &line[0 + 6], 2 });
+                    temp_card.numbers[card_index][3] = to_int<uint16_t>(str_view{ &line[0 + 9], 2 });
+                    temp_card.numbers[card_index][4] = to_int<uint16_t>(str_view{ &line[0 + 12], 2 });
                     card_index++;
                 }
             }
@@ -179,9 +179,9 @@ namespace
     }
 }
 
-output_t Day_2021_4::run_solution(const input_t& input) const
+output_t Day_2021_4::run_solution(str_view input) const
 {
-    const game_t game_data = parse_input(input);
+    const game_t game_data = parse(input);
     size_t part1 = get_part1(game_data);
     size_t part2 = get_part2(game_data);
     return { part1, part2 };
@@ -210,8 +210,7 @@ void Day_2021_4::run_tests() const
         "22 11 13  6  5\n"
         " 2  0 12  3  7\n"
         "\n";
-    input_t test1 { text1, sizeof(text1) };
-    const game_t game_data = parse_input(test1);
+    const game_t game_data = parse(text1);
     assert(4512 == get_part1(game_data));
     assert(1924 == get_part2(game_data));
 }
