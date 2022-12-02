@@ -2,53 +2,43 @@
 
 namespace
 {
-    enum class valid_t { TODO, OK, ERR };
+    static const char* OK = COLOR_GREEN() "OK" COLOR_RESET();
 
-    valid_t validate(const output_t& expected, const output_t& actual)
+    int64_t run_single_day(size_t year, size_t day, DayFactory::create_fn_t create_fn)
     {
-        if (actual.part1 == 0 || actual.part2 == 0)
-            return valid_t::TODO;
-        else if (actual.part1 == expected.part1 && actual.part2 == expected.part2)
-            return valid_t::OK;
-        else
-            return valid_t::ERR;
-    }
-
-    std::string to_str(valid_t value)
-    {
-        if (value == valid_t::TODO)
-            return { COLOR_YELLOW() "TODO" COLOR_RESET() };
-        else if (value == valid_t::OK)
-            return { COLOR_GREEN() "OK" COLOR_RESET() };
-        else
-            return { COLOR_RED() "ERR" COLOR_RESET() };
-    }
-
-    std::pair<output_t, int64_t> run_single_day(size_t year, size_t day, IDay* inst)
-    {
+        // Run static tests (if any)
+        const std::unique_ptr<IDay> inst = create_fn();
         inst->run_tests();
 
-        const std::string& in_fname = fmt::format("input/{}/day{:02}.txt", year, day);
-        std::string input = load_input(in_fname);
+        // Load input file once
+        const std::string in_fname = fmt::format("input/{}/day{:02}.txt", year, day);
+        const std::string input = load_input(in_fname);
 
-        auto t0 = std::chrono::steady_clock::now();
-        output_t result = inst->run_solution(input);
-        auto elapsed = (std::chrono::steady_clock::now() - t0);
-        int64_t time = (elapsed.count() / 1000);
-
-        return { result, time };
-    }
-
-    void print_results(size_t year, size_t day, const output_t& expected, const output_t& actual, int64_t time)
-    {
-        const std::string& day_str = fmt::format("{}/{:02}", year, day);
-        valid_t valid = validate(expected, actual);
-        fmt::print("{}: {} [{:6} μs]\n", day_str, to_str(valid), time);
-        if (valid != valid_t::OK)
+        // Run once to validate result
+        output_t actual = inst->run_solution(input);
+        output_t expected = inst->get_valid();
+        if (expected != actual)
         {
+            fmt::print("{}/{:02}: ERR\n", year, day);
             fmt::print("  - Expected: pt1 = {}  pt2 = {}\n", expected.part1, expected.part2);
             fmt::print("  - Actual  : pt1 = {}  pt2 = {}\n", actual.part1, actual.part2);
+            return 0;
         }
+
+        // Run more times to collect timings
+        std::vector<int64_t> timings;
+        for (int i = 0; i < 10; i++)
+        {
+            auto t0 = std::chrono::steady_clock::now();
+            inst->run_solution(input);
+            auto elapsed = (std::chrono::steady_clock::now() - t0);
+            int64_t time = (elapsed.count() / 1000);
+            timings.push_back(time);
+        }
+
+        auto [min, max] = std::minmax_element(timings.begin(), timings.end());
+        fmt::print("{}/{:02}: {} [min {:6} μs, max {:6} μs]\n", year, day, OK, *min, *max);
+        return *min;
     }
 }
 
@@ -69,18 +59,15 @@ int main(int argc, char *argv[])
             if (filter_day != 0 && day != filter_day)
                 continue;
 
-            const std::unique_ptr<IDay> inst = create_fn();
-            const auto& [result, time] = run_single_day(year, day, inst.get());
-            print_results(year, day, inst->get_valid(), result, time);
+            const int64_t min_time = run_single_day(year, day, create_fn);
 
-            time_year += time;
-            time_total += time;
+            time_year += min_time;
+            time_total += min_time;
         }
 
         fmt::print("=> Total for year {}: {:6} μs\n\n", year, time_year);
     }
 
     fmt::print("=> Total for all years: {:6} μs\n\n", time_total);
-
     return 0;
 }

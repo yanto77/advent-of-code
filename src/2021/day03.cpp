@@ -85,7 +85,7 @@ namespace
 
 output_t Day_2021_3::run_solution(str_view input) const
 {
-    const std::vector<uint16_t>& data = get_bitset_data(input, 12);
+    const std::vector<uint16_t> data = get_bitset_data(input, 12);
     const auto& [ gamma, epsilon ] = get_part1(data, 12);
     const auto& [ OGR, CSR ] = get_part2(data, 12);
 
@@ -99,7 +99,7 @@ void Day_2021_3::run_tests() const
     char text1[] = "00100\n11110\n10110\n10111\n10101\n01111\n"
                    "00111\n11100\n10000\n11001\n00010\n01010\n";
 
-    const std::vector<uint16_t>& data = get_bitset_data(text1, 5);
+    const std::vector<uint16_t> data = get_bitset_data(text1, 5);
     const auto& [ gamma, epsilon ] = get_part1(data, 5);
     assert(198 == (gamma * epsilon));
 

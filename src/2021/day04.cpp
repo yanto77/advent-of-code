@@ -19,7 +19,7 @@ namespace
 
         bool has_win() const
         {
-            static const std::vector<std::bitset<5*5>> valid_set = {
+            static const std::bitset<5*5> valid_set[] = {
                 // horizontal
                 0b11111'00000'00000'00000'00000,
                 0b00000'11111'00000'00000'00000,

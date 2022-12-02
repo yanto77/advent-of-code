@@ -5,7 +5,6 @@ struct output_t
 {
     size_t part1 = 0;
     size_t part2 = 0;
-
 };
 
 inline bool operator==(const output_t& lhs, const output_t& rhs) 

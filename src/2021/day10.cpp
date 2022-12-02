@@ -4,24 +4,31 @@ ADVENT_DAY(2021, 10, 321237, 2360030859);
 
 namespace
 {
-    const std::unordered_map<char, int> pt1_scores = {
-        { ')', 3 },
-        { ']', 57 },
-        { '}', 1197 },
-        { '>', 25137 },
-    };
-    const std::unordered_map<char, int> pt2_scores = {
-        { '(', 1 },
-        { '[', 2 },
-        { '{', 3 },
-        { '<', 4 },
-    };
-    const std::unordered_map<char, char> symbol_pairs = {
-        { '(', ')' },
-        { '[', ']' },
-        { '{', '}' },
-        { '<', '>' },
-    };
+    int get_score(char value)
+    {   
+        // Part 1
+        if (value == ')') return 3;
+        if (value == ']') return 57;
+        if (value == '}') return 1197;
+        if (value == '>') return 25137;
+        // Part 2
+        if (value == '(') return 1;
+        if (value == '[') return 2;
+        if (value == '{') return 3;
+        if (value == '<') return 4;
+
+        assert(false);
+        return 0;
+    }
+
+    bool is_pair(char lhs, char rhs)
+    {
+        if (lhs == '(' && rhs == ')') return true;
+        if (lhs == '[' && rhs == ']') return true;
+        if (lhs == '{' && rhs == '}') return true;
+        if (lhs == '<' && rhs == '>') return true;
+        return false;
+    }
 
     std::pair<size_t, size_t> solve(str_view input)
     {
@@ -39,14 +46,14 @@ namespace
                 {
                     symbols.push(ch);
                 }
-                else if (symbol_pairs.at(symbols.top()) == ch)
+                else if (is_pair(symbols.top(), ch))
                 {
                     symbols.pop();
                 }
                 else
                 {
                     valid = false;
-                    part1 += pt1_scores.at(ch);
+                    part1 += get_score(ch);
                     break;
                 }
             }
@@ -56,7 +63,7 @@ namespace
                 size_t tmp = 0;
                 while (!symbols.empty())
                 {
-                    tmp = 5 * tmp + pt2_scores.at(symbols.top());
+                    tmp = 5 * tmp + get_score(symbols.top());
                     symbols.pop();
                 }
 
