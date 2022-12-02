@@ -45,7 +45,7 @@ namespace
                 }
                 else
                 {
-                    fmt::print(colors[num]);
+                    fmt::print(fmt::runtime(colors[num]));
                     fmt::print("{}", num);
                 }
             }

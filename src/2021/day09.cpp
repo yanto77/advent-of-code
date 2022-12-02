@@ -49,9 +49,8 @@ namespace
                 }
                 else
                 {
-                    auto c = colors[regions[y][x] % colors.size()];
-                    auto str = c + "{}" COLOR_RESET();
-                    fmt::print(str, map[y][x]);
+                    std::string c = colors[regions[y][x] % colors.size()];
+                    fmt::print("{}{}" COLOR_RESET(), c, map[y][x]);
                 }
 
             }
