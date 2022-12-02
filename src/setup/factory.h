@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include <map>
+#include "output_t.h"
 
 // Interface class representing solutions to each day/problem
 class IDay

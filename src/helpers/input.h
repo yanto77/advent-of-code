@@ -1,13 +1,11 @@
 #pragma once
-#include "../setup/input_t.h"
 #include <fstream>
 #include <functional>
 #include <string>
 #include <string_view>
+#include <filesystem>
 
-/// Input helpers
-
-inline void parse_input(str_view input, std::function<void(const std::string_view&)> line_cb)
+inline void parse_input(str_view input, std::function<void(str_view)> line_cb)
 {
     for (size_t size = 0, i = 0; i < input.size(); i++)
     {
@@ -18,9 +16,9 @@ inline void parse_input(str_view input, std::function<void(const std::string_vie
         else
         {
 #ifdef __linux__
-            std::string_view line { &input[i - size], size };
+            str_view line { &input[i - size], size };
 #elif _WIN32
-            std::string_view line { &input[i - size], size - 1 }; // account for "\r\n"
+            str_view line { &input.s[i - size], size - 1 }; // account for "\r\n"
 #endif
             line_cb(line);
             size = 0;
@@ -28,36 +26,25 @@ inline void parse_input(str_view input, std::function<void(const std::string_vie
     }
 }
 
-inline input_t load_input(const std::string& filename)
+// Ref: https://blog.insane.engineer/post/cpp_read_file_into_string/
+inline std::string load_input(str_view filename)
 {
-    input_t input;
+    // Sanity check
+    if (!std::filesystem::is_regular_file(filename))
+        return { };
 
-    std::ifstream file(filename.c_str(), std::ios::binary | std::ios::ate);
-    input.len = file.tellg();
-    if (input.len == -1)
-    {
-        perror("filesize failed");
-        exit(EXIT_FAILURE);
-    }
+    // Open the file
+    // Note that we have to use binary mode as we want to return a string
+    // representing matching the bytes of the file on the file system.
+    std::ifstream file(filename.data(), std::ios::in | std::ios::binary);
+    if (!file.is_open())
+        return { };
 
-    file.seekg(0, std::ios::beg);
-    input.s = new char[input.len];
-    if (input.s == nullptr)
-    {
-        perror("allocation failed");
-        exit(EXIT_FAILURE);
-    }
+    // Read contents
+    std::string content{std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()};
 
-    if (!file.read(input.s, input.len))
-    {
-        perror(filename.c_str());
-        exit(EXIT_FAILURE);
-    }
+    // Close the file
+    file.close();
 
-    return input;
-}
-
-inline void free_input(input_t& input)
-{
-    delete[] input.s;
+    return content;
 }

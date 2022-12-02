@@ -29,14 +29,12 @@ namespace
         inst->run_tests();
 
         const std::string& in_fname = fmt::format("input/{}/day{:02}.txt", year, day);
-        input_t input = load_input(in_fname);
+        std::string input = load_input(in_fname);
 
         auto t0 = std::chrono::steady_clock::now();
-        output_t result = inst->run_solution(str_view { input.s, (size_t)input.len });
+        output_t result = inst->run_solution(input);
         auto elapsed = (std::chrono::steady_clock::now() - t0);
         int64_t time = (elapsed.count() / 1000);
-
-        free_input(input);
 
         return { result, time };
     }
