@@ -77,8 +77,6 @@ target_link_libraries(${exec_NAME}
 )
 target_include_directories(${exec_NAME}
     SYSTEM PRIVATE include/3rd-party/fmt/include
-)
-target_include_directories(${exec_NAME}
     SYSTEM PRIVATE include/
     SYSTEM PRIVATE src/
 )
@@ -102,23 +100,18 @@ target_compile_options(advent_of_code PRIVATE
         -Wall
         -Wextra
         -Wpedantic
+        -pedantic
         # Disable specific warnings
-        -Wno-c++20-compat
         -Wno-c++98-compat-pedantic
         -Wno-exit-time-destructors
         -Wno-global-constructors
         -Wno-sign-conversion
         -Wno-sign-compare
         -Wno-padded
-        -Wno-weak-vtables # allow abstract classes
-        -Wno-keyword-macro # allows overriding new/delete
-        -Wno-disabled-macro-expansion
         -Wno-old-style-cast
         -Wno-implicit-int-float-conversion
-        -Wno-cast-align
         # Code Generation Convention
         -fwrapv
-        -pedantic
     >
     $<$<CXX_COMPILER_ID:MSVC>:
         /W4
