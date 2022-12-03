@@ -1,4 +1,5 @@
 #include "setup/all.h"
+#include <stack>
 
 ADVENT_DAY(2021, 10, 321237, 2360030859);
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
-#include <string>
 #include <map>
+#include "helpers/string.h"
 #include "result_t.h"
 
 // Interface class representing solutions to each day/problem

@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 
 /// Get index of the value appearing in the array first time
 template <typename T, size_t N>

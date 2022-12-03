@@ -2,6 +2,7 @@
 #include "vec2.h"
 #include <bitset>
 #include <iostream>
+#include <immintrin.h>
 
 #define STR(x)  #x
 #define XSTR(x) STR(x)

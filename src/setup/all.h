@@ -1,34 +1,30 @@
 #pragma once
 
-#include <algorithm>
-#include <array>
+// std includes
 #include <bitset>
-#include <cctype>
-#include <chrono>
-#include <climits>
-#include <cmath>
 #include <cstdint>
-#include <cstring>
-#include <deque>
-#include <functional>
-#include <map>
+#include <cstddef>
 #include <queue>
-#include <set>
-#include <stack>
-#include <string>
 #include <string_view>
-#include <thread>
-#include <unordered_map>
-#include <vector>
-#include <immintrin.h>
 
+// 3rd-party includes
 #include <fmt/format.h>
 #include <fmt/ranges.h>
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wheader-hygiene"
-using namespace std::chrono_literals;
-#pragma clang diagnostic pop
+// custom helper includes
+#include <helpers/array.h>
+#include <helpers/bit.h>
+#include <helpers/conv.h>
+#include <helpers/pow.h>
+#include <helpers/print.h>
+#include <helpers/string.h>
+#include <helpers/vec2.h>
+#include <helpers/vec3.h>
+#include <helpers/math.h>
+#include <helpers/num.h>
+
+// ADVENT_DAY() macro
+#include <setup/factory.h>
 
 // Include assert() for all builds (incl. Release)
 #ifdef NDEBUG
@@ -38,19 +34,3 @@ using namespace std::chrono_literals;
 #else
     #include <cassert>
 #endif
-
-#include <helpers/array.h>
-#include <helpers/bit.h>
-#include <helpers/conv.h>
-#include <helpers/hash.h>
-#include <helpers/input.h>
-#include <helpers/pow.h>
-#include <helpers/print.h>
-#include <helpers/string.h>
-#include <helpers/vec2.h>
-#include <helpers/vec3.h>
-#include <helpers/timer.h>
-#include <helpers/math.h>
-#include <helpers/num.h>
-
-#include <setup/factory.h>

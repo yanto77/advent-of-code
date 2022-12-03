@@ -1,6 +1,9 @@
 #include "intcode.h"
 #include "setup/all.h"
 #include <thread>
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 namespace
 {

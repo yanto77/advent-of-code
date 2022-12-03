@@ -1,4 +1,5 @@
 #include "setup/all.h"
+#include <helpers/hash.h>
 
 ADVENT_DAY(2020, 22, 33434, 31657);
 

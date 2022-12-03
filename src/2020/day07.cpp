@@ -1,5 +1,6 @@
 #include "setup/all.h"
 #include <3rd-party/ctre.hpp> // https://github.com/hanickadot/compile-time-regular-expressions
+#include <set>
 
 ADVENT_DAY(2020, 7, 172, 39645);
 

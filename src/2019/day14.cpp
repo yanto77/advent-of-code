@@ -1,4 +1,5 @@
 #include "setup/all.h"
+#include <helpers/hash.h>
 
 ADVENT_DAY(2019, 14, 0, 0);
 
