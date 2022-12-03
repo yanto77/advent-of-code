@@ -17,7 +17,7 @@ namespace
                 map[y][x] = 9;
 
         size_t in_y = 0;
-        parse_input(input, [&](str_view line_str)
+        for_each_split(input, '\n', [&](str_view line_str)
         {
             for (size_t in_x = 0; in_x < X_DIM; in_x++)
                 map[in_y+PAD][in_x+PAD] = to_int<uint8_t>(line_str[in_x]);

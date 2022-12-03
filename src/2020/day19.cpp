@@ -126,7 +126,7 @@ namespace
             std::array<std::array<uint8_t, 4>, RULE_N> rules {};
 
             bool fill_rules = true;
-            parse_input(input, [&](str_view line)
+            for_each_split(input, '\n', [&](str_view line)
             {
                 if (line.empty()) fill_rules = false;
 

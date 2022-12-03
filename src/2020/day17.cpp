@@ -12,7 +12,7 @@ namespace
     input_world_t parse(str_view input)
     {
         input_world_t world;
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             std::vector<bool> vec;
             for (char ch: line) vec.push_back(ch == '#');

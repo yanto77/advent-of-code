@@ -24,7 +24,7 @@ namespace
     orbits_t parse(str_view input)
     {
         orbits_t links;
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             uint32_t a = get_id(&line[0]);
             uint32_t b = get_id(&line[4]);

@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <queue>
 #include <string_view>
+#include <unordered_map>
 
 // 3rd-party includes
 #include <fmt/format.h>

@@ -10,7 +10,7 @@ namespace
     {
         std::vector<line_t> lines;
     
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             const auto& [p1_str, p2_str] = split_at(line, " -> ");
 

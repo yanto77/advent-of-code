@@ -89,7 +89,7 @@ namespace
         bool skip_next = false;
         game_t game_data;
 
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             if (skip_next)
             {

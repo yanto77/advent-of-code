@@ -57,7 +57,7 @@ namespace
         memory_t memory;
         memory.reserve(part1 ? 1000 : 100000);
 
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             const auto& [type, arg] = split_at(line, " = ");
             if (type.starts_with("mask"))

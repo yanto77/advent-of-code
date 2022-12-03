@@ -66,7 +66,7 @@ namespace
         // 2. Parse the strings, for example:
         //   - given: "muted plum bags contain 3 shiny brown bags, 4 shiny teal bags."
         //   - saves: MP => {{3, SB}, {4, ST}} (where MP, SB, and ST are indexes)
-        parse_input(input, [&](str_view line) 
+        for_each_split(input, '\n', [&](str_view line) 
         {
             auto [node_from, value] = split_at(line, " bags contain ");
             const auto from_id = get_id(node_from);

@@ -50,7 +50,7 @@ namespace
         seat_map_t seats;
         ssize_t len = -1;
 
-        parse_input(input, [&](str_view line_in) {
+        for_each_split(input, '\n', [&](str_view line_in) {
             if (len == -1)
                 len = line_in.size();
 

@@ -28,7 +28,7 @@ result_t Day_2022_3::run_solution(str_view input) const
     uint8_t lineCount = 0;
     uint64_t groupItem = UINT64_MAX;
 
-    parse_input(input, [&](str_view line)
+    for_each_split(input, '\n', [&](str_view line)
     {
         const auto [leftStr, rightStr] = split_at(line, line.size() / 2);
 

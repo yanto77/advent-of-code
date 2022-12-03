@@ -10,9 +10,9 @@ namespace
             std::vector<int64_t> data;
 
         public:
-            void parse(str_view in)
+            void parse(str_view input)
             {
-                parse_input(in, [&](str_view line)
+                for_each_split(input, '\n', [&](str_view line)
                 {
                     data.push_back(to_int<int64_t>(line));
                 });

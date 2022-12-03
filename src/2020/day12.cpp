@@ -92,7 +92,7 @@ namespace
         std::vector<order_t> orders;
         orders.reserve(1000);
 
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             orders.push_back(order_t {
                 .action = char_to_action(line[0]),

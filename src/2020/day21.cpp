@@ -94,7 +94,7 @@ namespace
     {
         std::unordered_map<str_view, ingredient_t> ingr_map;
 
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             // std::cout << line << std::endl;
 

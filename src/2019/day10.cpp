@@ -1,5 +1,6 @@
 #include "setup/all.h"
 #include <unordered_set>
+#include <functional>
 
 ADVENT_DAY(2019, 10, 286, 504);
 
@@ -11,7 +12,7 @@ namespace
     {
         map_t out;
 
-        parse_input(input, [&](str_view line_str)
+        for_each_split(input, '\n', [&](str_view line_str)
         {
             std::vector<bool> line_bit(line_str.size(), 0);
 

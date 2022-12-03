@@ -7,7 +7,7 @@ result_t Day_2022_1::run_solution(str_view input) const
     std::array<size_t, 3> maxCounts = {};
     size_t currValue = 0;
 
-    parse_input(input, [&](str_view line)
+    for_each_split(input, '\n', [&](str_view line)
     {
         if (line.empty())
         {

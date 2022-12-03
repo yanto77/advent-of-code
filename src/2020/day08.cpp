@@ -38,7 +38,7 @@ namespace
         program_t program;
         program.reserve(1000);
 
-        parse_input(input, [&](str_view line) 
+        for_each_split(input, '\n', [&](str_view line) 
         {
             op_t op;
             if (line.starts_with("acc"))

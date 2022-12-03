@@ -31,7 +31,7 @@ result_t Day_2020_5::run_solution(str_view input) const
     std::array<bool, SEAT_NB> seats;
     seats.fill(false);
 
-    parse_input(input, [&](str_view line)
+    for_each_split(input, '\n', [&](str_view line)
     {
         uint16_t seat_id = convert_line(line);
 

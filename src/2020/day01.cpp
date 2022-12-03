@@ -44,7 +44,7 @@ result_t Day_2020_1::run_solution(str_view input) const
 {
     std::vector<int> v;
     v.reserve(1000);
-    parse_input(input, [&](str_view line) 
+    for_each_split(input, '\n', [&](str_view line) 
     { 
         v.emplace_back(to_int<int>(line)); 
     });

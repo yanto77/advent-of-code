@@ -6,7 +6,7 @@ ADVENT_DAY(2021, 1, 1400, 1429);
 result_t Day_2021_1::run_solution(str_view input) const
 {
     std::vector<int32_t> data;
-    parse_input(input, [&](str_view line)
+    for_each_split(input, '\n', [&](str_view line)
     {
         data.push_back(to_int<int32_t>(line));
     });

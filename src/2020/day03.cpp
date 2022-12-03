@@ -56,7 +56,7 @@ namespace
         tree_map_t map {};
 
         size_t row = 0;
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             map[row] = convert_avx2(line.data());
             ++row;

@@ -7,7 +7,7 @@ result_t Day_2021_2::run_solution(str_view input) const
     vec2i p1_pos {0, 0}; // { horizontal pos, depth }
     vec3i p2_pos {0, 0, 0}; // { horizontal pos, depth, aim }
 
-    parse_input(input, [&](str_view line)
+    for_each_split(input, '\n', [&](str_view line)
     {
         switch (line[0])
         {

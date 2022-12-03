@@ -91,7 +91,7 @@ result_t Day_2020_18::run_solution(str_view input) const
 {
     size_t part1 = 0;
     size_t part2 = 0;
-    parse_input(input, [&](str_view line)
+    for_each_split(input, '\n', [&](str_view line)
     {
         part1 += solve_single(pt1, line);
         part2 += solve_single(pt2, line);

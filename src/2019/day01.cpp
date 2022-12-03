@@ -36,7 +36,7 @@ result_t Day_2019_1::run_solution(str_view input) const
 {
     size_t sum1 = 0;
     size_t sum2 = 0;
-    parse_input(input, [&](str_view line)
+    for_each_split(input, '\n', [&](str_view line)
     {
         auto value = to_int<int32_t>(line);
         sum1 += fn1(value);

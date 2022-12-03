@@ -1,4 +1,5 @@
 #include "setup/all.h"
+#include <functional>
 
 ADVENT_DAY(2020, 20, 107399567124539, 1555);
 
@@ -68,7 +69,7 @@ namespace
         enum { ID, MAP } state = ID;
         int row = 0;
         tile_t tile;
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             if (state == ID)
             {

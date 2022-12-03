@@ -32,7 +32,7 @@ namespace
     {
         recipe_list_t recipes;
 
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             const auto& [ins, out] = split_at(line, " => ");
 

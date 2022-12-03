@@ -119,7 +119,7 @@ namespace
 
         result_t out;
 
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             // skip unnecessary lines
             if (parser.skip_next)

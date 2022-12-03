@@ -5,10 +5,10 @@ ADVENT_DAY(2020, 10, 2664, 148098383347712);
 namespace
 {
     // Returns a vector of element-wise differences (between sorted adapters)
-    std::vector<uint8_t> parse(str_view in)
+    std::vector<uint8_t> parse(str_view input)
     {
         std::vector<uint8_t> out;
-        parse_input(in, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             out.push_back(to_int<uint8_t>(line));
         });

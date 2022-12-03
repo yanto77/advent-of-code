@@ -36,7 +36,7 @@ namespace
         size_t part1 = 0;
         std::vector<size_t> part2vec {};
 
-        parse_input(input, [&](str_view line){
+        for_each_split(input, '\n', [&](str_view line){
 
             std::stack<char> symbols;
             bool valid = true;

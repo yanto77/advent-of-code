@@ -50,7 +50,7 @@ namespace
         data_t parsed;
 
         bool first = true;
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             if (first)
             {

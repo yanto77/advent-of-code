@@ -101,7 +101,7 @@ namespace
         size_t part1 = 0;
         size_t part2 = 0;
 
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             signal_pair_t signals;
             parse_line(line, &signals);

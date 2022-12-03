@@ -7,7 +7,7 @@ namespace
     std::vector<uint16_t> get_bitset_data(str_view input, size_t line_size)
     {
         std::vector<uint16_t> data {};
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             uint16_t value = 0;
             for (int i = 0; i < line_size; i++)

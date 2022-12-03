@@ -30,7 +30,7 @@ result_t Day_2020_4::run_solution(str_view input) const
     size_t filled_nb = 0;
     size_t valid_nb = 0;
 
-    parse_input(input, [&](str_view line)
+    for_each_split(input, '\n', [&](str_view line)
     {
         if (line != "")
         {

@@ -90,7 +90,7 @@ namespace
 
         bool add_to_p1 = true;
         bool skip_line = true;
-        parse_input(input, [&](str_view line)
+        for_each_split(input, '\n', [&](str_view line)
         {
             if (skip_line)
             {

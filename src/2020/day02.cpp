@@ -15,7 +15,7 @@ result_t Day_2020_2::run_solution(str_view input) const
     size_t part1 = 0;
     size_t part2 = 0;
 
-    parse_input(input, [&](str_view line)
+    for_each_split(input, '\n', [&](str_view line)
     {
         // Parsing line
         size_t mid = line.find_first_of('-', 0);

@@ -1,34 +1,45 @@
 #pragma once
-#include <functional>
 #include <string_view>
 #include <vector>
+
 using str_view = std::string_view;
 
-
 // Split string by delimiters into multiple parts, run `cb` on each part
-inline void for_each_split(str_view input, str_view delim, std::function<void(str_view)> callback)
+template <typename Functor>
+inline void for_each_split(str_view input, str_view delim, Functor&& callback)
 {
-    size_t start = 0;
-    while (start < input.size())
+    size_t start = 0U;
+    size_t end = input.find(delim);
+    while (end != std::string::npos)
     {
-        size_t pos = input.find(delim, start);
-        if (pos == str_view::npos)
-        {
-            if (start < input.size()) // fill in the last part
-                callback(str_view { &input[start], input.size() - start });
+        callback(str_view { &input[start], (end - start) });
+        start = end + delim.length();
+        end = input.find(delim, start);
+    }
 
-            break;
-        }
-
-        callback(str_view { &input[start], pos - start });
-        start = pos + delim.size();
+    if (start < input.size())
+    {
+        callback(str_view { &input[start], (input.size() - start) });
     }
 }
 
 // Split string by delimiters into multiple parts, run `cb` on each part
-inline void for_each_split(str_view input, char delim, std::function<void(str_view)> callback)
+template <typename Functor>
+inline void for_each_split(str_view input, char delim, Functor&& callback)
 {
-    for_each_split(input, str_view { &delim, 1 }, callback);
+    size_t start = 0U;
+    size_t end = input.find(delim);
+    while (end != std::string::npos)
+    {
+        callback(str_view { &input[start], (end - start) });
+        start = end + 1;
+        end = input.find(delim, start);
+    }
+
+    if (start < input.size())
+    {
+        callback(str_view { &input[start], (input.size() - start) });
+    }
 }
 
 // Split string by delimiters into multiple parts
