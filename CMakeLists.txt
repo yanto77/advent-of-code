@@ -85,8 +85,16 @@ if (UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
 endif (UNIX)
 
-set_target_properties(${exec_NAME} PROPERTIES CXX_STANDARD 20)
-set_target_properties(${exec_NAME} PROPERTIES CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set_target_properties(${exec_NAME} PROPERTIES 
+    CXX_STANDARD 20
+
+    # Used for code editor to run compilation checks on individual files.
+    EXPORT_COMPILE_COMMANDS ON
+
+    # Reduces the size of the executable/library, by hiding unnecessary info.
+    CXX_VISIBILITY_PRESET hidden
+    VISIBILITY_INLINES_HIDDEN ON
+)
 
 #
 # Add compiler warnings
