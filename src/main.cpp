@@ -3,6 +3,7 @@
 namespace
 {
     static const char* OK = COLOR_GREEN() "OK" COLOR_RESET();
+    static const char* ERR = COLOR_RED() "ERR" COLOR_RESET();
 
     int64_t run_single_day(size_t year, size_t day, DayFactory::create_fn_t create_fn)
     {
@@ -14,31 +15,32 @@ namespace
         const std::string in_fname = fmt::format("input/{}/day{:02}.txt", year, day);
         const std::string input = load_input(in_fname);
 
-        // Run once to validate result
-        result_t actual = inst->run_solution(input);
-        result_t expected = inst->get_valid();
-        if (expected != actual)
-        {
-            fmt::print("{}/{:02}: ERR\n", year, day);
-            fmt::print("  - Expected: pt1 = {}  pt2 = {}\n", expected.part1, expected.part2);
-            fmt::print("  - Actual  : pt1 = {}  pt2 = {}\n", actual.part1, actual.part2);
-            return 0;
-        }
-
-        // Run more times to collect timings
+        // Run the solution multiple times to collect timings
         std::vector<int64_t> timings;
         for (int i = 0; i < 10; i++)
         {
             auto t0 = std::chrono::steady_clock::now();
-            inst->run_solution(input);
+            result_t actual = inst->run_solution(input);
             auto elapsed = (std::chrono::steady_clock::now() - t0);
             int64_t time = (elapsed.count() / 1000);
             timings.push_back(time);
+
+            if (i == 0) // Validate only once
+            {
+                result_t expected = inst->get_valid();
+                if (expected != actual)
+                {
+                    fmt::print("{}/{:02}: {} [{:6} μs]\n", year, day, ERR, time);
+                    fmt::print("  - Expected: pt1 = {}  pt2 = {}\n", expected.part1, expected.part2);
+                    fmt::print("  - Actual  : pt1 = {}  pt2 = {}\n", actual.part1, actual.part2);
+                    return 0;
+                }
+            }
         }
 
-        auto [min, max] = std::minmax_element(timings.begin(), timings.end());
-        fmt::print("{}/{:02}: {} [min {:6} μs, max {:6} μs]\n", year, day, OK, *min, *max);
-        return *min;
+        int64_t min_time = *(std::min_element(timings.begin(), timings.end()));
+        fmt::print("{}/{:02}: {} [{:6} μs]\n", year, day, OK, min_time);
+        return min_time;
     }
 }
 

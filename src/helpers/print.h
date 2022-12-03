@@ -89,10 +89,10 @@ void print_row(const std::vector<vec2<T>>& input)
 template <typename T, size_t N = sizeof(T) * 8>
 void print_bits(T data, bool color = false)
 {
-    for (int i = N - 1; i >= 0; --i)
+    for (int i = 0; i <= N - 1; i++)
     {
         if (color)
-            printf(get_bit(data, i) ? COLOR_GREEN() "1" : COLOR_CYAN() "0");
+            printf(get_bit(data, i) ? COLOR_GREEN() "1" : COLOR_GRAY() "0");
         else
             printf(get_bit(data, i) ? "1" : "0");
         printf(COLOR_RESET());
@@ -105,7 +105,7 @@ void print_bits(const std::bitset<N>& data, bool color = false)
     for (int i = N - 1; i >= 0; --i)
     {
         if (color)
-            printf(data.test(i) ? COLOR_GREEN() "1" : COLOR_CYAN() "0");
+            printf(data.test(i) ? COLOR_GREEN() "1" : COLOR_GRAY() "0");
         else
             printf(data.test(i) ? "1" : "0");
         printf(COLOR_RESET());
