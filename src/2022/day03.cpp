@@ -14,27 +14,10 @@ namespace
         17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  0,   0,   0,   0,   0,   0,
     };
 
-    // Map bit indexes (1-52) to {a-z, A-Z}
-    //  - 1-26 to {a-z}
-    //  - 27-52 to {A-Z}
-    const uint8_t indexToChar[] = {
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
-        'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
-        'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-    };
-
     struct rucksack_t {
         uint64_t left = 0;
         uint64_t right = 0;
     };
-
-    uint8_t get_char_value(uint64_t items)
-    {
-        int idx = std::countr_zero(items);
-        char value = indexToChar[idx];
-        return charToIndex[value-65];
-    }
 }
 
 result_t Day_2022_3::run_solution(str_view input) const
@@ -56,7 +39,7 @@ result_t Day_2022_3::run_solution(str_view input) const
         // Part 1: check duplicates between left/right compartments of single sack.
         {
             uint64_t duplicates = singleSack.left & singleSack.right;
-            part1 += get_char_value(duplicates);
+            part1 += (std::countr_zero(duplicates) + 1);
         }
 
         // Part 2: check Elf group of three lines
@@ -66,7 +49,7 @@ result_t Day_2022_3::run_solution(str_view input) const
 
             if (lineCount == 3)
             {
-                part2 += get_char_value(groupItem);
+                part2 += (std::countr_zero(groupItem) + 1);
 
                 lineCount = 0;
                 groupItem = UINT64_MAX;
