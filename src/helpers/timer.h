@@ -1,5 +1,6 @@
 #pragma once
 #include <chrono>
+#include <fmt/format.h>
 
 class stack_timer_t
 {
@@ -15,7 +16,7 @@ class stack_timer_t
         {
             auto elapsed = (clock_t::now() - t0);
             int64_t time = (elapsed.count() / 1000);
-            printf("[timer] %s %d μs\n", msg, time);
+            fmt::print("[timer] {} {} μs\n", msg, time);
         }
 
     private:

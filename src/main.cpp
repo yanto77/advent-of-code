@@ -1,9 +1,35 @@
 #include "setup/all.h"
+#include <chrono>
+#include <fstream>
+#include <filesystem>
 
 namespace
 {
     static const char* OK = COLOR_GREEN() "OK" COLOR_RESET();
     static const char* ERR = COLOR_RED() "ERR" COLOR_RESET();
+
+    // Ref: https://blog.insane.engineer/post/cpp_read_file_into_string/
+    inline std::string load_input(str_view filename)
+    {
+        // Sanity check
+        if (!std::filesystem::is_regular_file(filename))
+            return { };
+
+        // Open the file
+        // Note that we have to use binary mode as we want to return a string
+        // representing matching the bytes of the file on the file system.
+        std::ifstream file(filename.data(), std::ios::in | std::ios::binary);
+        if (!file.is_open())
+            return { };
+
+        // Read contents
+        std::string content{std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()};
+
+        // Close the file
+        file.close();
+
+        return content;
+    }
 
     int64_t run_single_day(size_t year, size_t day, DayFactory::create_fn_t create_fn)
     {

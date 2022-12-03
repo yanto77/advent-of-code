@@ -15,7 +15,6 @@
 #include <helpers/array.h>
 #include <helpers/bit.h>
 #include <helpers/conv.h>
-#include <helpers/pow.h>
 #include <helpers/print.h>
 #include <helpers/string.h>
 #include <helpers/vec2.h>
