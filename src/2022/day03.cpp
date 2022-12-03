@@ -47,8 +47,7 @@ result_t Day_2022_3::run_solution(str_view input) const
 
     parse_input(input, [&](str_view line)
     {
-        str_view leftStr = line.substr(0, line.size() / 2);
-        str_view rightStr = line.substr(line.size() / 2, line.size());
+        const auto [leftStr, rightStr] = split_at(line, line.size() / 2);
 
         rucksack_t singleSack;
         for (char ch: leftStr) set_bit(singleSack.left, charToIndex[ch-65]-1);

@@ -59,7 +59,7 @@ namespace
 
         parse_input(input, [&](str_view line)
         {
-            const auto& [type, arg] = split_single(line, " = ");
+            const auto& [type, arg] = split_at(line, " = ");
             if (type.starts_with("mask"))
             {
                 mask.parse_from(arg);

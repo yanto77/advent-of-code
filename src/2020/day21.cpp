@@ -98,12 +98,12 @@ namespace
         {
             // std::cout << line << std::endl;
 
-            auto [part1, part2] = split_single(line, "(");
+            auto [part1, part2] = split_at(line, '(');
             part2.remove_prefix(sizeof("contains ") - 1);
             part2.remove_suffix(sizeof(")") - 1);
 
-            const auto& ingredients = split_multi(part1, ' ');
-            const auto& allergens = split_multi(part2, ", ");
+            const auto& ingredients = split(part1, ' ');
+            const auto& allergens = split(part2, ", ");
 
             // printf(" - ingr: "); print_row(ingredients);
             // printf(" - allerg: "); print_row(allergens);

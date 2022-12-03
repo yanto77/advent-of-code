@@ -34,9 +34,9 @@ result_t Day_2020_4::run_solution(str_view input) const
     {
         if (line != "")
         {
-            for (str_view field : split_multi(line, " "))
+            for (str_view field : split(line, ' '))
             {
-                const auto& [key_str, val_str] = split_single(field, ":");
+                const auto& [key_str, val_str] = split_at(field, ':');
 
                 const Field key = s_fields.at(key_str);
                 pass_filled.set(key);

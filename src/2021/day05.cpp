@@ -12,10 +12,10 @@ namespace
     
         parse_input(input, [&](str_view line)
         {
-            const auto& [p1_str, p2_str] = split_single(line, " -> ");
+            const auto& [p1_str, p2_str] = split_at(line, " -> ");
 
-            const auto& [p1x, p1y] = split_single(p1_str, ",");
-            const auto& [p2x, p2y] = split_single(p2_str, ",");
+            const auto& [p1x, p1y] = split_at(p1_str, ',');
+            const auto& [p2x, p2y] = split_at(p2_str, ',');
 
             vec2i p1 { to_int<uint16_t>(p1x), to_int<uint16_t>(p1y) };
             vec2i p2 { to_int<uint16_t>(p2x), to_int<uint16_t>(p2y) };

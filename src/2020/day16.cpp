@@ -162,10 +162,10 @@ namespace
                 case parser_t::RULES:
                 {
                     // Example: "arrival platform: 40-831 or 837-961"
-                    const auto& [type, ranges] = split_single(line, ": ");
-                    const auto& [range1, range2] = split_single(ranges, " or ");
-                    const auto& [r1_min, r1_max] = split_single(range1, "-");
-                    const auto& [r2_min, r2_max] = split_single(range2, "-");
+                    const auto& [type, ranges] = split_at(line, ": ");
+                    const auto& [range1, range2] = split_at(ranges, " or ");
+                    const auto& [r1_min, r1_max] = split_at(range1, '-');
+                    const auto& [r2_min, r2_max] = split_at(range2, '-');
                     data.rules.push_back({ .type = type,
                                            .r1 = { to_int<uint16_t>(r1_min), to_int<uint16_t>(r1_max) },
                                            .r2 = { to_int<uint16_t>(r2_min), to_int<uint16_t>(r2_max) } });

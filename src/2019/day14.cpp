@@ -20,7 +20,7 @@ namespace
     // returns [output_id, output_num]
     std::pair<size_t, size_t> parse_num_type(str_view line)
     {
-        const auto& [num, type] = split_single(line, " ");
+        const auto& [num, type] = split_at(line, ' ');
         // fmt::print("  -> num: [{}] type: [{} = {}]\n", num, fnv1a_hash(type), type);
         auto id = fnv1a_hash(type);
         debug_map[id] = type;
@@ -34,12 +34,12 @@ namespace
 
         parse_input(input, [&](str_view line)
         {
-            const auto& [ins, out] = split_single(line, " => ");
+            const auto& [ins, out] = split_at(line, " => ");
 
             const auto& [out_id, out_num] = parse_num_type(out);
             recipes[out_id] = {};
 
-            for (const auto& in: split_multi(ins, ", "))
+            for (str_view in: split(ins, ", "))
             {
                 const auto& [in_id, in_num] = parse_num_type(in);
                 recipes[out_id].push_back(recipe_t{

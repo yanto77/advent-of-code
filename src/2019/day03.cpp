@@ -40,7 +40,7 @@ namespace
     polyline_t get_polyline(str_view line)
     {
         polyline_t out = { vec2i{0, 0} };
-        split_multi(line, ',', [&](str_view part)
+        for_each_split(line, ',', [&](str_view part)
         {
             const auto& [num, end] = to_int<uint16_t>(part, 1);
             switch (part[0]) // R right, U up, D down, L left

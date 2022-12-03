@@ -31,7 +31,7 @@ namespace
         std::vector<vec2i> eqs;
 
         eqs.reserve(100);
-        const auto& parts = split_multi(line, ',');
+        const auto& parts = split(line, ',');
         for (size_t i = 0; i < parts.size(); ++i)
         {
             if (parts[i][0] != 'x')
