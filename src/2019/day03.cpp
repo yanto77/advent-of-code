@@ -144,24 +144,24 @@ void Day_2019_3::run_tests() const
     };
 
     {
-        auto line1 = get_polyline(str_view{ inputs[0].data(), inputs[0].length() });
-        auto line2 = get_polyline(str_view{ inputs[1].data(), inputs[1].length() });
+        auto line1 = get_polyline(inputs[0]);
+        auto line2 = get_polyline(inputs[1]);
         auto points = get_intersections(line1, line2);
         assert(get_dist(get_closest_pt1(points)) == 6);
         assert(get_distance_pt2(points) == 30);
     }
 
     {
-        auto line1 = get_polyline(str_view{ inputs[2].data(), inputs[2].length() });
-        auto line2 = get_polyline(str_view{ inputs[3].data(), inputs[3].length() });
+        auto line1 = get_polyline(inputs[2]);
+        auto line2 = get_polyline(inputs[3]);
         auto points = get_intersections(line1, line2);
         assert(get_dist(get_closest_pt1(points)) == 159);
         assert(get_distance_pt2(points) == 610);
     }
 
     {
-        auto line1 = get_polyline(str_view{ inputs[4].data(), inputs[4].length() });
-        auto line2 = get_polyline(str_view{ inputs[5].data(), inputs[5].length() });
+        auto line1 = get_polyline(inputs[4]);
+        auto line2 = get_polyline(inputs[5]);
         auto points = get_intersections(line1, line2);
         assert(get_dist(get_closest_pt1(points)) == 135);
         assert(get_distance_pt2(points) == 410);

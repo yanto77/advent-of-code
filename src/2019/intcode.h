@@ -39,12 +39,6 @@ class intcode_solver_t
         reset();
     }
 
-    intcode_solver_t(const std::string& input)
-        : intcode_solver_t(str_view { input.data(), input.length() })
-    {
-        reset();
-    }
-
     // execute whole program, until it halts, or, may yield on input/output instructions. 
     // NB: user is responsible for filling in the inputs immediately after yield!
     // returns the last opcode, when yielding/halting
