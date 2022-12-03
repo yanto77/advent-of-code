@@ -9,7 +9,7 @@
 #include <unordered_map>
 
 // 3rd-party includes
-#include <fmt/format.h>
+#include <fmt/core.h>
 #include <fmt/ranges.h>
 
 // custom helper includes

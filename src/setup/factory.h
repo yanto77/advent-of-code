@@ -28,19 +28,19 @@ class DayFactory
 {
   public:
     using create_fn_t = std::unique_ptr<IDay>(*)();
-    using year_map_t = std::map<size_t, create_fn_t>;
+    using year_map_t = std::map<uint64_t, create_fn_t>;
 
   public:
     DayFactory() = delete;
 
-    static bool add_day(size_t year, size_t day, const create_fn_t& fn);
+    static bool add_day(uint64_t year, uint64_t day, const create_fn_t& fn);
 
-    static std::unique_ptr<IDay> create(size_t year, size_t day);
+    static std::unique_ptr<IDay> create(uint64_t year, uint64_t day);
 
-    static std::map<size_t, year_map_t>& get_years() { return s_years; }
+    static std::map<uint64_t, year_map_t>& get_years() { return s_years; }
 
   private:
-    static std::map<size_t, year_map_t> s_years;
+    static std::map<uint64_t, year_map_t> s_years;
 };
 
 

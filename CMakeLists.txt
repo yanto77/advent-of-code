@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 3.16)
 project (advent_of_code)
 
+option(ENABLE_ERRORS         "Enable extra errors"                ON)
+option(ENABLE_TIME_TRACE     "Enables -ftime-trace flag"          ON)
 
 add_subdirectory(include/3rd-party/fmt EXCLUDE_FROM_ALL)
 
@@ -73,9 +75,7 @@ add_executable(${exec_NAME}
 )
 
 target_precompile_headers(${exec_NAME} PRIVATE src/setup/all.h)
-target_link_libraries(${exec_NAME}
-    fmt::fmt
-)
+target_link_libraries(${exec_NAME} fmt::fmt)
 target_include_directories(${exec_NAME}
     SYSTEM PRIVATE include/3rd-party/fmt/include
     SYSTEM PRIVATE include/
@@ -97,47 +97,47 @@ set_target_properties(${exec_NAME} PROPERTIES
     VISIBILITY_INLINES_HIDDEN ON
 )
 
-#
-# Add compiler warnings
-#
+if (ENABLE_ERRORS)
+    message(STATUS "Using extra compilation warnings/errors")
+    target_compile_options(advent_of_code PRIVATE
+        $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
+            # Warnings
+            -Weverything
+            # -Werror
+            -Wall
+            -Wextra
+            -Wpedantic
+            -pedantic
+            # Disable specific warnings
+            -Wno-c++98-compat-pedantic
+            -Wno-exit-time-destructors
+            -Wno-global-constructors
+            -Wno-sign-conversion
+            -Wno-sign-compare
+            -Wno-padded
+            -Wno-old-style-cast
+            -Wno-implicit-int-float-conversion
+            # Code Generation Convention
+            -fwrapv
+        >
+        $<$<CXX_COMPILER_ID:MSVC>:
+            /W4
+        >
+    )
 
-target_compile_options(advent_of_code PRIVATE
-    $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
-        # Warnings
-        -Weverything
-        # -Werror
-        -Wall
-        -Wextra
-        -Wpedantic
-        -pedantic
-        # Disable specific warnings
-        -Wno-c++98-compat-pedantic
-        -Wno-exit-time-destructors
-        -Wno-global-constructors
-        -Wno-sign-conversion
-        -Wno-sign-compare
-        -Wno-padded
-        -Wno-old-style-cast
-        -Wno-implicit-int-float-conversion
-        # Code Generation Convention
-        -fwrapv
-    >
-    $<$<CXX_COMPILER_ID:MSVC>:
-        /W4
-    >
-)
+    cmake_policy(SET CMP0092 NEW) # Windows specific: Do not add /W3, as we are adding /W4 already.
+endif()
+
+if (ENABLE_TIME_TRACE)
+    target_compile_options(${exec_NAME} PRIVATE -ftime-trace)
+endif()
 
 # `-rdynamic` instructs the linker to add all symbols to the dynamic symbol table 
 # (as opposed to only the used ones). This allows backtrace_symbols() to convert 
 # addresses to function names.
 target_link_options(advent_of_code PRIVATE "-rdynamic")
 
-cmake_policy(SET CMP0092 NEW) # Windows specific: Do not add /W3, as we are adding /W4 already.
-
-#
 # Copy static data relative to the executable
-#
-
 add_custom_command(TARGET ${exec_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E create_symlink
         "${CMAKE_SOURCE_DIR}/input"
