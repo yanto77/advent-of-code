@@ -6,23 +6,14 @@
 
 #include "string.h"
 
-
-/**
- * Convert single char into int
- * @param input input char
- * @returns parsed int
- */
+// Convert a char into int
 template <typename T>
 T to_int(char ch)
 {
     return ch - '0';
 }
 
-/**
- * Convert full string into single int
- * @param input input string
- * @returns parsed int
- */
+// Convert a string into 1 int
 template <typename T>
 T to_int(str_view input)
 {
@@ -80,53 +71,4 @@ inline std::vector<T> to_multi_int(str_view input)
     }
 
     return out;
-}
-
-/**
- * Convert single hex char to integer representation
- * @param hex_digit hex char (e.g., '1', 'F')
- * @ref Source: https://stackoverflow.com/a/3382894
- * @returns int
- */
-constexpr inline int hex_to_dec(unsigned char hex_digit)
-{
-    constexpr const signed char hex_values[256] = {
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1,
-        -1, 10, 11, 12, 13, 14, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, 10, 11, 12, 13, 14, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    };
-
-    int value = hex_values[hex_digit];
-    if (value == -1)
-        throw std::invalid_argument("invalid hex digit");
-
-    return value;
-}
-
-/**
- * Convert full hex string into integer
- * @param input hex string, including # ("#123abc")
- * @returns int
- */
-constexpr inline int hex_to_dec(str_view input)
-{
-    return hex_to_dec(input[1]) * 1048576 // 16^5
-           + hex_to_dec(input[2]) * 65536 // 16^4
-           + hex_to_dec(input[3]) * 4096 // 16^3
-           + hex_to_dec(input[4]) * 256 // 16^2
-           + hex_to_dec(input[5]) * 16 // 16^1
-           + hex_to_dec(input[6]) * 1; // 16^0
 }
