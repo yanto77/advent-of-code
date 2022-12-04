@@ -63,7 +63,7 @@ namespace
         {
             for (int x = 0 + PAD; x < 10 + PAD; x++)
             {
-                map[y][x] = to_int<uint8_t>(*read_ptr);
+                map[y][x] = parse_uint(*read_ptr);
                 read_ptr++;
             }
 

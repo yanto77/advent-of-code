@@ -6,12 +6,6 @@
 
 #include "string.h"
 
-// Convert a char into int
-template <typename T>
-T to_int(char ch)
-{
-    return ch - '0';
-}
 
 // Convert a string into 1 int
 template <typename T>
@@ -71,4 +65,9 @@ inline std::vector<T> to_multi_int(str_view input)
     }
 
     return out;
+}
+
+inline uint8_t parse_uint(char ch) 
+{
+    return ch - '0'; 
 }

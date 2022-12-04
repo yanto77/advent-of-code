@@ -33,7 +33,7 @@ namespace
             }
             else 
             {
-                intermediate[trg] = to_int<uint8_t>(ch);
+                intermediate[trg] = parse_uint(ch);
                 trg--;
             }
         }

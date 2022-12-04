@@ -9,7 +9,8 @@ namespace
         std::array<size_t, 9> buckets = {};
         for (int i = 0; i < input.size(); i += 2)
         {
-            buckets[to_int<size_t>(input[i])]++;
+            uint8_t idx = parse_uint(input[i]);
+            buckets[idx]++;
         }
 
         for (int d = 0; d < days; d++)

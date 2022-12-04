@@ -13,21 +13,21 @@ result_t Day_2021_2::run_solution(str_view input) const
         {
             case 'f': // forward
             {
-                auto value = to_int<int8_t>(line[sizeof("forward")]);
+                auto value = parse_uint(line[sizeof("forward")]);
                 p1_pos.x += value;
                 p2_pos += { value, p2_pos.z * value, 0};
                 break;
             }
             case 'd': // down
             {
-                auto value = to_int<int8_t>(line[sizeof("down")]);
+                auto value = parse_uint(line[sizeof("down")]);
                 p1_pos.y += value;
                 p2_pos.z += value;
                 break;
             }
             case 'u': // up
             {
-                auto value = to_int<int8_t>(line[sizeof("up")]);
+                auto value = parse_uint(line[sizeof("up")]);
                 p1_pos.y -= value;
                 p2_pos.z -= value;
                 break;
