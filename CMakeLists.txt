@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.16)
 project (advent_of_code)
 
 option(ENABLE_ERRORS         "Enable extra errors"                ON)
-option(ENABLE_TIME_TRACE     "Enables -ftime-trace flag"          ON)
+option(ENABLE_TIME_TRACE     "Enables -ftime-trace flag"          OFF)
 
 add_subdirectory(include/3rd-party/fmt EXCLUDE_FROM_ALL)
 
@@ -72,6 +72,7 @@ add_executable(${exec_NAME}
     src/2022/day01.cpp
     src/2022/day02.cpp
     src/2022/day03.cpp
+    src/2022/day04.cpp
 )
 
 target_precompile_headers(${exec_NAME} PRIVATE src/setup/all.h)
