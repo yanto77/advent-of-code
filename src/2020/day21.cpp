@@ -33,8 +33,8 @@ namespace
                 else if (a == "fish") ++allergens[FISH];
                 else if (a == "soy") ++allergens[SOY];
 
-                // printf(" - added to: "); std::cout << a << std::endl;
-                // printf("  -> result: "); print_row(allergens);
+                // fmt::print(" - added to: {}\n", a)
+                // fmt::print("  -> result: {}\n", allergens)
             }
         }
     };
@@ -105,8 +105,8 @@ namespace
             const auto& ingredients = split(part1, ' ');
             const auto& allergens = split(part2, ", ");
 
-            // printf(" - ingr: "); print_row(ingredients);
-            // printf(" - allerg: "); print_row(allergens);
+            // fmt::print(" - ingr: {}\n, ingredients);
+            // fmt::print(" - allerg: {}\n, allergens);
 
             for (str_view ingr : ingredients)
             {

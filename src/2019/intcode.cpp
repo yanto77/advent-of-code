@@ -173,8 +173,8 @@ void intcode_solver_t::run_tests()
         {
             fmt::print("Unexpected end state\n");
             fmt::print("    - program: {}\n", test.program);
-            fmt::print("    - expected: "); print_row(test.end_state);
-            fmt::print("    - actual  : "); print_row(solver.program);
+            fmt::print("    - expected: {}\n", test.end_state);
+            fmt::print("    - actual  : {}\n", solver.program);
         }
 
         const auto& output = solver.output_data;
@@ -182,8 +182,8 @@ void intcode_solver_t::run_tests()
         {
             fmt::print("Unexpected output\n");
             fmt::print("    - program: {}\n", test.program);
-            fmt::print("    - expected: "); print_row(test.output);
-            fmt::print("    - actual  : "); print_row(output);
+            fmt::print("    - expected: {}\n", test.output);
+            fmt::print("    - actual  : {}\n", output);
         }
         
         assert(solver.memory == test.end_state);
@@ -218,9 +218,7 @@ void intcode_solver_t::debug_post_exec()
         fmt::print("{:4}, ", program[ip + i]);
     }
     fmt::print("\n");
-
-    fmt::print("  output     : "); print_row(output_data); fmt::print("\n");
-
+    fmt::print("  output     : {}\n", output_data);
     fmt::print("\n");
     std::this_thread::sleep_for(100ms);
 }

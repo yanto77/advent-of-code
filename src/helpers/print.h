@@ -34,93 +34,58 @@
     #define COLOR_RESET()   "\033[39m"
 #endif
 
-// TODO: to_string() methods?
-
 inline void clear_screen()
 {
     // clear screen and move cursor to top-left corner
     printf("\x1B[2J\x1B[H");
 }
 
-template <typename cnt>
-void print_col(const cnt& data)
-{
-    for (const auto& d : data)
-    {
-        printf("%d\n", static_cast<int>(d));
-    }
-}
+void print_bits(uint8_t* data, size_t count, bool color);
 
-template <typename cnt>
-void print_row(const cnt& data, ssize_t linebreak = -1)
-{
-    for (size_t idx = 0; idx < data.size(); ++idx)
-    {
-        printf("%d, ", static_cast<int>(data[idx]));
+void print_bits_ext(uint8_t* data, size_t count, bool color);
 
-        if (linebreak != -1 && (idx + 1) % linebreak == 0)
-        {
-            printf("\n");
-        }
-    }
-    printf("\n");
-}
-
-template <typename cnt>
-void print_row_text(const cnt& data)
-{
-    for (const auto& d : data)
-    {
-        std::cout << "[" << d << "], ";
-    }
-    printf("\n");
-}
-
+// Prints values as bits
 template <typename T>
-void print_row(const std::vector<vec2<T>>& input)
-{
-    for (const auto& vec : input)
-    {
-        std::cout << "  (" << vec.x << ", " << vec.y << "), ";
-    }
-    std::cout << '\n';
-}
-
-template <typename T, size_t N = sizeof(T) * 8>
 void print_bits(T data, bool color = false)
 {
-    for (int i = 0; i <= N - 1; i++)
-    {
-        if (color)
-            printf(get_bit(data, i) ? COLOR_GREEN() "1" : COLOR_GRAY() "0");
-        else
-            printf(get_bit(data, i) ? "1" : "0");
-        printf(COLOR_RESET());
-    }
-}
-
-template <size_t N>
-void print_bits(const std::bitset<N>& data, bool color = false)
-{
-    for (int i = N - 1; i >= 0; --i)
-    {
-        if (color)
-            printf(data.test(i) ? COLOR_GREEN() "1" : COLOR_GRAY() "0");
-        else
-            printf(data.test(i) ? "1" : "0");
-        printf(COLOR_RESET());
-    }
-}
-
-inline void print_bits(const __m256i& data, bool color = false)
-{
-    const size_t n = sizeof(__m256i) / sizeof(uint8_t);
+    constexpr size_t n = sizeof(T) / sizeof(uint8_t);
     uint8_t buffer[n];
 
-    _mm256_storeu_si256((__m256i*)buffer, data);
-
-    for (int i = 0; i < n; i++)
+    if constexpr (std::is_same<T, __m128i>::value) 
     {
-        print_bits(buffer[i], color); printf(" ");
+        _mm_storeu_si128((__m128i*)buffer, data);
     }
+    else if constexpr (std::is_same<T, __m256i>::value)
+    {
+        _mm256_storeu_si256((__m256i*)buffer, data);
+    }
+    else 
+    {
+        std::memcpy(buffer, &data, sizeof(data));
+    }
+
+    print_bits(buffer, n, color);
+}
+
+// Prints values as bits, hex, and chars
+template <typename T>
+void print_bits_ext(T data, bool color = false)
+{
+    constexpr size_t n = sizeof(T) / sizeof(uint8_t);
+    uint8_t buffer[n];
+
+    if constexpr (std::is_same<T, __m128i>::value) 
+    {
+        _mm_storeu_si128((__m128i*)buffer, data);
+    }
+    else if constexpr (std::is_same<T, __m256i>::value)
+    {
+        _mm256_storeu_si256((__m256i*)buffer, data);
+    }
+    else 
+    {
+        std::memcpy(buffer, &data, sizeof(data));
+    }
+
+    print_bits_ext(buffer, n, color);
 }
