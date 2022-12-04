@@ -120,6 +120,8 @@ if (ENABLE_ERRORS)
             -Wno-padded
             -Wno-old-style-cast
             -Wno-implicit-int-float-conversion
+            -Wno-unused-variable
+            -Wno-shadow
             # Code Generation Convention
             -fwrapv
         >
