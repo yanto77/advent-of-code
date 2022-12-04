@@ -8,20 +8,19 @@ namespace
 
     std::vector<line_t> parse_lines(str_view input)
     {
-        std::vector<line_t> lines;
-    
-        for_each_split(input, '\n', [&](str_view line)
+        std::vector<uint16_t> data;
+        parse_uint_scalar(input, ",-> \n", [&](uint16_t num)
         {
-            const auto& [p1_str, p2_str] = split_at(line, " -> ");
-
-            const auto& [p1x, p1y] = split_at(p1_str, ',');
-            const auto& [p2x, p2y] = split_at(p2_str, ',');
-
-            vec2i p1 { to_int<uint16_t>(p1x), to_int<uint16_t>(p1y) };
-            vec2i p2 { to_int<uint16_t>(p2x), to_int<uint16_t>(p2y) };
-
-            lines.push_back(line_t { p1, p2 });
+            data.push_back(num);
         });
+
+        std::vector<line_t> lines;
+        for (size_t i = 0; i < data.size(); i += 4)
+        {
+            vec2i p1 { data[i+0], data[i+1] };
+            vec2i p2 { data[i+2], data[i+3] };
+            lines.push_back(line_t { p1, p2 });
+        }
 
         return lines;
     }

@@ -99,7 +99,10 @@ namespace
 
             if (!parse_cards)
             {
-                game_data.numbers = to_multi_int<uint8_t>(line);
+                parse_uint_scalar(line, ",", [&](uint8_t num)
+                {
+                    game_data.numbers.push_back(num);
+                });
                 parse_cards = true;
                 skip_next = true;
             }
@@ -117,12 +120,11 @@ namespace
                 }
                 else 
                 {
-                    assert(line.size() == 14);
-                    temp_card.numbers[card_index][0] = to_int<uint16_t>(str_view{ &line[0 + 0], 2 });
-                    temp_card.numbers[card_index][1] = to_int<uint16_t>(str_view{ &line[0 + 3], 2 });
-                    temp_card.numbers[card_index][2] = to_int<uint16_t>(str_view{ &line[0 + 6], 2 });
-                    temp_card.numbers[card_index][3] = to_int<uint16_t>(str_view{ &line[0 + 9], 2 });
-                    temp_card.numbers[card_index][4] = to_int<uint16_t>(str_view{ &line[0 + 12], 2 });
+                    size_t idx = 0;
+                    parse_uint_scalar(line, " ", [&](uint16_t num)
+                    {
+                        temp_card.numbers[card_index][idx++] = num;
+                    });
                     card_index++;
                 }
             }

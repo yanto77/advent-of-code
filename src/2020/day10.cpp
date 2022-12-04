@@ -8,9 +8,9 @@ namespace
     std::vector<uint8_t> parse(str_view input)
     {
         std::vector<uint8_t> out;
-        for_each_split(input, '\n', [&](str_view line)
+        parse_uint_scalar(input, "\n", [&](uint8_t num)
         {
-            out.push_back(to_int<uint8_t>(line));
+            out.push_back(num);
         });
 
         // Insert constant outlets (0 - charging, max+3 - build-in adapter)

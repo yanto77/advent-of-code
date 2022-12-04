@@ -10,11 +10,11 @@ namespace
             std::vector<int64_t> data;
 
         public:
-            void parse(str_view input)
+            solver_t(str_view input)
             {
-                for_each_split(input, '\n', [&](str_view line)
+                parse_uint_scalar(input, "\n", [&](uint64_t num)
                 {
-                    data.push_back(to_int<int64_t>(line));
+                    data.push_back(num);
                 });
             }
 
@@ -79,9 +79,7 @@ namespace
 
 result_t Day_2020_9::run_solution(str_view input) const
 {
-    solver_t solver;
-    solver.parse(input);
-
+    solver_t solver(input);
     size_t invalid_num = solver.get_invalid_num(25);
 
     const auto& [start, end] = solver.find_continuous_set(invalid_num);
@@ -95,8 +93,7 @@ void Day_2020_9::run_tests() const
     char text[] = "35\n20\n15\n25\n47\n40\n62\n55\n65\n95\n102\n"
                   "117\n150\n182\n127\n219\n299\n277\n309\n576\n";
 
-    solver_t solver;
-    solver.parse(text);
+    solver_t solver(text);
 
     assert(solver.data[0] == 35);
     assert(solver.data[19] == 576);

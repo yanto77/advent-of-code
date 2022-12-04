@@ -36,11 +36,10 @@ result_t Day_2019_1::run_solution(str_view input) const
 {
     size_t sum1 = 0;
     size_t sum2 = 0;
-    for_each_split(input, '\n', [&](str_view line)
+    parse_uint_scalar(input, "\n", [&](uint32_t num)
     {
-        auto value = to_int<int32_t>(line);
-        sum1 += fn1(value);
-        sum2 += fn2(value);
+        sum1 += fn1(num);
+        sum2 += fn2(num);
     });
 
     return {sum1, sum2};

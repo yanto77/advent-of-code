@@ -44,9 +44,9 @@ result_t Day_2020_1::run_solution(str_view input) const
 {
     std::vector<int> v;
     v.reserve(1000);
-    for_each_split(input, '\n', [&](str_view line) 
-    { 
-        v.emplace_back(to_int<int>(line)); 
+    parse_uint_scalar(input, "\n", [&](uint32_t num)
+    {
+        v.push_back(num);
     });
 
     std::sort(v.begin(), v.end());

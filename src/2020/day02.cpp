@@ -18,12 +18,12 @@ result_t Day_2020_2::run_solution(str_view input) const
     for_each_split(input, '\n', [&](str_view line)
     {
         // Parsing line
-        size_t mid = line.find_first_of('-', 0);
-        const int min = to_int<int>(str_view { &line[0], mid });
-        const auto& [max, idx2] = to_int<int>(line, mid+1);
-
-        const char ch = line[idx2+1];
-        const str_view pwd { &line[idx2+4], line.size() - idx2 - 4};
+        const auto& [lhs, pwd] = split_at(line, ": ");
+        const auto& [range, chStr] = split_at(lhs, ' ');
+        const auto& [minStr, maxStr] = split_at(range, '-');
+        const char ch = chStr[0];
+        const int min = to_int<int>(minStr);
+        const int max = to_int<int>(maxStr);
 
         // Part 1
         size_t count = count_occurences(pwd, ch);

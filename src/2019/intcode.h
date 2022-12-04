@@ -34,8 +34,11 @@ class intcode_solver_t
     }
 
     intcode_solver_t(str_view input)
-        : program(to_multi_int<int64_t>(input))
     {
+        parse_int_scalar(input, ",", [&](int64_t num)
+        {
+            program.push_back(num);
+        });
         reset();
     }
 
@@ -224,7 +227,7 @@ class intcode_solver_t
     size_t rbp = 0; // relative base pointer
     int64_t* idp = nullptr; // input data pointer, valid immediately after program yields on INPUT, otherwise undefined
 
-    const std::vector<int64_t> program; // program, constant (always equal to input)
+    std::vector<int64_t> program; // program, constant (always equal to input)
     std::vector<int64_t> memory; // program, as loaded into memory, may be modified
     std::vector<int64_t> output_data;
 };
