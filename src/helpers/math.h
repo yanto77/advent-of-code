@@ -1,32 +1,32 @@
 #pragma once
 
 template <typename T>
-inline T min(const T& a, const T& b)
+inline T min(T a, T b)
 {
     return (a < b) ? a : b;
 }
 
 template <typename T>
-inline T max(const T& a, const T& b)
+inline T max(T a, T b)
 {
     return (a > b) ? a : b;
 }
 
 template <typename T>
-inline T range(const T& val, const T& min, const T& max)
+inline T range(T x, T min, T max)
 {
-    if (val <= min)
+    if (x <= min)
         return min;
-    else if (val >= max)
+    else if (x >= max)
         return max;
     else
-        return val;
+        return x;
 }
 
 template <typename T>
-inline bool in_range(const T& val, const T& min, const T& max)
+inline bool in_range(T x, T min, T max)
 {
-    return (min <= val && val <= max);
+    return (min <= x && x <= max);
 }
 
 // Greatest Common Divisor
