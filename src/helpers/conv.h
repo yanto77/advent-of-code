@@ -49,7 +49,7 @@ inline uint8_t parse_uint(char ch)
 }
 
 template <typename Functor>
-void parse_uint_scalar(str_view input, str_view separators, Functor func)
+void parse_uint_scalar(str_view input, Functor func)
 {
     uint64_t number = 0;
     uint8_t n_digits = 0;
@@ -62,7 +62,7 @@ void parse_uint_scalar(str_view input, str_view separators, Functor func)
             number = 10 * number + parse_uint(ch);
             n_digits++;
         }
-        else if (separators.find_first_of(ch) != str_view::npos)
+        else // assume everything else is a separator
         {
             if (n_digits > 0)
             {
@@ -71,7 +71,6 @@ void parse_uint_scalar(str_view input, str_view separators, Functor func)
                 n_digits = 0;
             }
         }
-        else assert(false);
     }
 
     if (n_digits > 0)
@@ -81,7 +80,7 @@ void parse_uint_scalar(str_view input, str_view separators, Functor func)
 }
 
 template <typename Functor>
-void parse_int_scalar(str_view input, str_view separators, Functor func)
+void parse_int_scalar(str_view input, Functor func)
 {
     // aoc doesn't use `+`, so assume the numbers are positive unless there's a minus.
     int8_t sign = +1; 
@@ -100,7 +99,7 @@ void parse_int_scalar(str_view input, str_view separators, Functor func)
         {
             sign = -1;
         }
-        else if (separators.find_first_of(ch) != str_view::npos)
+        else // assume everything else is a separator
         {
             if (n_digits > 0)
             {
@@ -110,7 +109,6 @@ void parse_int_scalar(str_view input, str_view separators, Functor func)
                 n_digits = 0;
             }
         }
-        else assert(false);
     }
 
     if (n_digits > 0)

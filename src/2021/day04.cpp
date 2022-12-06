@@ -99,7 +99,7 @@ namespace
 
             if (!parse_cards)
             {
-                parse_uint_scalar(line, ",", [&](uint8_t num)
+                parse_uint_scalar(line, [&](uint8_t num)
                 {
                     game_data.numbers.push_back(num);
                 });
@@ -121,7 +121,7 @@ namespace
                 else 
                 {
                     size_t idx = 0;
-                    parse_uint_scalar(line, " ", [&](uint16_t num)
+                    parse_uint_scalar(line, [&](uint16_t num)
                     {
                         temp_card.numbers[card_index][idx++] = num;
                     });

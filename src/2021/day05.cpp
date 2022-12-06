@@ -9,7 +9,7 @@ namespace
     std::vector<line_t> parse_lines(str_view input)
     {
         std::vector<uint16_t> data;
-        parse_uint_scalar(input, ",-> \n", [&](uint16_t num)
+        parse_uint_scalar(input, [&](uint16_t num)
         {
             data.push_back(num);
         });

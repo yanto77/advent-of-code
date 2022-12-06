@@ -67,7 +67,7 @@ namespace
 result_t Day_2021_7::run_solution(str_view input) const
 {
     std::vector<uint32_t> data;
-    parse_uint_scalar(input, ",\n", [&data](uint32_t num)
+    parse_uint_scalar(input, [&data](uint32_t num)
     {
         data.push_back(num);
     });
@@ -80,7 +80,7 @@ void Day_2021_7::run_tests() const
     char text1[] = "16,1,2,0,4,2,7,1,2,14\n";
 
     std::vector<uint32_t> data;
-    parse_uint_scalar(text1, ",\n", [&data](uint32_t num)
+    parse_uint_scalar(text1, [&data](uint32_t num)
     {
         data.push_back(num);
     });

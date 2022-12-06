@@ -35,7 +35,7 @@ class intcode_solver_t
 
     intcode_solver_t(str_view input)
     {
-        parse_int_scalar(input, ",", [&](int64_t num)
+        parse_int_scalar(input, [&](int64_t num)
         {
             program.push_back(num);
         });

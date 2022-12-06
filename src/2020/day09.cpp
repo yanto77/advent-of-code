@@ -12,7 +12,7 @@ namespace
         public:
             solver_t(str_view input)
             {
-                parse_uint_scalar(input, "\n", [&](uint64_t num)
+                parse_uint_scalar(input, [&](uint64_t num)
                 {
                     data.push_back(num);
                 });

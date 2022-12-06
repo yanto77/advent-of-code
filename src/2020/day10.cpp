@@ -8,7 +8,7 @@ namespace
     std::vector<uint8_t> parse(str_view input)
     {
         std::vector<uint8_t> out;
-        parse_uint_scalar(input, "\n", [&](uint8_t num)
+        parse_uint_scalar(input, [&](uint8_t num)
         {
             out.push_back(num);
         });

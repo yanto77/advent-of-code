@@ -174,7 +174,7 @@ namespace
                 case parser_t::MY_TICKET:
                 {
                     // Example: "7,1,14"
-                    parse_uint_scalar(line, ",\n", [&](uint16_t num)
+                    parse_uint_scalar(line, [&](uint16_t num)
                     {
                         data.my_ticket.push_back(num);
                     });
@@ -184,7 +184,7 @@ namespace
                 {
                     // Example: "7,3,47"
                     std::vector<uint16_t> other_ticket;
-                    parse_uint_scalar(line, ",\n", [&](uint16_t num)
+                    parse_uint_scalar(line, [&](uint16_t num)
                     {
                         other_ticket.push_back(num);
                     });

@@ -6,7 +6,7 @@ ADVENT_DAY(2021, 1, 1400, 1429);
 result_t Day_2021_1::run_solution(str_view input) const
 {
     std::vector<uint32_t> data;
-    parse_uint_scalar(input, "\n", [&](uint32_t num)
+    parse_uint_scalar(input, [&](uint32_t num)
     {
         data.push_back(num);
     });
