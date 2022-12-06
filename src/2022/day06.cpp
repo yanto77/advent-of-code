@@ -4,26 +4,48 @@ ADVENT_DAY(2022, 6, 1625, 2250);
 
 namespace 
 {
+    // returns index of first duplicate char, or -1 on valid string
+    ssize_t valid_substr(str_view substr)
+    {
+        // NB: start at the end, as that will allow to find the _last_ duplicate 
+        // index in _least_ number of operations, allowing large skips in future.
+        for (int64_t i = (substr.size() - 1); i >= 0 ; i--)
+        {
+            for (int64_t j = i + 1; j < substr.size(); j++)
+            {
+                if (substr[i] == substr[j])
+                {
+                    return i;
+                }
+            }
+        }
+
+        return -1;
+    }
+
     size_t get_marker(str_view input, size_t msg_size)
     {
         for (size_t lastIdx = (msg_size - 1); lastIdx < input.size(); lastIdx++)
         {
-            bool no_duplicates = true;
-            for (size_t i = (lastIdx - msg_size + 1); i < lastIdx && no_duplicates; i++)
-            {
-                for (size_t j = i + 1; j <= lastIdx && no_duplicates; j++)
-                {
-                    no_duplicates &= (input[i] != input[j]);
-                }
-            }
+            size_t firstIdx = (lastIdx - (msg_size - 1));
+            str_view substr { &input[firstIdx], msg_size};
 
-            if (no_duplicates)
+            ssize_t res = valid_substr(substr);
+            if (res == -1)
             {
-                return lastIdx + 1;
+                return lastIdx + 1; // convert 0-index to 1-index
+            }
+            else 
+            {
+                // with N being the index of _first_ duplicate char in the substr, 
+                // we jump to N + 1, as that is the next possible substr without 
+                // this duplicate char. (all the substrs in between will contain
+                // the exact same duplicate char).
+                lastIdx = lastIdx + res;
             }
         }
 
-        assert(false);
+        assert(false); // we expect to find a valid marker in every line
         return 0;
     }
 }
