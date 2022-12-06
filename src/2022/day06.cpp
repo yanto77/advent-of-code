@@ -5,7 +5,26 @@ ADVENT_DAY(2022, 6, 1625, 2250);
 namespace 
 {
     // returns index of first duplicate char, or -1 on valid string
-    ssize_t valid_substr(str_view substr)
+    [[maybe_unused]]
+    ssize_t valid_substr_array(str_view substr)
+    {
+        std::array<bool, 26> chars { false };
+        for (int64_t i = (substr.size() - 1); i >= 0 ; i--)
+        {
+            size_t charIdx = (substr[i] - 'a');
+            if (chars[charIdx])
+            {
+                return i;
+            }
+            chars[charIdx] = true;
+        }
+
+        return -1;
+    }
+
+    [[maybe_unused]]
+    // returns index of first duplicate char, or -1 on valid string
+    ssize_t valid_substr_loop(str_view substr)
     {
         // NB: start at the end, as that will allow to find the _last_ duplicate 
         // index in _least_ number of operations, allowing large skips in future.
@@ -25,15 +44,12 @@ namespace
 
     size_t get_marker(str_view input, size_t msg_size)
     {
-        for (size_t lastIdx = (msg_size - 1); lastIdx < input.size(); lastIdx++)
+        for (size_t i = 0; i < (input.size() - msg_size); i++)
         {
-            size_t firstIdx = (lastIdx - (msg_size - 1));
-            str_view substr { &input[firstIdx], msg_size};
-
-            ssize_t res = valid_substr(substr);
+            ssize_t res = valid_substr_loop({ &input[i], msg_size});
             if (res == -1)
             {
-                return lastIdx + 1; // convert 0-index to 1-index
+                return i + msg_size;
             }
             else 
             {
@@ -41,7 +57,7 @@ namespace
                 // we jump to N + 1, as that is the next possible substr without 
                 // this duplicate char. (all the substrs in between will contain
                 // the exact same duplicate char).
-                lastIdx = lastIdx + res;
+                i += res;
             }
         }
 
