@@ -5,38 +5,18 @@ ADVENT_DAY(2022, 6, 1625, 2250);
 namespace 
 {
     // returns index of first duplicate char, or -1 on valid string
-    [[maybe_unused]]
-    ssize_t valid_substr_array(str_view substr)
+    ssize_t valid_substr(str_view substr)
     {
-        std::array<bool, 26> chars { false };
+        uint32_t chars = 0;
         for (int64_t i = (substr.size() - 1); i >= 0 ; i--)
         {
             size_t charIdx = (substr[i] - 'a');
-            if (chars[charIdx])
+            if (get_bit(chars, charIdx))
             {
                 return i;
             }
-            chars[charIdx] = true;
-        }
 
-        return -1;
-    }
-
-    [[maybe_unused]]
-    // returns index of first duplicate char, or -1 on valid string
-    ssize_t valid_substr_loop(str_view substr)
-    {
-        // NB: start at the end, as that will allow to find the _last_ duplicate 
-        // index in _least_ number of operations, allowing large skips in future.
-        for (int64_t i = (substr.size() - 1); i >= 0 ; i--)
-        {
-            for (int64_t j = i + 1; j < substr.size(); j++)
-            {
-                if (substr[i] == substr[j])
-                {
-                    return i;
-                }
-            }
+            set_bit(chars, charIdx);
         }
 
         return -1;
@@ -46,7 +26,7 @@ namespace
     {
         for (size_t i = 0; i < (input.size() - msg_size); i++)
         {
-            ssize_t res = valid_substr_loop({ &input[i], msg_size});
+            ssize_t res = valid_substr({ &input[i], msg_size});
             if (res == -1)
             {
                 return i + msg_size;
