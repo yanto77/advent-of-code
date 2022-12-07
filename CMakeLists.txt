@@ -77,6 +77,7 @@ add_executable(${exec_NAME}
     src/2022/day04.cpp
     src/2022/day05.cpp
     src/2022/day06.cpp
+    src/2022/day07.cpp
 )
 
 target_precompile_headers(${exec_NAME} PRIVATE src/setup/all.h)
