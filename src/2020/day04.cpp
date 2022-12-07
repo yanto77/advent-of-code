@@ -46,14 +46,14 @@ namespace
     enum Field: char { byr, cid, ecl, eyr, hcl, hgt, iyr, pid };
     enum EyeColor: char { amb, blu, brn, gry, grn, hzl, oth };
 
-    static const std::unordered_map<std::string_view, Field> s_fields =
+    static const std::unordered_map<str_view, Field> s_fields =
     {
         { "byr", Field::byr }, { "cid", Field::cid }, { "ecl", Field::ecl },
         { "eyr", Field::eyr }, { "hcl", Field::hcl }, { "hgt", Field::hgt },
         { "iyr", Field::iyr }, { "pid", Field::pid }
     };
 
-    static const std::unordered_map<std::string_view, EyeColor> s_colors =
+    static const std::unordered_map<str_view, EyeColor> s_colors =
     {
         { "amb", EyeColor::amb}, { "blu", EyeColor::blu}, { "brn", EyeColor::brn},
         { "gry", EyeColor::gry}, { "grn", EyeColor::grn}, { "hzl", EyeColor::hzl},
