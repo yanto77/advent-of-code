@@ -13,6 +13,20 @@ inline T max(T a, T b)
 }
 
 template <typename T>
+inline int8_t sign(T a)
+{
+    return (a >= 0) ? +1 : -1;
+}
+
+template <typename T, typename T2>
+inline T clamp(T a, T2 lower, T2 upper) 
+{
+    if (a < lower) a = lower;
+    if (a > upper) a = upper;
+    return a;
+}
+
+template <typename T>
 inline T range(T x, T min, T max)
 {
     if (x <= min)
