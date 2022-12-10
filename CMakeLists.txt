@@ -16,6 +16,7 @@ add_executable(${exec_NAME}
     src/main.cpp
 
     src/helpers/print.cpp
+    src/helpers/ocr.cpp
 
     src/2019/intcode.cpp
     src/2019/day01.cpp
@@ -80,6 +81,7 @@ add_executable(${exec_NAME}
     src/2022/day07.cpp
     src/2022/day08.cpp
     src/2022/day09.cpp
+    src/2022/day10.cpp
 )
 
 target_precompile_headers(${exec_NAME} PRIVATE src/setup/all.h)
