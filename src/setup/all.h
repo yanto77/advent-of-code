@@ -1,6 +1,7 @@
 #pragma once
 
 // std includes
+#include <algorithm>
 #include <bitset>
 #include <cstdint>
 #include <cstddef>
