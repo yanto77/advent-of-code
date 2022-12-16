@@ -7,38 +7,53 @@ struct vec2
     T x;
     T y;
 
-    constexpr vec2<T>& operator+=(const vec2<T>& rhs) { x += rhs.x; y += rhs.y; return *this; }
-    constexpr vec2<T>& operator-=(const vec2<T>& rhs) { x -= rhs.x; y -= rhs.y; return *this; }
-    constexpr vec2<T>& operator/=(const vec2<T>& rhs) { x /= rhs.x; y /= rhs.y; return *this; }
-    constexpr vec2<T>& operator*=(const vec2<T>& rhs) { x *= rhs.x; y *= rhs.y; return *this; }
+    constexpr vec2<T>& operator+=(const vec2<T>& r) { x += r.x; y += r.y; return *this; }
+    constexpr vec2<T>& operator-=(const vec2<T>& r) { x -= r.x; y -= r.y; return *this; }
+    constexpr vec2<T>& operator/=(const vec2<T>& r) { x /= r.x; y /= r.y; return *this; }
+    constexpr vec2<T>& operator*=(const vec2<T>& r) { x *= r.x; y *= r.y; return *this; }
 
-    constexpr vec2<T>& operator+=(const T rhs) { x += rhs; y += rhs; return *this; }
-    constexpr vec2<T>& operator-=(const T rhs) { x -= rhs; y -= rhs; return *this; }
-    constexpr vec2<T>& operator/=(const T rhs) { x /= rhs; y /= rhs; return *this; }
-    constexpr vec2<T>& operator*=(const T rhs) { x *= rhs; y *= rhs; return *this; }
+    constexpr vec2<T>& operator+=(const T r) { x += r; y += r; return *this; }
+    constexpr vec2<T>& operator-=(const T r) { x -= r; y -= r; return *this; }
+    constexpr vec2<T>& operator/=(const T r) { x /= r; y /= r; return *this; }
+    constexpr vec2<T>& operator*=(const T r) { x *= r; y *= r; return *this; }
 
     constexpr T norm() const { return static_cast<T>(sqrt(x*x + y*y)); };
     constexpr T norm_sq() const { return x*x + y*y; };
     
-    constexpr friend vec2<T> operator+(vec2<T> lhs, const vec2<T>& rhs) { lhs += rhs; return lhs; }
-    constexpr friend vec2<T> operator-(vec2<T> lhs, const vec2<T>& rhs) { lhs -= rhs; return lhs; }
-    constexpr friend vec2<T> operator/(vec2<T> lhs, const vec2<T>& rhs) { lhs /= rhs; return lhs; }
-    constexpr friend vec2<T> operator*(vec2<T> lhs, const vec2<T>& rhs) { lhs *= rhs; return lhs; }
+    constexpr friend vec2<T> operator+(vec2<T> l, const vec2<T>& r) { l += r; return l; }
+    constexpr friend vec2<T> operator-(vec2<T> l, const vec2<T>& r) { l -= r; return l; }
+    constexpr friend vec2<T> operator/(vec2<T> l, const vec2<T>& r) { l /= r; return l; }
+    constexpr friend vec2<T> operator*(vec2<T> l, const vec2<T>& r) { l *= r; return l; }
 
-    constexpr friend vec2<T> operator+(vec2<T> lhs, const T rhs) { lhs += rhs; return lhs; }
-    constexpr friend vec2<T> operator-(vec2<T> lhs, const T rhs) { lhs -= rhs; return lhs; }
-    constexpr friend vec2<T> operator/(vec2<T> lhs, const T rhs) { lhs /= rhs; return lhs; }
-    constexpr friend vec2<T> operator*(vec2<T> lhs, const T rhs) { lhs *= rhs; return lhs; }
+    constexpr friend vec2<T> operator+(vec2<T> l, const T r) { l += r; return l; }
+    constexpr friend vec2<T> operator-(vec2<T> l, const T r) { l -= r; return l; }
+    constexpr friend vec2<T> operator/(vec2<T> l, const T r) { l /= r; return l; }
+    constexpr friend vec2<T> operator*(vec2<T> l, const T r) { l *= r; return l; }
 
-    constexpr friend vec2<T> operator+(const T lhs, vec2<T> rhs) { rhs += lhs; return rhs; }
-    constexpr friend vec2<T> operator-(const T lhs, vec2<T> rhs) { rhs -= lhs; return rhs; }
-    constexpr friend vec2<T> operator/(const T lhs, vec2<T> rhs) { rhs /= lhs; return rhs; }
-    constexpr friend vec2<T> operator*(const T lhs, vec2<T> rhs) { rhs *= lhs; return rhs; }
+    constexpr friend vec2<T> operator+(const T l, vec2<T> r) { r += l; return r; }
+    constexpr friend vec2<T> operator-(const T l, vec2<T> r) { r -= l; return r; }
+    constexpr friend vec2<T> operator/(const T l, vec2<T> r) { r /= l; return r; }
+    constexpr friend vec2<T> operator*(const T l, vec2<T> r) { r *= l; return r; }
 
-    constexpr friend bool operator==(const vec2<T>& lhs, const vec2<T>& rhs) { return lhs.x == rhs.x && lhs.y == rhs.y; }
+    constexpr friend bool operator<(const vec2<T>& l, const vec2<T>& r) 
+    {
+        return l.x < r.x && l.y < r.y;
+    }
+    constexpr friend bool operator> (const vec2<T>& l, const vec2<T>& r) { return r < l; }
+    constexpr friend bool operator<=(const vec2<T>& l, const vec2<T>& r) { return !(l > r); }
+    constexpr friend bool operator>=(const vec2<T>& l, const vec2<T>& r) { return !(l < r); }
+
+    constexpr friend bool operator==(const vec2<T>& l, const vec2<T>& r) 
+    { 
+        return l.x == r.x && l.y == r.y; 
+    }
+    constexpr friend bool operator!=(const vec2<T>& l, const vec2<T>& r) { return !(l == r); }
 
     template <typename U>
-    constexpr friend vec2<T> clamp(vec2<T> v, U lower, U upper) { return { ::clamp(v.x, lower, upper), ::clamp(v.y, lower, upper) }; };
+    constexpr friend vec2<T> clamp(vec2<T> v, U lower, U upper) 
+    { 
+        return { ::clamp(v.x, lower, upper), ::clamp(v.y, lower, upper) }; 
+    };
 };
 
 namespace std
