@@ -35,19 +35,15 @@ struct vec2
     constexpr friend vec2<T> operator/(const T l, vec2<T> r) { r /= l; return r; }
     constexpr friend vec2<T> operator*(const T l, vec2<T> r) { r *= l; return r; }
 
-    constexpr friend bool operator<(const vec2<T>& l, const vec2<T>& r) 
-    {
-        return l.x < r.x && l.y < r.y;
-    }
+    constexpr friend bool operator<(const vec2<T>& l, const vec2<T>& r) { return l.x < r.x && l.y < r.y; }
     constexpr friend bool operator> (const vec2<T>& l, const vec2<T>& r) { return r < l; }
-    constexpr friend bool operator<=(const vec2<T>& l, const vec2<T>& r) { return !(l > r); }
-    constexpr friend bool operator>=(const vec2<T>& l, const vec2<T>& r) { return !(l < r); }
+    constexpr friend bool operator<=(const vec2<T>& l, const vec2<T>& r) { return l.x <= r.x && l.y <= r.y; }
+    constexpr friend bool operator>=(const vec2<T>& l, const vec2<T>& r) { return !(r < l); }
 
-    constexpr friend bool operator==(const vec2<T>& l, const vec2<T>& r) 
-    { 
-        return l.x == r.x && l.y == r.y; 
-    }
+    constexpr friend bool operator==(const vec2<T>& l, const vec2<T>& r) { return l.x == r.x && l.y == r.y; }
     constexpr friend bool operator!=(const vec2<T>& l, const vec2<T>& r) { return !(l == r); }
+
+    constexpr friend int64_t dist_mnht(const vec2<T>& l, const vec2<T>& r) { return abs(l.x - r.x) + abs(l.y - r.y); }
 
     template <typename U>
     constexpr friend vec2<T> clamp(vec2<T> v, U lower, U upper) 
