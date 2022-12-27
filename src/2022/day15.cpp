@@ -100,7 +100,7 @@ namespace
         [[maybe_unused]]
         void print(std::optional<vec2i> center = {}, std::vector<vec2i> highlights = {})
         {
-            auto [min, max] = outer_bound;
+            auto [min, max] = inner_bound;
             if (center.has_value())
             {
                 min.x = center.value().x - 5;
