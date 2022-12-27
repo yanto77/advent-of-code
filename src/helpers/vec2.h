@@ -1,5 +1,6 @@
 #pragma once
 #include <helpers/math.h>
+#include <fmt/format.h>
 
 template <typename T>
 struct vec2
@@ -52,21 +53,35 @@ struct vec2
     };
 };
 
-namespace std
+template <typename T>
+struct std::hash<vec2<T>>
 {
-    template <typename T>
-    struct hash<vec2<T>>
+    // Ref: https://stackoverflow.com/a/17017281
+    size_t operator()( const vec2<T>& v ) const
     {
-        // Ref: https://stackoverflow.com/a/17017281
-        size_t operator()( const vec2<T>& v ) const
-        {
-            size_t res = 17;
-            res = res * 31 + hash<T>()( v.x );
-            res = res * 31 + hash<T>()( v.y );
-            return res;
-        }
-    };
-}
+        size_t res = 17;
+        res = res * 31 + hash<T>()( v.x );
+        res = res * 31 + hash<T>()( v.y );
+        return res;
+    }
+};
+
+template <typename T>
+struct fmt::formatter<vec2<T>>
+{
+    template<typename ParseContext>
+    constexpr auto parse(ParseContext& ctx)
+    {
+        return ctx.begin();
+    }
+
+    template<typename FormatContext>
+    auto format(vec2<T> const& v, FormatContext& ctx) const
+    {
+        return fmt::format_to(ctx.out(), "({0}, {1})", v.x, v.y);
+    }
+};
+
 
 typedef vec2<int32_t> vec2i;
 typedef vec2<uint32_t> vec2u;
