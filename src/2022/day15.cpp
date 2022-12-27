@@ -53,8 +53,11 @@ namespace
         size_t count_covered_cells(int32_t y)
         {
             size_t count = 0;
+            std::vector<vec2i> xranges;
+            xranges.reserve(sensors.size());
+            compute_ranges_x(y, outer_bound, xranges);
 
-            for (auto [x1, x2]: compute_ranges(y, outer_bound))
+            for (auto [x1, x2]: xranges)
             {
                 count += (x2 - x1) + 1; // NB: incl. range
                 for (vec2i beacon: beacons)
@@ -71,14 +74,22 @@ namespace
 
         size_t find_beacon_score()
         {
-            for (int32_t y = inner_bound.min.y; y < inner_bound.max.y; y++)
+            std::vector<vec2i> xranges, yranges;
+            xranges.reserve(sensors.size());
+            yranges.reserve(sensors.size());
+            
+            compute_ranges_y(inner_bound, yranges);
+            for (auto [min, max]: yranges)
             {
-                auto ranges = compute_ranges(y, inner_bound);
-                if (ranges.size() == 2)
+                for (int32_t y = min; y < max; y++)
                 {
-                    const vec2i a = ranges[0], b = ranges[1];
-                    if (a.x > b.y) return int64_t(b.y + 1) * 4000000 + y;
-                    else return int64_t(a.y + 1) * 4000000 + y;
+                    compute_ranges_x(y, outer_bound, xranges);
+                    if (xranges.size() == 2)
+                    {
+                        const vec2i a = xranges[0], b = xranges[1];
+                        if (a.x > b.y) return int64_t(b.y + 1) * 4000000 + y;
+                        else return int64_t(a.y + 1) * 4000000 + y;
+                    }
                 }
             }
 
@@ -89,7 +100,7 @@ namespace
         [[maybe_unused]]
         void print(std::optional<vec2i> center = {}, std::vector<vec2i> highlights = {})
         {
-            auto [min, max] = inner_bound;
+            auto [min, max] = outer_bound;
             if (center.has_value())
             {
                 min.x = center.value().x - 5;
@@ -100,7 +111,7 @@ namespace
 
             for (int32_t y = min.y; y <= max.y; y++)
             {
-                fmt::print("{:3} : ", y);
+                fmt::print("{:5} : ", y);
                 for (int32_t x = min.x; x <= max.x; x++)
                 {
                     const vec2i pos { x, y };
@@ -140,7 +151,7 @@ namespace
                     {
                         if (dist_mnht(sensor, pos) <= extent) // in range
                         {
-                            fmt::print(COLOR_GRAY() "#");
+                            fmt::print(COLOR_GRAY() "o");
                             goto next;
                         }
                     }
@@ -156,9 +167,9 @@ namespace
         }
 
         private:
-            std::vector<vec2i> compute_ranges(int32_t y, bound_t bound)
+            void compute_ranges_x(int32_t y, const bound_t& bound, std::vector<vec2i>& ranges)
             {
-                std::vector<vec2i> ranges;
+                ranges.clear();
                 for (auto [center, extent]: sensors)
                 {
                     int32_t extent_in_y = (int32_t)extent - abs(y - center.y);
@@ -169,7 +180,32 @@ namespace
                         ranges.push_back(vec2i{x1, x2});
                     }
                 }
+                merge_ranges(ranges);
+            }
 
+            void compute_ranges_y(const bound_t& bound, std::vector<vec2i>& ranges)
+            {
+                ranges.clear();
+                for (size_t i = 0; i < sensors.size(); i++)
+                {
+                    for (size_t j = 0; j < i; j++)
+                    {
+                        auto [ap, ad] = sensors[i];
+                        auto [bp, bd] = sensors[j];
+                        if (dist_mnht(ap, bp) - bd - ad == 2)
+                        {
+                            // There's a 1 cell diagonal between the sensor areas where the missing sensor could be found
+                            int32_t ymin = clamp(min(ap.y, bp.y), bound.min.y, bound.max.y);
+                            int32_t ymax = clamp(max(ap.y, bp.y), bound.min.y, bound.max.y);
+                            ranges.push_back({ymin, ymax});
+                        }
+                    }
+                }
+                merge_ranges(ranges);
+            }
+
+            void merge_ranges(std::vector<vec2i>& ranges)
+            {
                 for (int64_t i = ranges.size() - 1; i >= 0; i--)
                 {
                     for (int64_t j = i - 1; j >= 0; j--)
@@ -184,8 +220,6 @@ namespace
                         }
                     }
                 }
-
-                return ranges;
             }
     };
 }
@@ -195,8 +229,6 @@ result_t Day_2022_15::run_solution(str_view input) const
     sensor_map_t map(input);
     size_t part1 = map.count_covered_cells(2000000);
     size_t part2 = map.find_beacon_score();
-
-    assert(part2 > 343970184);
     return { part1, part2 };
 }
 
@@ -221,25 +253,8 @@ void Day_2022_15::run_tests() const
     sensor_map_t map(test_input);
     size_t part1 = map.count_covered_cells(10);
     assert(part1 == 26);
-    // fmt::print("test part1: {}\n", part1);
 
     // map.print();
     size_t part2 = map.find_beacon_score();
     assert(part2 == 56000011);
-    // fmt::print("test part2: {}\n", part2);
-
-    // for (size_t i = 0; i < map.sensors.size(); i++)
-    // {
-    //     for (size_t j = 0; j < map.sensors.size() && i != j; j++)
-    //     {
-    //         auto [ap, ad] = map.sensors[i];
-    //         auto [bp, bd] = map.sensors[j];
-    //         if (dist_mnht(ap, bp) - bd - ad == 2)
-    //         {
-    //             map.print({}, { ap, bp });
-    //             fmt::print("- {} and {}: ranges: {}, {}\n", i, j, ad, bd);
-    //             fmt::print("\n");
-    //         }
-    //     }
-    // }
 }
