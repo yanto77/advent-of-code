@@ -87,6 +87,7 @@ add_executable(${exec_NAME}
     src/2022/day13.cpp
     src/2022/day14.cpp
     src/2022/day15.cpp
+    src/2022/day16.cpp
     src/2022/day25.cpp
 )
 

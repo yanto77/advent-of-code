@@ -93,3 +93,11 @@ inline int64_t binpow(int64_t a, int64_t b)
     }
     return res;
 }
+
+// saturating add (doesn't overflow)
+template <typename T>
+T sat_add(T a, T b) 
+{
+    auto max = std::numeric_limits<T>::max();
+    return (a > max - b) ? max : a + b;
+}
